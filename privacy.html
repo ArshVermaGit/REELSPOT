@@ -3,17 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy - ReelSpot</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>ReelSpot - Privacy</title>
+    <link rel="icon" href="assets/icons/favicon.ico">
     <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen">
-    <div class="flex items-center justify-center min-h-screen px-4">
-        <div class="max-w-lg text-center text-white">
-            <h1 class="text-4xl font-bold mb-4">Privacy Policy</h1>
-            <p class="mb-6">We respect your privacy. No personal data is collected or stored. All downloads are processed securely.</p>
-            <a href="index.html" class="text-white/80 hover:text-white transition">← Back to Home</a>
+<body>
+    <nav>
+        <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-film"></i>
+                <h1>ReelSpot</h1>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <button id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
         </div>
-    </div>
+    </nav>
+
+    <section class="hero">
+        <div class="max-w-lg text-center fade-in-up">
+            <h2>Privacy Policy</h2>
+            <p>Our commitment to your privacy.</p>
+            <div class="mt-8 space-y-4">
+                <p>At ReelSpot, we prioritize your privacy. We do not collect or store any personal data during your use of our service. All downloads are processed securely with no third-party tracking.</p>
+                <p>Your trust is important to us, and we adhere to strict privacy standards to ensure a safe experience.</p>
+            </div>
+            <a href="index.html" class="mt-8 inline-block text-white/80 hover:text-white transition-colors">← Back to Home</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 ReelSpot - All Rights Reserved. Trademark by Arsh Verma.</p>
+    </footer>
 </body>
 </html>

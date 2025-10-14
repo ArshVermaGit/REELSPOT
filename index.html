@@ -3,208 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReelSpot - Download Videos & Reels from All Platforms</title>
-    <meta name="description" content="Download Instagram Reels, YouTube Videos, Facebook Posts, TikTok Videos in HD quality. Fast, Free & Unlimited!">
+    <title>ReelSpot - Download Videos & Reels</title>
+    <meta name="description" content="Download Instagram Reels, YouTube Videos, and more in HD. Fast, free, and unlimited!">
     <link rel="icon" href="assets/icons/favicon.ico">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
-        }
-        .fade-in-up { animation: fadeInUp 0.8s ease-out; }
-        .float { animation: float 3s ease-in-out infinite; }
-    </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-x-hidden text-white font-inter">
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 bg-white/10 backdrop-blur-xl border-b border-white/20 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-film text-2xl text-white transition-transform hover:scale-110"></i>
-                    <h1 class="text-2xl font-bold text-white hover:text-purple-400 transition-colors">ReelSpot</h1>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#features" class="text-white/80 hover:text-white transition-colors hover:underline">Features</a>
-                    <a href="#platforms" class="text-white/80 hover:text-white transition-colors hover:underline">Platforms</a>
-                    <a href="#about" class="text-white/80 hover:text-white transition-colors hover:underline">About</a>
-                    <a href="#contact" class="text-white/80 hover:text-white transition-colors hover:underline">Contact</a>
-                </div>
-                <button id="mobile-menu-btn" class="md:hidden text-white hover:text-purple-400 transition-colors">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
+<body>
+    <nav>
+        <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-film"></i>
+                <h1>ReelSpot</h1>
             </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#features">Features</a>
+                <a href="#platforms">Platforms</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <button id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-        <div class="absolute inset-0">
-            <div class="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20"></div>
-            <div class="absolute inset-0 opacity-20">
-                <div class="w-full h-full bg-[radial-gradient(circle_at_20%_80%,rgba(120,119,198,0.3),transparent_50%)]"></div>
-            </div>
-        </div>
-        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto fade-in-up">
-            <h1 class="text-6xl md:text-7xl font-bold mb-6 leading-tight">
-                <span class="text-white">ReelSpot</span> - 
-                <span class="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Download Anywhere</span>
-            </h1>
-            <p class="text-xl text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
-                Experience fast, free, and high-quality downloads of videos and reels from your favorite platforms. No watermarks, unlimited access!
-            </p>
-            <a href="platforms.html" class="inline-block bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:scale-105 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                <i class="fas fa-download mr-2"></i>Start Downloading Now
-            </a>
-            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="text-center p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-all">
-                    <div class="text-3xl font-bold text-purple-400">10M+</div>
-                    <div class="text-sm text-white/70">Downloads</div>
-                </div>
-                <div class="text-center p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-all">
-                    <div class="text-3xl font-bold text-pink-400">50+</div>
-                    <div class="text-sm text-white/70">Platforms</div>
-                </div>
-                <div class="text-center p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-all">
-                    <div class="text-3xl font-bold text-blue-400">99.9%</div>
-                    <div class="text-sm text-white/70">Uptime</div>
-                </div>
-                <div class="text-center p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-all">
-                    <div class="text-3xl font-bold text-green-400">0s</div>
-                    <div class="text-sm text-white/70">Watermarks</div>
-                </div>
+    <section class="hero">
+        <div class="max-w-4xl text-center fade-in-up">
+            <h1><span>ReelSpot</span> - <span class="bg-gradient">Download Anywhere</span></h1>
+            <p>Experience fast, free, and high-quality downloads of videos and reels. No watermarks, unlimited access!</p>
+            <a href="platforms.html" class="bg-gradient">Start Downloading Now</a>
+            <div class="grid grid-cols-4 mt-12">
+                <div><div class="text-3xl font-bold text-purple-400">10M+</div><div class="text-sm">Downloads</div></div>
+                <div><div class="text-3xl font-bold text-pink-400">50+</div><div class="text-sm">Platforms</div></div>
+                <div><div class="text-3xl font-bold text-blue-400">99.9%</div><div class="text-sm">Uptime</div></div>
+                <div><div class="text-3xl font-bold text-green-400">0s</div><div class="text-sm">Watermarks</div></div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="features" class="py-20 bg-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in-up" style="animation-delay: 0.2s">
-                <h2 class="text-4xl font-bold text-white mb-4">Why Choose ReelSpot?</h2>
-                <p class="text-xl text-white/80 max-w-2xl mx-auto">Unleash the power of seamless media downloading with cutting-edge features.</p>
+    <section id="features">
+        <div class="text-center mb-16 fade-in-up">
+            <h2>Why Choose ReelSpot?</h2>
+            <p>Unleash the power of seamless media downloading.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div>
+                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-bolt text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Lightning Fast</h3>
+                <p>Downloads start instantly with optimized speed.</p>
             </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="text-center p-6 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:shadow-lg transform hover:-translate-y-2 fade-in-up" style="animation-delay: 0.4s">
-                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-bolt text-2xl text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Lightning Fast</h3>
-                    <p class="text-white/70">Downloads start instantly with optimized speed.</p>
+            <div>
+                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-hd-desktop text-2xl"></i>
                 </div>
-                <div class="text-center p-6 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:shadow-lg transform hover:-translate-y-2 fade-in-up" style="animation-delay: 0.6s">
-                    <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-hd-desktop text-2xl text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">HD Quality</h3>
-                    <p class="text-white/70">Enjoy videos in stunning high definition.</p>
+                <h3 class="text-xl font-semibold mb-2">HD Quality</h3>
+                <p>Enjoy videos in stunning high definition.</p>
+            </div>
+            <div>
+                <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-infinity text-2xl"></i>
                 </div>
-                <div class="text-center p-6 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:shadow-lg transform hover:-translate-y-2 fade-in-up" style="animation-delay: 0.8s">
-                    <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-infinity text-2xl text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-2">Unlimited Access</h3>
-                    <p class="text-white/70">Download as much as you want, anytime.</p>
-                </div>
+                <h3 class="text-xl font-semibold mb-2">Unlimited Access</h3>
+                <p>Download as much as you want, anytime.</p>
             </div>
         </div>
     </section>
 
-    <!-- Platforms Section -->
-    <section id="platforms" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in-up" style="animation-delay: 0.2s">
-                <h2 class="text-4xl font-bold text-white mb-4">Supported Platforms</h2>
-                <p class="text-xl text-white/80 max-w-2xl mx-auto">Download from a wide range of popular platforms.</p>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                <div class="text-center p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:shadow-lg transform hover:-translate-y-2 fade-in-up" style="animation-delay: 0.4s">
-                    <i class="fab fa-instagram text-3xl text-pink-500 mb-2"></i>
-                    <div class="text-white font-medium">Instagram</div>
-                </div>
-                <div class="text-center p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:shadow-lg transform hover:-translate-y-2 fade-in-up" style="animation-delay: 0.6s">
-                    <i class="fab fa-youtube text-3xl text-red-500 mb-2"></i>
-                    <div class="text-white font-medium">YouTube</div>
-                </div>
-                <div class="text-center p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:shadow-lg transform hover:-translate-y-2 fade-in-up" style="animation-delay: 0.8s">
-                    <i class="fab fa-facebook text-3xl text-blue-500 mb-2"></i>
-                    <div class="text-white font-medium">Facebook</div>
-                </div>
-                <div class="text-center p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:shadow-lg transform hover:-translate-y-2 fade-in-up" style="animation-delay: 1.0s">
-                    <i class="fab fa-twitter text-3xl text-gray-500 mb-2"></i>
-                    <div class="text-white font-medium">X</div>
-                </div>
-                <div class="text-center p-4 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:shadow-lg transform hover:-translate-y-2 fade-in-up" style="animation-delay: 1.2s">
-                    <i class="fab fa-tiktok text-3xl text-pink-500 mb-2"></i>
-                    <div class="text-white font-medium">TikTok</div>
-                </div>
+    <section id="platforms">
+        <div class="text-center mb-16 fade-in-up">
+            <h2>Supported Platforms</h2>
+            <p>Download from a wide range of popular platforms.</p>
+        </div>
+        <div class="grid">
+            <div><i class="fab fa-instagram text-3xl text-pink-500"></i><div>Instagram</div></div>
+            <div><i class="fab fa-youtube text-3xl text-red-500"></i><div>YouTube</div></div>
+            <div><i class="fab fa-facebook text-3xl text-blue-500"></i><div>Facebook</div></div>
+            <div><i class="fab fa-twitter text-3xl text-gray-500"></i><div>X</div></div>
+            <div><i class="fab fa-tiktok text-3xl text-pink-500"></i><div>TikTok</div></div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="text-center mb-16 fade-in-up">
+            <h2>About ReelSpot</h2>
+            <p>Discover the story behind the tool.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-12">
+            <div><img src="https://via.placeholder.com/500x300?text=ReelSpot+Team" alt="ReelSpot Team"></div>
+            <div class="space-y-4">
+                <p>ReelSpot is a revolutionary media downloader launched in 2025 to simplify downloading videos and reels. It offers a fast, secure, and user-friendly experience with no watermarks or limitations.</p>
+                <p>Built with passion, it supports Instagram, YouTube, Facebook, X, and TikTok, empowering users to save and enjoy content freely.</p>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in-up" style="animation-delay: 0.2s">
-                <h2 class="text-4xl font-bold text-white mb-4">About ReelSpot</h2>
-                <p class="text-xl text-white/80 max-w-2xl mx-auto">Discover the story behind the tool.</p>
+    <section id="contact">
+        <div class="text-center mb-16 fade-in-up">
+            <h2>Contact Us</h2>
+            <p>Get in touch with the ReelSpot team.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div>
+                <i class="fas fa-envelope text-3xl text-purple-400"></i>
+                <h3 class="text-xl font-semibold">Email</h3>
+                <a href="mailto:arshvermadev@gmail.com">arshvermadev@gmail.com</a>
             </div>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="fade-in-up" style="animation-delay: 0.4s">
-                    <img src="https://via.placeholder.com/500x300?text=ReelSpot+Team" alt="ReelSpot Team" class="rounded-xl shadow-lg hover:shadow-xl transition-shadow">
-                </div>
-                <div class="space-y-4 fade-in-up" style="animation-delay: 0.6s">
-                    <p class="text-white/80 leading-relaxed">
-                        ReelSpot is a revolutionary media downloader designed to simplify the process of downloading videos and reels from your favorite social platforms. Launched in 2025, this project aims to provide a fast, secure, and user-friendly experience with no watermarks or limitations. Whether you're a content creator, a casual viewer, or a professional, ReelSpot caters to all your downloading needs.
-                    </p>
-                    <p class="text-white/80 leading-relaxed">
-                        Built with cutting-edge technology and a passion for innovation, ReelSpot supports a wide range of platforms including Instagram, YouTube, Facebook, X, and TikTok. Our mission is to empower users with the freedom to save and enjoy their favorite content anytime, anywhere.
-                    </p>
-                </div>
+            <div>
+                <i class="fab fa-linkedin text-3xl text-blue-400"></i>
+                <h3 class="text-xl font-semibold">LinkedIn</h3>
+                <a href="https://www.linkedin.com/in/arshvermadev/" target="_blank">linkedin.com/in/arshvermadev</a>
+            </div>
+            <div>
+                <i class="fab fa-github text-3xl text-gray-400"></i>
+                <h3 class="text-xl font-semibold">GitHub</h3>
+                <a href="https://github.com/ArshVermaGit" target="_blank">github.com/ArshVermaGit</a>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 fade-in-up" style="animation-delay: 0.2s">
-                <h2 class="text-4xl font-bold text-white mb-4">Contact Us</h2>
-                <p class="text-xl text-white/80 max-w-2xl mx-auto">Get in touch with the ReelSpot team.</p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-8 text-center">
-                <div class="p-6 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:shadow-lg transform hover:-translate-y-2 fade-in-up" style="animation-delay: 0.4s">
-                    <i class="fas fa-envelope text-3xl text-purple-400 mb-4"></i>
-                    <h3 class="text-xl font-semibold text-white">Email</h3>
-                    <a href="mailto:arshvermadev@gmail.com" class="text-white/80 hover:text-white transition-colors underline">arshvermadev@gmail.com</a>
-                </div>
-                <div class="p-6 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:shadow-lg transform hover:-translate-y-2 fade-in-up" style="animation-delay: 0.6s">
-                    <i class="fab fa-linkedin text-3xl text-blue-400 mb-4"></i>
-                    <h3 class="text-xl font-semibold text-white">LinkedIn</h3>
-                    <a href="https://www.linkedin.com/in/arshvermadev/" target="_blank" class="text-white/80 hover:text-white transition-colors underline">linkedin.com/in/arshvermadev</a>
-                </div>
-                <div class="p-6 bg-white/10 rounded-xl hover:bg-white/20 transition-all hover:shadow-lg transform hover:-translate-y-2 fade-in-up" style="animation-delay: 0.8s">
-                    <i class="fab fa-github text-3xl text-gray-400 mb-4"></i>
-                    <h3 class="text-xl font-semibold text-white">GitHub</h3>
-                    <a href="https://github.com/ArshVermaGit" target="_blank" class="text-white/80 hover:text-white transition-colors underline">github.com/ArshVermaGit</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-6 bg-white/10 backdrop-blur-xl border-t border-white/20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p class="text-white/80">© 2025 ReelSpot - All Rights Reserved. Trademark by Arsh Verma.</p>
-        </div>
+    <footer>
+        <p>© 2025 ReelSpot - All Rights Reserved. Trademark by Arsh Verma.</p>
     </footer>
 
     <script src="js/main.js"></script>
