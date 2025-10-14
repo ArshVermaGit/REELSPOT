@@ -10,7 +10,7 @@
 </head>
 <body>
     <nav>
-        <div class="flex">
+        <div class="container">
             <div class="logo">
                 <i class="fas fa-film"></i>
                 <h1>ReelSpot</h1>
@@ -19,20 +19,20 @@
                 <a href="index.html">Home</a>
                 <a href="platforms.html">Platforms</a>
             </div>
-            <button id="mobile-menu-btn"></button>
+            <button id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
         </div>
     </nav>
 
     <section class="hero fade-in-up">
-        <div class="max-w-xl w-full space-y-6">
-            <div id="platform-header" class="text-center">
+        <div class="content max-w-xl space-y-6">
+            <div class="text-center">
                 <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-2">
                     <i id="platform-icon" class="fab fa-instagram text-white text-2xl"></i>
                 </div>
                 <h2 id="platform-title" class="text-xl font-semibold">Instagram Downloader</h2>
                 <p id="platform-subtitle" class="text-gray-400">Download Reels, Stories, Posts in HD</p>
             </div>
-            <div class="p-4 bg-2a2a2a rounded-lg">
+            <div class="p-4 bg-white/10 rounded-xl backdrop-blur-sm">
                 <div class="relative">
                     <input type="url" id="video-url" placeholder="Paste video URL here..." class="w-full bg-transparent text-white placeholder-gray-500 p-3 rounded-lg border border-gray-700 focus:outline-none focus:border-purple-500">
                     <button id="analyze-btn" class="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg hover:scale-105 transition-all">
@@ -41,12 +41,12 @@
                 </div>
             </div>
             <div id="download-options" class="hidden space-y-4">
-                <div class="p-4 bg-2a2a2a rounded-lg">
+                <div class="p-4 bg-white/10 rounded-xl backdrop-blur-sm">
                     <video id="video-preview" controls class="w-full rounded-lg" poster=""></video>
                     <p id="video-title" class="text-white mt-2 font-semibold"></p>
                     <p id="video-duration" class="text-gray-400 text-sm"></p>
                 </div>
-                <div class="p-4 bg-2a2a2a rounded-lg">
+                <div class="p-4 bg-white/10 rounded-xl backdrop-blur-sm">
                     <h3 class="text-white font-semibold mb-2 flex items-center"><i class="fas fa-hd-desktop mr-1 text-blue-500"></i>Select Quality</h3>
                     <div class="grid grid-cols-3 gap-2" id="quality-options"></div>
                 </div>
@@ -54,7 +54,7 @@
                     <i class="fas fa-download mr-1"></i>Download HD Video
                 </button>
             </div>
-            <div id="progress-bar" class="hidden p-4 bg-2a2a2a rounded-lg">
+            <div id="progress-bar" class="hidden p-4 bg-white/10 rounded-xl backdrop-blur-sm">
                 <div class="flex items-center justify-between mb-1">
                     <span class="text-white font-semibold">Downloading...</span>
                     <span id="progress-text" class="text-gray-400">0%</span>
