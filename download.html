@@ -10,62 +10,60 @@
 </head>
 <body>
     <nav>
-        <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-2">
+        <div class="flex">
+            <div class="logo">
                 <i class="fas fa-film"></i>
                 <h1>ReelSpot</h1>
             </div>
-            <div class="hidden md:flex space-x-8">
+            <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="platforms.html">Platforms</a>
             </div>
-            <button id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <button id="mobile-menu-btn"></button>
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="max-w-2xl w-full space-y-6 text-center fade-in-up">
-            <div id="platform-header">
-                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+    <section class="hero fade-in-up">
+        <div class="max-w-xl w-full space-y-6">
+            <div id="platform-header" class="text-center">
+                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-2">
                     <i id="platform-icon" class="fab fa-instagram text-white text-2xl"></i>
                 </div>
-                <h2 id="platform-title">Instagram Downloader</h2>
-                <p id="platform-subtitle">Download Reels, Stories, Posts in HD</p>
+                <h2 id="platform-title" class="text-xl font-semibold">Instagram Downloader</h2>
+                <p id="platform-subtitle" class="text-gray-400">Download Reels, Stories, Posts in HD</p>
             </div>
-            <div class="p-6 bg-white/10 rounded-xl">
+            <div class="p-4 bg-2a2a2a rounded-lg">
                 <div class="relative">
-                    <input type="url" id="video-url" placeholder="Paste video URL here..." class="w-full bg-transparent text-white placeholder-white/60 p-4 pr-12 rounded-xl border-none focus:outline-none text-lg">
-                    <button id="analyze-btn" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-xl font-semibold hover:scale-105 transition-all">
-                        <i class="fas fa-magic mr-2"></i>Analyze
+                    <input type="url" id="video-url" placeholder="Paste video URL here..." class="w-full bg-transparent text-white placeholder-gray-500 p-3 rounded-lg border border-gray-700 focus:outline-none focus:border-purple-500">
+                    <button id="analyze-btn" class="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg hover:scale-105 transition-all">
+                        <i class="fas fa-magic mr-1"></i>Analyze
                     </button>
                 </div>
             </div>
             <div id="download-options" class="hidden space-y-4">
-                <div class="p-4 bg-white/10 rounded-xl">
-                    <video id="video-preview" controls class="w-full rounded-xl" poster=""></video>
+                <div class="p-4 bg-2a2a2a rounded-lg">
+                    <video id="video-preview" controls class="w-full rounded-lg" poster=""></video>
                     <p id="video-title" class="text-white mt-2 font-semibold"></p>
-                    <p id="video-duration" class="text-white/70 text-sm"></p>
+                    <p id="video-duration" class="text-gray-400 text-sm"></p>
                 </div>
-                <div class="p-6 bg-white/10 rounded-xl">
-                    <h3 class="text-white font-semibold mb-4 flex items-center">
-                        <i class="fas fa-hd-desktop mr-2 text-blue-400"></i>Select Quality
-                    </h3>
-                    <div class="grid grid-cols-3 gap-3" id="quality-options"></div>
+                <div class="p-4 bg-2a2a2a rounded-lg">
+                    <h3 class="text-white font-semibold mb-2 flex items-center"><i class="fas fa-hd-desktop mr-1 text-blue-500"></i>Select Quality</h3>
+                    <div class="grid grid-cols-3 gap-2" id="quality-options"></div>
                 </div>
-                <button id="download-btn" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 rounded-xl font-bold text-xl hover:scale-105 transition-all">
-                    <i class="fas fa-download mr-2"></i>Download HD Video
+                <button id="download-btn" class="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-2 rounded-lg hover:scale-105 transition-all">
+                    <i class="fas fa-download mr-1"></i>Download HD Video
                 </button>
             </div>
-            <div id="progress-bar" class="hidden p-4 bg-white/10 rounded-xl">
-                <div class="flex items-center justify-between mb-2">
+            <div id="progress-bar" class="hidden p-4 bg-2a2a2a rounded-lg">
+                <div class="flex items-center justify-between mb-1">
                     <span class="text-white font-semibold">Downloading...</span>
-                    <span id="progress-text" class="text-white/80">0%</span>
+                    <span id="progress-text" class="text-gray-400">0%</span>
                 </div>
-                <div class="w-full bg-white/20 rounded-full h-3">
-                    <div id="progress-fill" class="bg-gradient-to-r from-green-500 to-emerald-600 h-3 rounded-full transition-all" style="width: 0%"></div>
+                <div class="w-full bg-gray-700 rounded-full h-2">
+                    <div id="progress-fill" class="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full transition-all" style="width: 0%"></div>
                 </div>
             </div>
-            <a href="platforms.html" class="mt-4 inline-block text-white/80 hover:text-white transition-colors">← Back to Platforms</a>
+            <a href="platforms.html" class="mt-4 inline-block text-gray-400 hover:text-white transition-colors">← Back to Platforms</a>
         </div>
     </section>
 

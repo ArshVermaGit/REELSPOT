@@ -4,119 +4,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReelSpot - Download Videos & Reels</title>
-    <meta name="description" content="Download Instagram Reels, YouTube Videos, and more in HD. Fast, free, and unlimited!">
+    <meta name="description" content="Download videos and reels from multiple platforms in HD. Fast, free, and unlimited!">
     <link rel="icon" href="assets/icons/favicon.ico">
     <link href="css/style.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <nav>
-        <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-2">
+        <div class="flex">
+            <div class="logo">
                 <i class="fas fa-film"></i>
                 <h1>ReelSpot</h1>
             </div>
-            <div class="hidden md:flex space-x-8">
+            <div class="nav-links">
                 <a href="#features">Features</a>
                 <a href="#platforms">Platforms</a>
-                <a href="#about">About</a>
+                <a href="#about-the-developer">About the Developer</a>
                 <a href="#contact">Contact</a>
             </div>
-            <button id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <button id="mobile-menu-btn"></button>
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="max-w-4xl text-center fade-in-up">
+    <section class="hero fade-in-up">
+        <div>
             <h1><span>ReelSpot</span> - <span class="bg-gradient">Download Anywhere</span></h1>
-            <p>Experience fast, free, and high-quality downloads of videos and reels. No watermarks, unlimited access!</p>
-            <a href="platforms.html" class="bg-gradient">Start Downloading Now</a>
-            <div class="grid grid-cols-4 mt-12">
-                <div><div class="text-3xl font-bold text-purple-400">10M+</div><div class="text-sm">Downloads</div></div>
-                <div><div class="text-3xl font-bold text-pink-400">50+</div><div class="text-sm">Platforms</div></div>
-                <div><div class="text-3xl font-bold text-blue-400">99.9%</div><div class="text-sm">Uptime</div></div>
-                <div><div class="text-3xl font-bold text-green-400">0s</div><div class="text-sm">Watermarks</div></div>
+            <p>Fast, free, and high-quality video downloads with no watermarks or limits.</p>
+            <a href="platforms.html">Start Downloading</a>
+            <div class="stats-grid">
+                <div><div class="text-xl font-bold text-purple-500">10M+</div><div>Downloads</div></div>
+                <div><div class="text-xl font-bold text-pink-500">50+</div><div>Platforms</div></div>
+                <div><div class="text-xl font-bold text-blue-500">99.9%</div><div>Uptime</div></div>
+                <div><div class="text-xl font-bold text-green-500">0</div><div>Watermarks</div></div>
             </div>
         </div>
     </section>
 
     <section id="features">
-        <div class="text-center mb-16 fade-in-up">
-            <h2>Why Choose ReelSpot?</h2>
-            <p>Unleash the power of seamless media downloading.</p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
+        <h2>Why Choose ReelSpot?</h2>
+        <p>Seamless media downloading with top-notch features.</p>
+        <div class="features-grid">
             <div>
-                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-bolt text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-semibold mb-2">Lightning Fast</h3>
-                <p>Downloads start instantly with optimized speed.</p>
+                <i class="fas fa-bolt text-purple-500"></i>
+                <h3>Lightning Fast</h3>
+                <p>Instant downloads with optimized speed.</p>
             </div>
             <div>
-                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-hd-desktop text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-semibold mb-2">HD Quality</h3>
-                <p>Enjoy videos in stunning high definition.</p>
+                <i class="fas fa-hd-desktop text-blue-500"></i>
+                <h3>HD Quality</h3>
+                <p>Stunning high-definition videos.</p>
             </div>
             <div>
-                <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-infinity text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-semibold mb-2">Unlimited Access</h3>
-                <p>Download as much as you want, anytime.</p>
+                <i class="fas fa-infinity text-green-500"></i>
+                <h3>Unlimited Access</h3>
+                <p>Download anytime, as much as you want.</p>
             </div>
         </div>
     </section>
 
     <section id="platforms">
-        <div class="text-center mb-16 fade-in-up">
-            <h2>Supported Platforms</h2>
-            <p>Download from a wide range of popular platforms.</p>
-        </div>
-        <div class="grid">
-            <div><i class="fab fa-instagram text-3xl text-pink-500"></i><div>Instagram</div></div>
-            <div><i class="fab fa-youtube text-3xl text-red-500"></i><div>YouTube</div></div>
-            <div><i class="fab fa-facebook text-3xl text-blue-500"></i><div>Facebook</div></div>
-            <div><i class="fab fa-twitter text-3xl text-gray-500"></i><div>X</div></div>
-            <div><i class="fab fa-tiktok text-3xl text-pink-500"></i><div>TikTok</div></div>
+        <h2>Supported Platforms</h2>
+        <p>Download from your favorite social media.</p>
+        <div class="platforms-grid">
+            <div><i class="fab fa-instagram text-pink-500"></i><h3>Instagram</h3></div>
+            <div><i class="fab fa-youtube text-red-500"></i><h3>YouTube</h3></div>
+            <div><i class="fab fa-facebook text-blue-500"></i><h3>Facebook</h3></div>
+            <div><i class="fab fa-twitter text-gray-500"></i><h3>X</h3></div>
+            <div><i class="fab fa-tiktok text-pink-500"></i><h3>TikTok</h3></div>
         </div>
     </section>
 
-    <section id="about">
-        <div class="text-center mb-16 fade-in-up">
-            <h2>About ReelSpot</h2>
-            <p>Discover the story behind the tool.</p>
-        </div>
-        <div class="grid md:grid-cols-2 gap-12">
-            <div><img src="https://via.placeholder.com/500x300?text=ReelSpot+Team" alt="ReelSpot Team"></div>
+    <section id="about-the-developer">
+        <h2>About the Developer</h2>
+        <p>Meet the mind behind ReelSpot.</p>
+        <div class="about-grid">
+            <img src="https://via.placeholder.com/400x300?text=Arsh+Verma" alt="Arsh Verma">
             <div class="space-y-4">
-                <p>ReelSpot is a revolutionary media downloader launched in 2025 to simplify downloading videos and reels. It offers a fast, secure, and user-friendly experience with no watermarks or limitations.</p>
-                <p>Built with passion, it supports Instagram, YouTube, Facebook, X, and TikTok, empowering users to save and enjoy content freely.</p>
+                <p>Arsh Verma is a passionate developer and innovator who created ReelSpot in 2025. With a keen interest in technology and user experience, Arsh aims to simplify media downloading for everyone. This project reflects his dedication to open-source and creative solutions.</p>
+                <p>Arsh is currently enhancing ReelSpot with new features and plans to expand its capabilities. Stay tuned for more from this talented individual!</p>
             </div>
         </div>
     </section>
 
     <section id="contact">
-        <div class="text-center mb-16 fade-in-up">
-            <h2>Contact Us</h2>
-            <p>Get in touch with the ReelSpot team.</p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
+        <h2>Contact</h2>
+        <p>Get in touch with Arsh Verma.</p>
+        <div class="contact-grid">
             <div>
-                <i class="fas fa-envelope text-3xl text-purple-400"></i>
-                <h3 class="text-xl font-semibold">Email</h3>
+                <i class="fas fa-envelope text-purple-500"></i>
+                <h3>Email</h3>
                 <a href="mailto:arshvermadev@gmail.com">arshvermadev@gmail.com</a>
             </div>
             <div>
-                <i class="fab fa-linkedin text-3xl text-blue-400"></i>
-                <h3 class="text-xl font-semibold">LinkedIn</h3>
+                <i class="fab fa-linkedin text-blue-500"></i>
+                <h3>LinkedIn</h3>
                 <a href="https://www.linkedin.com/in/arshvermadev/" target="_blank">linkedin.com/in/arshvermadev</a>
             </div>
             <div>
-                <i class="fab fa-github text-3xl text-gray-400"></i>
-                <h3 class="text-xl font-semibold">GitHub</h3>
+                <i class="fab fa-github text-gray-500"></i>
+                <h3>GitHub</h3>
                 <a href="https://github.com/ArshVermaGit" target="_blank">github.com/ArshVermaGit</a>
             </div>
         </div>

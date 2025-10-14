@@ -72,8 +72,8 @@ class ReelSpotDownloader {
         
         const qualityContainer = document.getElementById('quality-options');
         qualityContainer.innerHTML = videoData.qualities.map(quality => `
-            <button class="bg-white/10 text-white py-3 rounded-xl border border-white/20 hover:bg-white/20 transition-all flex items-center justify-center space-x-2">
-                <i class="fas fa-${quality.includes('Audio') ? 'music' : 'video'} text-sm"></i>
+            <button class="bg-2a2a2a text-white py-2 rounded-lg border border-gray-700 hover:bg-333 transition-all flex items-center justify-center space-x-1">
+                <i class="fas fa-${quality.includes('Audio') ? 'music' : 'video'}"></i>
                 <span>${quality}</span>
             </button>
         `).join('');
