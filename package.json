@@ -1,0 +1,10 @@
+{
+  "name": "reelspot",
+  "version": "1.0.0",
+  "description": "Ultimate media downloader with iOS 26 inspired design",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {}
+}

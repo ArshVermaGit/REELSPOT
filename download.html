@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download - ReelSpot</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen">
+    <div class="flex items-center justify-center min-h-screen px-4">
+        <div class="max-w-2xl w-full space-y-6">
+            <div id="platform-header" class="text-center">
+                <div class="flex justify-center mb-4">
+                    <div id="platform-icon" class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                        <i class="fab fa-instagram text-white text-2xl"></i>
+                    </div>
+                </div>
+                <h1 id="platform-title" class="text-3xl font-bold text-white">Instagram Downloader</h1>
+                <p id="platform-subtitle" class="text-white/80">Download Reels, Stories, Posts in HD</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20">
+                <div class="relative">
+                    <input type="url" id="video-url" placeholder="Paste Instagram video URL here..." class="w-full bg-transparent text-white placeholder-white/60 p-4 pr-12 rounded-2xl border-none focus:outline-none text-lg">
+                    <button id="analyze-btn" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-xl font-semibold hover:scale-105 transition-all">
+                        <i class="fas fa-magic mr-2"></i>Analyze
+                    </button>
+                </div>
+            </div>
+            <div id="download-options" class="hidden space-y-4">
+                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-4 border border-white/20">
+                    <video id="video-preview" controls class="w-full rounded-2xl" poster=""></video>
+                    <p id="video-title" class="text-white mt-2 font-semibold"></p>
+                    <p id="video-duration" class="text-white/70 text-sm"></p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20">
+                    <h3 class="text-white font-semibold mb-4 flex items-center">
+                        <i class="fas fa-hd-desktop mr-2 text-blue-400"></i>
+                        Select Quality
+                    </h3>
+                    <div class="grid grid-cols-3 gap-3" id="quality-options">
+                        <!-- Dynamic quality buttons -->
+                    </div>
+                </div>
+                <button id="download-btn" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 rounded-3xl font-bold text-xl hover:scale-[1.02] transition-all shadow-2xl">
+                    <i class="fas fa-download mr-2"></i>
+                    Download HD Video
+                </button>
+            </div>
+            <div id="progress-bar" class="hidden bg-white/10 backdrop-blur-sm rounded-3xl p-4 border border-white/20">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-white font-semibold">Downloading...</span>
+                    <span id="progress-text" class="text-white/80">0%</span>
+                </div>
+                <div class="w-full bg-white/20 rounded-full h-3">
+                    <div id="progress-fill" class="bg-gradient-to-r from-green-500 to-emerald-600 h-3 rounded-full transition-all" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/download.js"></script>
+</body>
+</html>
