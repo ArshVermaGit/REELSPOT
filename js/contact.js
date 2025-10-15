@@ -1,5 +1,3 @@
-// Contact Form JavaScript for ReelSpot
-
 document.addEventListener('DOMContentLoaded', () => {
     initContactForm();
 });
@@ -10,7 +8,6 @@ function initContactForm() {
     if (contactForm) {
         contactForm.addEventListener('submit', handleFormSubmit);
         
-        // Add input validation
         const inputs = contactForm.querySelectorAll('input, textarea');
         inputs.forEach(input => {
             input.addEventListener('blur', () => validateField(input));
@@ -28,10 +25,8 @@ function validateField(field) {
     let isValid = true;
     let errorMessage = '';
 
-    // Remove previous error
     removeFieldError(field);
 
-    // Validation rules
     if (field.hasAttribute('required') && !value) {
         isValid = false;
         errorMessage = 'This field is required';
@@ -90,7 +85,6 @@ async function handleFormSubmit(e) {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
     
-    // Validate all fields
     const inputs = form.querySelectorAll('input, textarea');
     let isValid = true;
     
@@ -105,23 +99,23 @@ async function handleFormSubmit(e) {
         return;
     }
     
-    // Show loading state
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalBtnContent = submitBtn.innerHTML;
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
     
     try {
-        // Simulate API call (In production, send to your backend)
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        const mailtoLink = `mailto:arshvermadev@gmail.com?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`)}`;
         
-        console.log('Form data:', data);
+        await new Promise(resolve => setTimeout(resolve, 1000));
         
-        // Show success message
-        showNotification('Message sent successfully! We\'ll get back to you soon.', 'success');
+        window.location.href = mailtoLink;
         
-        // Reset form
-        form.reset();
+        showNotification('Opening your email client...', 'success');
+        
+        setTimeout(() => {
+            form.reset();
+        }, 1500);
         
     } catch (error) {
         showNotification('Failed to send message. Please try again.', 'error');
@@ -167,7 +161,6 @@ function showNotification(message, type = 'info') {
     }, 4000);
 }
 
-// Add animations
 const style = document.createElement('style');
 style.textContent = `
     @keyframes slideInRight {
