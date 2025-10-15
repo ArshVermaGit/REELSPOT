@@ -1,7 +1,11 @@
-// Download Page JavaScript for ReelSpot
+// Download Page JavaScript for ReelSpot - Production Ready
 
 class ReelSpotDownloader {
     constructor() {
+        this.API_BASE_URL = window.location.origin.includes('localhost') 
+            ? 'http://localhost:3000/api' 
+            : '/api'; // Use relative path in production
+        
         this.platforms = {
             instagram: {
                 name: 'Instagram',
@@ -41,6 +45,8 @@ class ReelSpotDownloader {
         };
 
         this.selectedQuality = null;
+        this.currentVideoData = null;
+        this.currentPlatform = null;
         this.init();
     }
 
@@ -58,6 +64,7 @@ class ReelSpotDownloader {
             return;
         }
 
+        this.currentPlatform = platform;
         const config = this.platforms[platform];
         
         // Update platform header
@@ -105,17 +112,27 @@ class ReelSpotDownloader {
             return;
         }
 
+        // Validate platform-specific URL
+        if (!this.isPlatformURL(url, this.currentPlatform)) {
+            this.showNotification(`Please enter a valid ${this.platforms[this.currentPlatform].name} URL`, 'error');
+            return;
+        }
+
         this.showLoading();
 
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
             const videoData = await this.fetchVideoInfo(url);
-            this.displayDownloadOptions(videoData);
+            
+            if (videoData.success) {
+                this.currentVideoData = videoData;
+                this.displayDownloadOptions(videoData);
+            } else {
+                throw new Error(videoData.error || 'Failed to analyze video');
+            }
         } catch (error) {
             this.hideLoading();
-            this.showNotification('Failed to analyze video. Please try again.', 'error');
+            console.error('Analysis error:', error);
+            this.showNotification(error.message || 'Failed to analyze video. Please try again.', 'error');
         }
     }
 
@@ -128,19 +145,42 @@ class ReelSpotDownloader {
         }
     }
 
-    async fetchVideoInfo(url) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const platform = urlParams.get('platform') || 'instagram';
-        
-        // Simulate video data (In production, this would call your backend API)
-        return {
-            title: 'Sample Video - Amazing Content',
-            duration: '2:30',
-            size: '15.2 MB',
-            thumbnail: 'https://via.placeholder.com/640x360/6366f1/ffffff?text=Video+Preview',
-            qualities: this.platforms[platform].qualities,
-            videoUrl: 'https://via.placeholder.com/640x360/6366f1/ffffff?text=Video+Preview'
+    isPlatformURL(url, platform) {
+        const patterns = {
+            instagram: /instagram\.com/i,
+            youtube: /youtube\.com|youtu\.be/i,
+            facebook: /facebook\.com|fb\.watch/i,
+            tiktok: /tiktok\.com/i,
+            twitter: /twitter\.com|x\.com/i
         };
+
+        return patterns[platform] ? patterns[platform].test(url) : true;
+    }
+
+    async fetchVideoInfo(url) {
+        try {
+            const response = await fetch(`${this.API_BASE_URL}/analyze`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    url: url,
+                    platform: this.currentPlatform
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to fetch video information');
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Fetch error:', error);
+            throw error;
+        }
     }
 
     displayDownloadOptions(videoData) {
@@ -151,23 +191,35 @@ class ReelSpotDownloader {
 
         // Set video preview
         const videoPreview = document.getElementById('video-preview');
-        videoPreview.poster = videoData.thumbnail;
-        videoPreview.src = videoData.videoUrl;
+        if (videoData.thumbnail) {
+            videoPreview.poster = videoData.thumbnail;
+        }
+        
+        // For some platforms, we can set the actual video source
+        if (videoData.downloadUrl && !videoData.downloadUrl.includes('undefined')) {
+            videoPreview.src = videoData.downloadUrl;
+        }
 
         // Set video info
-        document.getElementById('video-title').textContent = videoData.title;
-        document.getElementById('video-duration').innerHTML = `<i class="fas fa-clock"></i> ${videoData.duration}`;
-        document.getElementById('video-size').innerHTML = `<i class="fas fa-file"></i> ${videoData.size}`;
+        document.getElementById('video-title').textContent = videoData.title || 'Downloaded Video';
+        document.getElementById('video-duration').innerHTML = `<i class="fas fa-clock"></i> ${videoData.duration || 'Unknown'}`;
+        document.getElementById('video-size').innerHTML = `<i class="fas fa-file"></i> ${videoData.size || 'Calculating...'}`;
 
         // Create quality options
         const qualityContainer = document.getElementById('quality-options');
         qualityContainer.innerHTML = '';
 
-        videoData.qualities.forEach((quality, index) => {
+        const qualities = videoData.qualities || this.platforms[this.currentPlatform].qualities;
+
+        qualities.forEach((quality, index) => {
             const button = document.createElement('button');
             button.className = 'quality-option';
+            
+            const isAudio = quality.toLowerCase().includes('audio');
+            const isNoWatermark = quality.toLowerCase().includes('watermark');
+            
             button.innerHTML = `
-                <i class="fas fa-${quality.includes('Audio') ? 'music' : 'video'}"></i>
+                <i class="fas fa-${isAudio ? 'music' : isNoWatermark ? 'droplet-slash' : 'video'}"></i>
                 <span>${quality}</span>
             `;
             
@@ -197,6 +249,11 @@ class ReelSpotDownloader {
             return;
         }
 
+        if (!this.currentVideoData || !this.currentVideoData.downloadUrl) {
+            this.showNotification('Video URL not available', 'error');
+            return;
+        }
+
         // Hide download options
         document.getElementById('download-options').classList.add('hidden');
         
@@ -204,39 +261,70 @@ class ReelSpotDownloader {
         const progressSection = document.getElementById('progress-bar');
         progressSection.classList.remove('hidden');
 
-        // Animate progress
-        let progress = 0;
-        const progressFill = document.getElementById('progress-fill');
-        const progressText = document.getElementById('progress-text');
-
-        const progressInterval = setInterval(() => {
-            progress += Math.random() * 10;
-            if (progress > 95) {
-                progress = 95;
+        try {
+            // Get the appropriate download URL based on quality selection
+            let downloadUrl = this.currentVideoData.downloadUrl;
+            
+            // Handle special cases for different qualities
+            if (this.selectedQuality.toLowerCase().includes('audio')) {
+                downloadUrl = this.currentVideoData.audioUrl || downloadUrl;
+            } else if (this.selectedQuality.toLowerCase().includes('watermark')) {
+                downloadUrl = this.currentVideoData.videoUrlNoWatermark || downloadUrl;
             }
 
-            progressFill.style.width = `${progress}%`;
-            progressText.textContent = `${Math.round(progress)}%`;
-        }, 200);
+            // Create a temporary link and trigger download
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = `reelspot_${this.currentPlatform}_${Date.now()}.mp4`;
+            link.target = '_blank';
+            
+            // Simulate progress
+            await this.simulateProgress();
+            
+            // Trigger download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
 
-        // Simulate download
-        await new Promise(resolve => setTimeout(resolve, 3000));
+            // Show success message
+            this.showNotification('Download started! Check your downloads folder.', 'success');
 
-        clearInterval(progressInterval);
-        
-        // Complete progress
-        progressFill.style.width = '100%';
-        progressText.textContent = '100%';
+            // Reset after delay
+            setTimeout(() => {
+                this.resetDownloader();
+            }, 2000);
 
-        await new Promise(resolve => setTimeout(resolve, 500));
+        } catch (error) {
+            console.error('Download error:', error);
+            this.showNotification('Failed to download video. Please try again.', 'error');
+            document.getElementById('progress-bar').classList.add('hidden');
+            document.getElementById('download-options').classList.remove('hidden');
+        }
+    }
 
-        // Show success message
-        this.showNotification('Download completed successfully!', 'success');
+    async simulateProgress() {
+        return new Promise((resolve) => {
+            let progress = 0;
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
 
-        // Reset after delay
-        setTimeout(() => {
-            this.resetDownloader();
-        }, 2000);
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 95) {
+                    progress = 95;
+                }
+
+                progressFill.style.width = `${progress}%`;
+                progressText.textContent = `${Math.round(progress)}%`;
+            }, 150);
+
+            setTimeout(() => {
+                clearInterval(progressInterval);
+                progressFill.style.width = '100%';
+                progressText.textContent = '100%';
+                setTimeout(resolve, 300);
+            }, 2000);
+        });
     }
 
     showLoading() {
@@ -255,10 +343,10 @@ class ReelSpotDownloader {
         document.getElementById('progress-bar').classList.add('hidden');
         document.getElementById('loading-state').classList.add('hidden');
         this.selectedQuality = null;
+        this.currentVideoData = null;
     }
 
     showNotification(message, type = 'info') {
-        // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification notification-${type}`;
         notification.innerHTML = `
@@ -266,7 +354,6 @@ class ReelSpotDownloader {
             <span>${message}</span>
         `;
 
-        // Add styles
         notification.style.cssText = `
             position: fixed;
             top: 100px;
@@ -282,17 +369,17 @@ class ReelSpotDownloader {
             font-weight: 600;
             z-index: 9999;
             animation: slideInRight 0.3s ease-out;
+            max-width: 90%;
         `;
 
         document.body.appendChild(notification);
 
-        // Remove after 3 seconds
         setTimeout(() => {
             notification.style.animation = 'slideOutRight 0.3s ease-out';
             setTimeout(() => {
                 notification.remove();
             }, 300);
-        }, 3000);
+        }, 3500);
     }
 }
 
