@@ -9,7 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav>
+    <nav class="navbar">
         <div class="container">
             <div class="logo">
                 <i class="fas fa-film"></i>
@@ -17,82 +17,154 @@
             </div>
             <div class="nav-links">
                 <a href="index.html">Home</a>
-                <a href="about-the-developer.html">About the Developer</a>
+                <a href="platforms.html" class="active">Platforms</a>
+                <a href="about.html">About</a>
                 <a href="contact.html">Contact</a>
             </div>
-            <button id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <button id="mobile-menu-btn" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </nav>
 
-    <section class="hero fade-in-up">
-        <div class="content max-w-md">
-            <h2>Select Platform</h2>
-            <p>Choose your platform to start downloading.</p>
-            <div class="space-y-4 mt-6">
-                <a href="download.html?platform=instagram">
-                    <div class="p-4 bg-white/10 rounded-xl flex items-center space-x-4 hover:bg-white/20 transition-all backdrop-blur-sm">
-                        <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center">
-                            <i class="fab fa-instagram text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold">Instagram</h3>
-                            <p class="text-gray-400">Reels • Stories • Posts</p>
+    <section class="platforms-page">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Select Your Platform</h2>
+                <p class="section-description">Choose from 5 popular social media platforms</p>
+            </div>
+
+            <div class="platforms-list">
+                <a href="download.html?platform=instagram" class="platform-card instagram-card">
+                    <div class="platform-card-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="platform-card-content">
+                        <h3>Instagram</h3>
+                        <p>Download Reels, Stories, Posts & IGTV</p>
+                        <div class="platform-features">
+                            <span><i class="fas fa-check"></i> HD Quality</span>
+                            <span><i class="fas fa-check"></i> No Watermark</span>
+                            <span><i class="fas fa-check"></i> Fast Download</span>
                         </div>
                     </div>
-                </a>
-                <a href="download.html?platform=youtube">
-                    <div class="p-4 bg-white/10 rounded-xl flex items-center space-x-4 hover:bg-white/20 transition-all backdrop-blur-sm">
-                        <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center">
-                            <i class="fab fa-youtube text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold">YouTube</h3>
-                            <p class="text-gray-400">Videos • Shorts • Audio</p>
-                        </div>
+                    <div class="platform-arrow">
+                        <i class="fas fa-arrow-right"></i>
                     </div>
                 </a>
-                <a href="download.html?platform=facebook">
-                    <div class="p-4 bg-white/10 rounded-xl flex items-center space-x-4 hover:bg-white/20 transition-all backdrop-blur-sm">
-                        <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center">
-                            <i class="fab fa-facebook text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold">Facebook</h3>
-                            <p class="text-gray-400">Videos • Posts</p>
+
+                <a href="download.html?platform=youtube" class="platform-card youtube-card">
+                    <div class="platform-card-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <div class="platform-card-content">
+                        <h3>YouTube</h3>
+                        <p>Download Videos, Shorts & Audio</p>
+                        <div class="platform-features">
+                            <span><i class="fas fa-check"></i> Multiple Formats</span>
+                            <span><i class="fas fa-check"></i> 4K Support</span>
+                            <span><i class="fas fa-check"></i> MP3 Extract</span>
                         </div>
                     </div>
-                </a>
-                <a href="download.html?platform=x">
-                    <div class="p-4 bg-white/10 rounded-xl flex items-center space-x-4 hover:bg-white/20 transition-all backdrop-blur-sm">
-                        <div class="w-12 h-12 bg-gradient-to-r from-gray-800 to-black rounded-full flex items-center justify-center">
-                            <i class="fab fa-twitter text-white"></i>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold">X (Twitter)</h3>
-                            <p class="text-gray-400">Videos • Photos</p>
-                        </div>
+                    <div class="platform-arrow">
+                        <i class="fas fa-arrow-right"></i>
                     </div>
                 </a>
-                <a href="download.html?platform=tiktok">
-                    <div class="p-4 bg-white/10 rounded-xl flex items-center space-x-4 hover:bg-white/20 transition-all backdrop-blur-sm">
-                        <div class="w-12 h-12 bg-gradient-to-r from-black via-pink-500 to-yellow-500 rounded-full flex items-center justify-center">
-                            <i class="fab fa-tiktok text-white"></i>
+
+                <a href="download.html?platform=facebook" class="platform-card facebook-card">
+                    <div class="platform-card-icon">
+                        <i class="fab fa-facebook"></i>
+                    </div>
+                    <div class="platform-card-content">
+                        <h3>Facebook</h3>
+                        <p>Download Videos & Watch Posts</p>
+                        <div class="platform-features">
+                            <span><i class="fas fa-check"></i> HD Quality</span>
+                            <span><i class="fas fa-check"></i> Stories Support</span>
+                            <span><i class="fas fa-check"></i> Quick Process</span>
                         </div>
-                        <div>
-                            <h3 class="text-lg font-semibold">TikTok</h3>
-                            <p class="text-gray-400">Videos • Sounds</p>
+                    </div>
+                    <div class="platform-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
+
+                <a href="download.html?platform=tiktok" class="platform-card tiktok-card">
+                    <div class="platform-card-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <div class="platform-card-content">
+                        <h3>TikTok</h3>
+                        <p>Download Videos & Sounds</p>
+                        <div class="platform-features">
+                            <span><i class="fas fa-check"></i> No Watermark</span>
+                            <span><i class="fas fa-check"></i> Original Quality</span>
+                            <span><i class="fas fa-check"></i> Audio Extract</span>
                         </div>
+                    </div>
+                    <div class="platform-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
+
+                <a href="download.html?platform=twitter" class="platform-card twitter-card">
+                    <div class="platform-card-icon">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <div class="platform-card-content">
+                        <h3>X (Twitter)</h3>
+                        <p>Download Videos, GIFs & Photos</p>
+                        <div class="platform-features">
+                            <span><i class="fas fa-check"></i> High Quality</span>
+                            <span><i class="fas fa-check"></i> GIF Support</span>
+                            <span><i class="fas fa-check"></i> Thread Videos</span>
+                        </div>
+                    </div>
+                    <div class="platform-arrow">
+                        <i class="fas fa-arrow-right"></i>
                     </div>
                 </a>
             </div>
-            <a href="index.html" class="mt-6 inline-block text-gray-400 hover:text-white transition-colors">← Back to Home</a>
+
+            <div class="back-link">
+                <a href="index.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </a>
+            </div>
         </div>
     </section>
 
-    <footer>
-        <p>© 2025 ReelSpot - All Rights Reserved. Trademark by Arsh Verma.</p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <i class="fas fa-film"></i>
+                        <h3>ReelSpot</h3>
+                    </div>
+                    <p>Download social media content with ease</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Quick Links</h4>
+                        <a href="index.html">Home</a>
+                        <a href="platforms.html">Platforms</a>
+                        <a href="about.html">About</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ReelSpot - All Rights Reserved. Trademark by Arsh Verma.</p>
+            </div>
+        </div>
     </footer>
 
-    <script src="js/download.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

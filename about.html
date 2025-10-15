@@ -9,7 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav>
+    <nav class="navbar">
         <div class="container">
             <div class="logo">
                 <i class="fas fa-film"></i>
@@ -18,26 +18,135 @@
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="platforms.html">Platforms</a>
+                <a href="about.html" class="active">About</a>
                 <a href="contact.html">Contact</a>
             </div>
-            <button id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <button id="mobile-menu-btn" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </nav>
 
-    <section class="hero fade-in-up">
-        <div class="content max-w-lg">
-            <h2>About the Developer</h2>
-            <p>Discover the creator of ReelSpot.</p>
-            <div class="mt-6 space-y-4">
-                <p>Arsh Verma is a talented developer who brought ReelSpot to life in 2025. With a deep passion for coding and user satisfaction, Arsh has crafted a tool that combines functionality with style, making media downloading a breeze.</p>
-                <p>Arsh continues to innovate, adding new features to ReelSpot while exploring exciting tech ventures. Connect with him to learn more!</p>
+    <section class="about-page">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About the Developer</h2>
+                <p class="section-description">Meet the creator behind ReelSpot</p>
             </div>
-            <a href="index.html" class="mt-6 inline-block text-gray-400 hover:text-white transition-colors">← Back to Home</a>
+
+            <div class="about-content">
+                <div class="about-card">
+                    <div class="developer-profile">
+                        <div class="developer-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <h3>Arsh Verma</h3>
+                        <p class="developer-title">Full Stack Developer & Creator</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-description">
+                    <div class="description-card">
+                        <div class="description-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>The Vision</h3>
+                        <p>Arsh Verma brought ReelSpot to life in 2025 with a vision to simplify social media content downloading. With a deep passion for coding and user satisfaction, Arsh has crafted a tool that combines functionality with elegant design, making media downloading effortless.</p>
+                    </div>
+
+                    <div class="description-card">
+                        <div class="description-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>The Journey</h3>
+                        <p>Starting as a simple project, ReelSpot has evolved into a comprehensive platform supporting multiple social media networks. Arsh continues to innovate, regularly adding new features and improving the user experience based on community feedback.</p>
+                    </div>
+
+                    <div class="description-card">
+                        <div class="description-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>The Mission</h3>
+                        <p>The mission is clear: provide users with a free, fast, and secure way to download their favorite content. ReelSpot stands committed to user privacy, quality, and simplicity in every download.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tech-stack">
+                <h3 class="tech-title">Built With</h3>
+                <div class="tech-icons">
+                    <div class="tech-item">
+                        <i class="fab fa-html5"></i>
+                        <span>HTML5</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-css3-alt"></i>
+                        <span>CSS3</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-js"></i>
+                        <span>JavaScript</span>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-node"></i>
+                        <span>Node.js</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="back-link">
+                <a href="index.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </a>
+            </div>
         </div>
     </section>
 
-    <footer>
-        <p>© 2025 ReelSpot - All Rights Reserved. Trademark by Arsh Verma.</p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <i class="fas fa-film"></i>
+                        <h3>ReelSpot</h3>
+                    </div>
+                    <p>Download social media content with ease</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Quick Links</h4>
+                        <a href="index.html">Home</a>
+                        <a href="platforms.html">Platforms</a>
+                        <a href="about.html">About</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ReelSpot - All Rights Reserved. Trademark by Arsh Verma.</p>
+            </div>
+        </div>
     </footer>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
