@@ -1,6 +1,6 @@
 # ReelSpot
 
-A user-friendly web application for downloading media from platforms like Instagram, YouTube, Facebook, and X. Built with HTML, Tailwind CSS, and JavaScript, inspired by iOS 26's sleek design.
+A user-friendly web application for downloading media from platforms like Instagram, YouTube, Facebook, and X. Built with HTML, Tailwind CSS, and JavaScript.
 
 ## Features
 - Select from multiple platforms (Instagram, YouTube, Facebook, X).
