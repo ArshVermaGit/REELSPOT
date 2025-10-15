@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ReelSpot</title>
+    <link rel="icon" href="assets/icons/favicon.ico">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-film"></i>
+                <h1>ReelSpot</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="platforms.html">Platforms</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <button id="mobile-menu-btn" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <section class="admin-page">
+        <div class="container">
+            <div id="admin-login-form" class="admin-login">
+                <h2><i class="fas fa-lock"></i> Admin Login</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required placeholder="Enter admin username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required placeholder="Enter admin password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </button>
+                </form>
+                <p style="text-align: center; margin-top: 1rem; color: var(--text-light); font-size: 0.875rem;">
+                    Default credentials: admin / admin123
+                </p>
+            </div>
+
+            <div id="admin-dashboard" class="admin-dashboard hidden">
+                <div class="admin-header">
+                    <h2 style="margin: 0;">Admin Dashboard</h2>
+                    <button onclick="adminLogout()" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+
+                <div class="admin-stats">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-number" id="total-feedback">0</div>
+                        <div class="admin-stat-label">Total Feedback</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-number" id="unread-feedback">0</div>
+                        <div class="admin-stat-label">Unread Feedback</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-number" id="avg-rating">0.0</div>
+                        <div class="admin-stat-label">Average Rating</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-number" id="this-month">0</div>
+                        <div class="admin-stat-label">This Month</div>
+                    </div>
+                </div>
+
+                <div class="feedback-section">
+                    <div class="feedback-header">
+                        <h3 style="margin: 0; color: white;">User Feedback</h3>
+                        <div class="feedback-filters">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="unread">Unread</button>
+                            <button class="filter-btn" data-filter="5star">5 Stars</button>
+                        </div>
+                    </div>
+                    <div class="feedback-list" id="feedback-list">
+                        <!-- Feedback items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <i class="fas fa-film"></i>
+                        <h3>ReelSpot</h3>
+                    </div>
+                    <p>Download social media content with ease</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Quick Links</h4>
+                        <a href="index.html">Home</a>
+                        <a href="platforms.html">Platforms</a>
+                        <a href="about.html">About</a>
+                        <a href="admin.html" class="admin-link">Admin</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ReelSpot - All Rights Reserved. Created by Arsh Verma.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

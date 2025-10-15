@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReelSpot - Download</title>
+    <title>Download Video - ReelSpot</title>
     <link rel="icon" href="assets/icons/favicon.ico">
     <link href="css/style.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -31,81 +31,90 @@
         <div class="container">
             <div class="download-container">
                 <div class="platform-header">
-                    <div class="platform-header-icon" id="platform-icon-header">
+                    <div class="platform-header-icon" id="platform-icon">
                         <i class="fab fa-instagram"></i>
                     </div>
                     <div>
-                        <h2 id="platform-title">Instagram Downloader</h2>
-                        <p id="platform-subtitle">Download Reels, Stories, Posts in HD</p>
+                        <h2 id="platform-title">Download Instagram Video</h2>
+                        <p>Paste your video URL below to start downloading</p>
                     </div>
                 </div>
 
                 <div class="download-input-section">
                     <div class="input-group">
-                        <input 
-                            type="url" 
-                            id="video-url" 
-                            placeholder="Paste your video URL here..."
-                            class="url-input"
-                        >
-                        <button id="analyze-btn" class="analyze-btn">
+                        <input type="url" class="url-input" placeholder="Paste video URL here..." id="video-url">
+                        <button class="analyze-btn" id="analyze-btn">
                             <i class="fas fa-search"></i>
                             Analyze
                         </button>
                     </div>
-                    <p class="input-hint">
+                    <div class="input-hint">
                         <i class="fas fa-info-circle"></i>
-                        Paste the complete URL of the video you want to download
-                    </p>
+                        <span id="url-hint">Copy the video URL from Instagram and paste it above</span>
+                    </div>
                 </div>
 
-                <div id="loading-state" class="loading-state hidden">
+                <div class="loading-state hidden">
                     <div class="loader"></div>
-                    <p>Analyzing video...</p>
+                    <h3>Analyzing Video URL</h3>
+                    <p>Please wait while we process your video...</p>
                 </div>
 
-                <div id="download-options" class="download-options hidden">
+                <div class="download-options hidden">
                     <div class="video-preview-section">
-                        <video id="video-preview" class="video-preview" controls></video>
+                        <div class="video-preview">
+                            <!-- Video thumbnail would appear here -->
+                        </div>
                         <div class="video-info">
-                            <h3 id="video-title">Video Title</h3>
+                            <h3 id="video-info-title">Instagram Video</h3>
                             <div class="video-meta">
-                                <span id="video-duration"><i class="fas fa-clock"></i> 2:30</span>
-                                <span id="video-size"><i class="fas fa-file"></i> 15.2 MB</span>
+                                <span><i class="fas fa-clock"></i> 0:30</span>
+                                <span><i class="fas fa-eye"></i> 15.2K views</span>
+                                <span><i class="fas fa-calendar"></i> 2 days ago</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="quality-section">
                         <h3 class="quality-title">
-                            <i class="fas fa-sliders-h"></i>
+                            <i class="fas fa-hd-video"></i>
                             Select Quality
                         </h3>
-                        <div id="quality-options" class="quality-grid"></div>
+                        <div class="quality-grid">
+                            <div class="quality-option selected" data-quality="1080">
+                                <div>1080p</div>
+                                <small>Full HD</small>
+                            </div>
+                            <div class="quality-option" data-quality="720">
+                                <div>720p</div>
+                                <small>HD</small>
+                            </div>
+                            <div class="quality-option" data-quality="480">
+                                <div>480p</div>
+                                <small>SD</small>
+                            </div>
+                            <div class="quality-option" data-quality="360">
+                                <div>360p</div>
+                                <small>Low</small>
+                            </div>
+                        </div>
                     </div>
 
-                    <button id="download-btn" class="download-btn">
+                    <button class="download-btn" onclick="downloadVideo()">
                         <i class="fas fa-download"></i>
-                        Download Now
+                        Download Video
                     </button>
                 </div>
 
-                <div id="progress-bar" class="progress-section hidden">
+                <div class="progress-section hidden">
                     <div class="progress-header">
-                        <span class="progress-label">Downloading...</span>
-                        <span id="progress-text" class="progress-percentage">0%</span>
+                        <div class="progress-label">Downloading...</div>
+                        <div class="progress-percentage">0%</div>
                     </div>
                     <div class="progress-bar-container">
-                        <div id="progress-fill" class="progress-bar-fill"></div>
+                        <div class="progress-bar-fill"></div>
                     </div>
-                    <p class="progress-message">Please wait while we prepare your download</p>
-                </div>
-
-                <div class="back-link">
-                    <a href="platforms.html" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i>
-                        Back to Platforms
-                    </a>
+                    <div class="progress-message">Preparing download...</div>
                 </div>
             </div>
         </div>
@@ -127,6 +136,7 @@
                         <a href="index.html">Home</a>
                         <a href="platforms.html">Platforms</a>
                         <a href="about.html">About</a>
+                        <a href="admin.html" class="admin-link">Admin</a>
                     </div>
                     <div class="footer-column">
                         <h4>Legal</h4>
@@ -141,6 +151,53 @@
         </div>
     </footer>
 
-    <script src="js/download.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Platform-specific configuration
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const platform = urlParams.get('platform');
+            
+            const platformConfig = {
+                'instagram': {
+                    title: 'Instagram Video Downloader',
+                    icon: 'fab fa-instagram',
+                    color: 'linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)',
+                    hint: 'Copy the URL from Instagram Reels, Stories, or Posts'
+                },
+                'youtube': {
+                    title: 'YouTube Video Downloader',
+                    icon: 'fab fa-youtube',
+                    color: '#ff0000',
+                    hint: 'Copy the URL from any YouTube video'
+                },
+                'tiktok': {
+                    title: 'TikTok Video Downloader',
+                    icon: 'fab fa-tiktok',
+                    color: '#000000',
+                    hint: 'Copy the URL from TikTok video (without watermark)'
+                },
+                'facebook': {
+                    title: 'Facebook Video Downloader',
+                    icon: 'fab fa-facebook',
+                    color: '#1877f2',
+                    hint: 'Copy the URL from Facebook video, reels, or stories'
+                },
+                'twitter': {
+                    title: 'X (Twitter) Video Downloader',
+                    icon: 'fab fa-twitter',
+                    color: '#1da1f2',
+                    hint: 'Copy the URL from X (Twitter) video tweet'
+                }
+            };
+
+            const config = platformConfig[platform] || platformConfig['instagram'];
+            
+            document.getElementById('platform-title').textContent = config.title;
+            document.getElementById('platform-icon').innerHTML = `<i class="${config.icon}"></i>`;
+            document.getElementById('platform-icon').style.background = config.color;
+            document.getElementById('url-hint').textContent = config.hint;
+        });
+    </script>
 </body>
 </html>
