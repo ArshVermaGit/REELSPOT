@@ -1,10 +1,8 @@
-// Download Page JavaScript for ReelSpot - Production Ready
-
 class ReelSpotDownloader {
     constructor() {
         this.API_BASE_URL = window.location.origin.includes('localhost') 
             ? 'http://localhost:3000/api' 
-            : '/api'; // Use relative path in production
+            : '/api';
         
         this.platforms = {
             instagram: {
@@ -67,7 +65,6 @@ class ReelSpotDownloader {
         this.currentPlatform = platform;
         const config = this.platforms[platform];
         
-        // Update platform header
         const headerIcon = document.getElementById('platform-icon-header');
         headerIcon.innerHTML = `<i class="fab fa-${config.icon}"></i>`;
         headerIcon.style.background = config.gradient;
@@ -112,7 +109,6 @@ class ReelSpotDownloader {
             return;
         }
 
-        // Validate platform-specific URL
         if (!this.isPlatformURL(url, this.currentPlatform)) {
             this.showNotification(`Please enter a valid ${this.platforms[this.currentPlatform].name} URL`, 'error');
             return;
@@ -189,23 +185,19 @@ class ReelSpotDownloader {
         const downloadOptions = document.getElementById('download-options');
         downloadOptions.classList.remove('hidden');
 
-        // Set video preview
         const videoPreview = document.getElementById('video-preview');
         if (videoData.thumbnail) {
             videoPreview.poster = videoData.thumbnail;
         }
         
-        // For some platforms, we can set the actual video source
         if (videoData.downloadUrl && !videoData.downloadUrl.includes('undefined')) {
             videoPreview.src = videoData.downloadUrl;
         }
 
-        // Set video info
         document.getElementById('video-title').textContent = videoData.title || 'Downloaded Video';
         document.getElementById('video-duration').innerHTML = `<i class="fas fa-clock"></i> ${videoData.duration || 'Unknown'}`;
         document.getElementById('video-size').innerHTML = `<i class="fas fa-file"></i> ${videoData.size || 'Calculating...'}`;
 
-        // Create quality options
         const qualityContainer = document.getElementById('quality-options');
         qualityContainer.innerHTML = '';
 
@@ -239,7 +231,6 @@ class ReelSpotDownloader {
             qualityContainer.appendChild(button);
         });
 
-        // Scroll to options
         downloadOptions.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
@@ -254,42 +245,33 @@ class ReelSpotDownloader {
             return;
         }
 
-        // Hide download options
         document.getElementById('download-options').classList.add('hidden');
         
-        // Show progress bar
         const progressSection = document.getElementById('progress-bar');
         progressSection.classList.remove('hidden');
 
         try {
-            // Get the appropriate download URL based on quality selection
             let downloadUrl = this.currentVideoData.downloadUrl;
             
-            // Handle special cases for different qualities
             if (this.selectedQuality.toLowerCase().includes('audio')) {
                 downloadUrl = this.currentVideoData.audioUrl || downloadUrl;
             } else if (this.selectedQuality.toLowerCase().includes('watermark')) {
                 downloadUrl = this.currentVideoData.videoUrlNoWatermark || downloadUrl;
             }
 
-            // Create a temporary link and trigger download
             const link = document.createElement('a');
             link.href = downloadUrl;
             link.download = `reelspot_${this.currentPlatform}_${Date.now()}.mp4`;
             link.target = '_blank';
             
-            // Simulate progress
             await this.simulateProgress();
             
-            // Trigger download
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
 
-            // Show success message
             this.showNotification('Download started! Check your downloads folder.', 'success');
 
-            // Reset after delay
             setTimeout(() => {
                 this.resetDownloader();
             }, 2000);
@@ -383,7 +365,6 @@ class ReelSpotDownloader {
     }
 }
 
-// Add notification animations
 const style = document.createElement('style');
 style.textContent = `
     @keyframes slideInRight {
@@ -410,7 +391,6 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Initialize downloader when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     new ReelSpotDownloader();
 });

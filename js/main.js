@@ -1,12 +1,11 @@
-// Main JavaScript for ReelSpot
-
 document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initScrollAnimations();
     initSmoothScroll();
+    initNavbarScroll();
+    setActiveNavLink();
 });
 
-// Mobile Menu Toggle
 function initMobileMenu() {
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
@@ -25,7 +24,6 @@ function initMobileMenu() {
             }
         });
 
-        // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!mobileMenuBtn.contains(e.target) && !navLinks.contains(e.target)) {
                 navLinks.classList.remove('active');
@@ -37,7 +35,6 @@ function initMobileMenu() {
     }
 }
 
-// Scroll Animations
 function initScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
@@ -62,7 +59,6 @@ function initScrollAnimations() {
     });
 }
 
-// Smooth Scroll for Anchor Links
 function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -81,20 +77,22 @@ function initSmoothScroll() {
     });
 }
 
-// Navbar Scroll Effect
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-    } else {
-        navbar.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
-    }
-});
+function initNavbarScroll() {
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        } else {
+            navbar.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
+        }
+    });
+}
 
-// Add active class to current page nav link
-const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-document.querySelectorAll('.nav-links a').forEach(link => {
-    if (link.getAttribute('href') === currentPage) {
-        link.classList.add('active');
-    }
-});
+function setActiveNavLink() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+        }
+    });
+}

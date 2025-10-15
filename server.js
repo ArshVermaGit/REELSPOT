@@ -1,4 +1,3 @@
-// Backend Server for ReelSpot - Node.js + Express
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
@@ -7,12 +6,10 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// API endpoints for different platforms
 const API_ENDPOINTS = {
     instagram: 'https://api.saveig.app/api/ajaxSearch',
     youtube: 'https://api.cobalt.tools/api/json',
@@ -21,15 +18,6 @@ const API_ENDPOINTS = {
     twitter: 'https://api.saveig.app/api/ajaxSearch'
 };
 
-// Alternative free APIs (you can use these as backups)
-const ALTERNATIVE_APIS = {
-    rapidapi_key: 'YOUR_RAPIDAPI_KEY', // Get from rapidapi.com
-    instagram: 'https://instagram-downloader-download-instagram-videos-stories1.p.rapidapi.com/get-info-rapidapi',
-    tiktok: 'https://tiktok-video-no-watermark2.p.rapidapi.com/',
-    youtube: 'https://youtube-mp36.p.rapidapi.com/dl'
-};
-
-// Analyze video URL endpoint
 app.post('/api/analyze', async (req, res) => {
     try {
         const { url, platform } = req.body;
@@ -67,7 +55,6 @@ app.post('/api/analyze', async (req, res) => {
     }
 });
 
-// Instagram analyzer
 async function analyzeInstagram(url) {
     try {
         const response = await axios.post(API_ENDPOINTS.instagram, {
@@ -96,7 +83,6 @@ async function analyzeInstagram(url) {
     }
 }
 
-// YouTube analyzer
 async function analyzeYouTube(url) {
     try {
         const response = await axios.post(API_ENDPOINTS.youtube, {
@@ -128,7 +114,6 @@ async function analyzeYouTube(url) {
     }
 }
 
-// TikTok analyzer
 async function analyzeTikTok(url) {
     try {
         const response = await axios.post(`${API_ENDPOINTS.tiktok}`, {
@@ -154,7 +139,6 @@ async function analyzeTikTok(url) {
     }
 }
 
-// Facebook analyzer
 async function analyzeFacebook(url) {
     try {
         const response = await axios.post(API_ENDPOINTS.facebook, {
@@ -183,7 +167,6 @@ async function analyzeFacebook(url) {
     }
 }
 
-// Twitter analyzer
 async function analyzeTwitter(url) {
     try {
         const response = await axios.post(API_ENDPOINTS.twitter, {
@@ -212,25 +195,21 @@ async function analyzeTwitter(url) {
     }
 }
 
-// Download endpoint
 app.post('/api/download', async (req, res) => {
     try {
-        const { url, quality } = req.body;
+        const { url } = req.body;
 
         if (!url) {
             return res.status(400).json({ error: 'URL is required' });
         }
 
-        // Fetch the video
         const response = await axios.get(url, {
             responseType: 'stream'
         });
 
-        // Set headers for download
         res.setHeader('Content-Type', 'video/mp4');
         res.setHeader('Content-Disposition', 'attachment; filename="reelspot_video.mp4"');
 
-        // Pipe the video stream to response
         response.data.pipe(res);
     } catch (error) {
         console.error('Download error:', error);
@@ -238,7 +217,6 @@ app.post('/api/download', async (req, res) => {
     }
 });
 
-// Helper functions
 function formatDuration(seconds) {
     if (!seconds) return 'Unknown';
     const mins = Math.floor(seconds / 60);
@@ -247,7 +225,6 @@ function formatDuration(seconds) {
 }
 
 function calculateSize(url) {
-    // This is a placeholder - in production, you'd fetch the actual file size
     return Math.floor(Math.random() * 50 + 5).toFixed(1) + ' MB';
 }
 
@@ -258,17 +235,14 @@ function extractQualities(urls) {
     return ['1080p HD', '720p', '480p'];
 }
 
-// Health check endpoint
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'ReelSpot API is running' });
 });
 
-// Serve static files
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start server
 app.listen(PORT, () => {
     console.log(`ReelSpot server running on http://localhost:${PORT}`);
     console.log('API endpoints available at /api/*');
