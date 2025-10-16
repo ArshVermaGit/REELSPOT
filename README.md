@@ -7,8 +7,3 @@ A user-friendly web application for downloading media from platforms like Instag
 - Choose specific services (e.g., Reels, Videos, Photos).
 - Responsive and modern UI with glassmorphism and smooth animations.
 - Placeholder for download functionality (backend not implemented).
-
-## Setup
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/ArshVermaGit/REELSPOT.git
