@@ -1,4 +1,53 @@
 class ReelSpotDownloader {
+    // ... existing code ...
+
+    async fetchVideoInfo(url) {
+        // Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        // Mock data for each platform
+        const mockData = {
+            success: true,
+            title: 'Sample Video - ' + this.currentPlatform,
+            thumbnail: '',
+            duration: '1:30',
+            size: '15.2 MB',
+            qualities: this.platforms[this.currentPlatform].qualities,
+            downloadUrl: '#'
+        };
+
+        return mockData;
+    }
+
+    async startDownload() {
+        if (!this.selectedQuality) {
+            this.showNotification('Please select a quality', 'error');
+            return;
+        }
+
+        // Simulate download
+        this.showNotification('Download functionality is available in the full version hosted on a Node.js server. This is a static demo.', 'info');
+
+        // Alternatively, we can simulate the download progress and then show a message.
+        // Let's simulate the progress and then show the message.
+
+        document.getElementById('download-options').classList.add('hidden');
+        const progressSection = document.getElementById('progress-bar');
+        progressSection.classList.remove('hidden');
+
+        await this.simulateProgress();
+
+        this.showNotification('This is a static demo. For actual downloads, please run the Node.js server locally or deploy to a Node.js hosting service.', 'info');
+
+        setTimeout(() => {
+            this.resetDownloader();
+        }, 3000);
+    }
+
+    // ... rest of the code ...
+}
+
+class ReelSpotDownloader {
     constructor() {
         this.API_BASE_URL = window.location.origin.includes('localhost') 
             ? 'http://localhost:3000/api' 
