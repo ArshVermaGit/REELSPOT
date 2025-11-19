@@ -681,6 +681,15 @@ body {
     top: 100px;
 }
 
+.developer-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #6366f1;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
 .developer-avatar {
     width: 150px;
     height: 150px;
