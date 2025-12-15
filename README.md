@@ -90,6 +90,12 @@ reelspot/
 3. Push to the branch (`git push origin feature/amazing-feature`).
 4. Open a Pull Request – I'll review promptly!
 
+## ☎️ Connect me
+- 🐙 **GitHub**: [ArshVermaGit](https://github.com/ArshVermaGit)
+- 💼 **LinkedIn**: [ArshVermaDev](https://www.linkedin.com/in/arshvermadev/)
+- ✖️ **X (Twitter)**: [@TheArshVerma](https://x.com/TheArshVerma)
+- 📧 **Email**: [Arshverma.dev@gmail.com](mailto:Arshverma.dev@gmail.com)
+
 Feedback? Hit the [contact form](contact.html) or open an issue.
 
 ## 📄 License
