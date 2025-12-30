@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { Github, Linkedin, Twitter, Mail, Rocket, Shield, Heart, RefreshCw, Code2, Database, Cloud, Server } from 'lucide-react'
-import { GlassCard } from '@/components/ui'
+import { Github, Linkedin, Twitter, Mail, Rocket, Shield, Code2, Database, Cloud, Server, Cpu, Orbit, Sparkles } from 'lucide-react'
+import { GlassCard, GlowButton } from '@/components/ui'
 
 const socialLinks = [
   { icon: Github, href: 'https://github.com/ArshVermaGit', label: 'GitHub' },
@@ -14,37 +14,32 @@ const socialLinks = [
 
 const devStats = [
   { value: '1+', label: 'Years Experience' },
-  { value: '50+', label: 'Projects' },
-  { value: '100K+', label: 'Users' },
+  { value: '50+', label: 'Deployments' },
+  { value: '100K+', label: 'Network Points' },
 ]
 
 const missionCards = [
   {
     icon: Rocket,
-    title: 'Our Mission',
-    description: 'ReelSpot was created to provide a simple, fast, and free solution for downloading social media content. We believe that everyone should have access to their favorite videos without complicated processes or hidden costs.',
+    title: 'Kinetic Extraction',
+    description: 'ReelSpot was engineered to provide a seamless, high-velocity protocol for capturing extraordinary digital moments. We believe in unrestricted access to the creative vanguard.',
   },
   {
     icon: Shield,
-    title: 'Privacy & Security',
-    description: "Your privacy is our top priority. We don't store any of your data, track your downloads, or require registration. All downloads are processed securely and anonymously.",
+    title: 'Zero-Trace Protocol',
+    description: "Security is non-negotiable. Our architecture ensures zero-log delivery and neural-encrypted processing. Your extraction history remains your sovereign metadata.",
   },
   {
-    icon: Heart,
-    title: 'Why Choose Us',
-    description: 'ReelSpot stands out with its user-friendly interface, lightning-fast downloads, and commitment to being completely free. We continuously update our platform to support new features and maintain compatibility.',
-  },
-  {
-    icon: RefreshCw,
-    title: 'Continuous Improvement',
-    description: 'We regularly update our platform to support new features, fix bugs, and ensure compatibility with the latest social media platform changes.',
+    icon: Sparkles,
+    title: 'Premium Vanguard',
+    description: 'We don\'t just build tools; we craft experiences. ReelSpot stands as a testament to hyper-premium design and engineering excellence in the digital space.',
   },
 ]
 
 const techStack = [
-  { icon: Code2, name: 'Next.js' },
-  { icon: Code2, name: 'TypeScript' },
-  { icon: Code2, name: 'React' },
+  { icon: Code2, name: 'Next.js 16' },
+  { icon: Cpu, name: 'TypeScript' },
+  { icon: Orbit, name: 'Framer Motion' },
   { icon: Database, name: 'PostgreSQL' },
   { icon: Cloud, name: 'Vercel' },
   { icon: Server, name: 'Prisma' },
@@ -52,157 +47,186 @@ const techStack = [
 
 export default function AboutPage() {
   return (
-    <>
-      {/* Hero */}
-      <section className="relative py-24 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/8 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent-pink/6 rounded-full blur-[120px]" />
+    <main className="min-h-screen bg-background">
+      {/* Cinematic Hero */}
+      <section className="relative pt-40 pb-24 overflow-hidden">
+        {/* Abstract Background Atoms */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-1/4 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[160px] animate-pulse" />
+          <div className="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-accent-indigo/5 rounded-full blur-[140px]" />
         </div>
 
-        <div className="container relative z-10 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-bold text-foreground mb-6"
-          >
-            About <span className="text-gradient">ReelSpot</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-lg text-foreground-muted max-w-2xl mx-auto"
-          >
-            Learn more about our mission and the developer behind the fastest video downloader
-          </motion.p>
+        <div className="container relative z-10 px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center justify-center gap-4 mb-8"
+            >
+                <div className="w-12 h-px bg-primary" />
+                <span className="text-xs font-black text-primary uppercase tracking-[0.5em]">System Origin</span>
+                <div className="w-12 h-px bg-primary" />
+            </motion.div>
+            
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-6xl md:text-8xl font-heading font-black text-foreground mb-8 tracking-tighter"
+            >
+              THE <span className="text-foreground/20 italic">ARCHITECTS</span>
+            </motion.h1>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-xl md:text-2xl text-foreground/50 font-medium leading-relaxed"
+            >
+              Engineering the future of digital content extraction through hyper-premium design and neural precision.
+            </motion.p>
+          </div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="pb-24">
-        <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            {/* Developer Card */}
+      {/* Origin Grid */}
+      <section className="pb-32 px-6">
+        <div className="container max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            {/* Architect Card */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="lg:sticky lg:top-24 h-fit"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-5"
             >
-              <GlassCard className="p-8 text-center">
-                {/* Avatar */}
-                <div className="relative w-32 h-32 mx-auto mb-6">
-                  <div className="absolute inset-0 bg-linear-to-r from-primary to-accent-pink rounded-full blur-xl opacity-30" />
-                  <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg">
+              <GlassCard className="p-12 border-white/5 bg-background-subtle/30 shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-opacity">
+                   <Cpu className="w-24 h-24 text-primary" />
+                </div>
+                
+                {/* Visual Profile */}
+                <div className="relative w-48 h-48 mb-10 group-hover:scale-105 transition-transform duration-700">
+                  <div className="absolute inset-0 bg-primary/20 rounded-3xl blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="relative w-48 h-48 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-3xl bg-background-subtle">
                     <Image
                       src="/images/arsh-verma.jpg"
                       alt="Arsh Verma"
                       fill
-                      className="object-cover"
+                      className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
                       priority
+                      unoptimized
                     />
                   </div>
                 </div>
 
-                <h3 className="text-2xl font-bold text-foreground mb-2">Arsh Verma</h3>
-                <p className="text-primary font-medium mb-4">
-                  Full Stack Developer & Creator
+                <h3 className="text-4xl font-heading font-black text-foreground mb-2 tracking-tight transition-colors">Arsh Verma</h3>
+                <p className="text-primary font-black uppercase tracking-[0.3em] text-[10px] mb-8">
+                  LEAD ARCHITECT & VISIONARY
                 </p>
-                <p className="text-foreground-muted text-sm mb-6">
-                  Passionate about building tools that make life easier for content creators and social media enthusiasts.
+                <p className="text-foreground/50 text-lg font-bold leading-relaxed mb-10">
+                  Dedicated to crafting digital instruments that redefine the boundary between functionality and art.
                 </p>
 
-                {/* Social Links */}
-                <div className="flex justify-center gap-2 mb-6">
+                {/* Secure Links */}
+                <div className="flex gap-4 mb-12">
                   {socialLinks.map((link) => (
-                    <a
+                    <motion.a
                       key={link.label}
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-xl bg-black/5 border border-black/8 flex items-center justify-center text-foreground-muted hover:text-primary hover:border-primary/30 hover:bg-primary/5 transition-all"
+                      whileHover={{ y: -5, scale: 1.1 }}
+                      className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-foreground/40 hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all shadow-xl"
                       title={link.label}
                     >
-                      <link.icon className="w-5 h-5" />
-                    </a>
+                      <link.icon className="w-6 h-6" />
+                    </motion.a>
                   ))}
                 </div>
 
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-4 pt-6 border-t border-black/10">
+                {/* Neural Stats */}
+                <div className="grid grid-cols-3 gap-8 pt-10 border-t border-white/5">
                   {devStats.map((stat) => (
-                    <div key={stat.label} className="text-center">
-                      <div className="text-xl font-bold text-gradient">{stat.value}</div>
-                      <div className="text-xs text-foreground-muted">{stat.label}</div>
+                    <div key={stat.label}>
+                      <div className="text-2xl font-black text-foreground tracking-tighter">{stat.value}</div>
+                      <div className="text-[9px] font-black text-foreground/30 uppercase tracking-[0.2em] mt-1">{stat.label}</div>
                     </div>
                   ))}
                 </div>
               </GlassCard>
             </motion.div>
 
-            {/* Mission Cards */}
-            <div className="lg:col-span-2 space-y-5">
-              {missionCards.map((card, index) => (
-                <motion.div
-                  key={card.title}
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <GlassCard className="p-6 flex gap-5">
-                    <div className="shrink-0 w-12 h-12 rounded-xl bg-linear-to-br from-primary to-accent-pink flex items-center justify-center shadow-lg shadow-primary/20">
-                      <card.icon className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-foreground mb-2">{card.title}</h3>
-                      <p className="text-foreground-muted text-sm leading-relaxed">
-                        {card.description}
-                      </p>
-                    </div>
-                  </GlassCard>
-                </motion.div>
-              ))}
+            {/* Protocols & Tech */}
+            <div className="lg:col-span-7 space-y-12">
+              <div className="grid grid-cols-1 gap-6">
+                {missionCards.map((card, index) => (
+                  <motion.div
+                    key={card.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <GlassCard className="p-10 flex flex-col md:flex-row gap-8 border-white/5 bg-background-subtle/20 group hover:border-primary/30 transition-all duration-500">
+                      <div className="shrink-0 w-16 h-16 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all duration-500 shadow-xl">
+                        <card.icon className="w-8 h-8" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-heading font-black text-foreground mb-3 tracking-tight">{card.title}</h3>
+                        <p className="text-foreground/50 text-base font-bold leading-relaxed">
+                          {card.description}
+                        </p>
+                      </div>
+                    </GlassCard>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Stack Horizon */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="pt-12"
+              >
+                <div className="flex items-center gap-4 mb-10">
+                   <div className="w-8 h-px bg-white/10" />
+                   <h2 className="text-xs font-black text-foreground/30 uppercase tracking-[0.5em]">TECH HORIZON</h2>
+                </div>
+                
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                  {techStack.map((tech) => (
+                    <motion.div
+                      key={tech.name}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                      className="p-6 rounded-4xl bg-background-subtle/40 border border-white/5 flex items-center gap-4 group"
+                    >
+                      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-background transition-all">
+                        <tech.icon className="w-6 h-6" />
+                      </div>
+                      <span className="text-sm font-black text-foreground/60 group-hover:text-foreground mb-0">{tech.name}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Tech Stack */}
-      <section className="py-16 bg-black/3">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="text-2xl font-bold text-foreground mb-3">Built With Modern Technology</h2>
-            <p className="text-foreground-muted">
-              We use the latest technologies for the best performance
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-            {techStack.map((tech, index) => (
-              <motion.div
-                key={tech.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08 }}
-                className="text-center"
-              >
-                <div className="w-14 h-14 mx-auto mb-3 rounded-xl bg-white border border-black/8 shadow-sm flex items-center justify-center">
-                  <tech.icon className="w-7 h-7 text-primary" />
-                </div>
-                <span className="text-sm text-foreground-muted font-medium">{tech.name}</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+      {/* Call to Signal */}
+      <section className="py-24 relative overflow-hidden">
+         <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/5 to-transparent" />
+         <div className="container relative z-10 px-6 text-center">
+            <h2 className="text-4xl md:text-6xl font-heading font-black text-foreground mb-10 tracking-tighter">
+               READY TO <span className="text-primary italic">EXTRACT?</span>
+            </h2>
+            <GlowButton size="lg" className="rounded-full">
+               Initialize Protocol
+            </GlowButton>
+         </div>
       </section>
-    </>
+    </main>
   )
 }
