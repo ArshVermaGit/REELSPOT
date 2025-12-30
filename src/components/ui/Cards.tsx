@@ -19,12 +19,13 @@ export function GlassCard({
   return (
     <motion.div
       className={cn(
-        'bg-white border border-black/8 rounded-3xl shadow-md overflow-hidden',
-        hover && 'transition-all duration-300 hover:shadow-lg hover:border-primary/20 hover:-translate-y-1',
+        'bg-background-subtle/40 backdrop-blur-2xl border border-white/5 rounded-3xl shadow-2xl overflow-hidden relative group',
+        hover && 'transition-all duration-500 hover:border-primary/30 hover:shadow-primary/5 hover:-translate-y-2',
         className
       )}
       {...props}
     >
+      <div className="absolute inset-0 bg-linear-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
       {children}
     </motion.div>
   )
@@ -45,27 +46,27 @@ export function GlowButton({
   ...props
 }: GlowButtonProps) {
   const sizeClasses = {
-    sm: 'px-5 py-2 text-xs font-semibold',
-    md: 'px-6 py-3 text-sm font-semibold',
-    lg: 'px-8 py-4 text-base font-semibold',
+    sm: 'px-5 py-2 text-xs font-bold leading-none',
+    md: 'px-7 py-3 text-sm font-bold leading-none',
+    lg: 'px-10 py-5 text-base font-black uppercase tracking-widest leading-none',
   }
 
   const variantClasses = {
     primary:
-      'bg-primary text-white hover:bg-primary-dark shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30',
+      'bg-primary text-background hover:brightness-110 shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-[0_0_30px_rgba(16,185,129,0.4)]',
     secondary:
-      'bg-white border border-black/10 text-foreground hover:border-primary/30 hover:shadow-md',
+      'bg-white/5 border border-white/10 text-foreground hover:border-primary/40 hover:bg-white/10 shadow-lg',
     ghost:
-      'bg-transparent text-foreground-muted hover:text-foreground hover:bg-black/5',
+      'bg-transparent text-foreground/50 hover:text-foreground hover:bg-white/5',
   }
 
   return (
     <motion.button
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
       className={cn(
-        'relative inline-flex items-center justify-center gap-2 rounded-xl transition-all duration-200',
+        'relative inline-flex items-center justify-center gap-2 rounded-2xl transition-all duration-300',
         sizeClasses[size],
         variantClasses[variant],
         className
@@ -89,20 +90,22 @@ export function AnimatedCounter({ value, label, delay = 0 }: AnimatedCounterProp
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: delay * 0.1, duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-      className="flex flex-col items-center text-center space-y-2"
+      transition={{ delay: delay * 0.1, duration: 0.8, ease: "easeOut" }}
+      className="flex flex-col items-center text-center space-y-4"
     >
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
+        initial={{ scale: 0.8, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ delay: delay * 0.1 + 0.2, type: 'spring', stiffness: 100 }}
-        className="text-4xl md:text-6xl font-heading font-black text-foreground tracking-tight"
+        transition={{ delay: delay * 0.1 + 0.3, type: 'spring', stiffness: 100 }}
+        className="text-5xl md:text-7xl font-heading font-black text-foreground tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
       >
         {value}
       </motion.div>
-      <div className="h-px w-8 bg-linear-to-r from-primary to-accent-pink" />
-      <p className="text-foreground-muted text-xs uppercase font-semibold tracking-wider">{label}</p>
+      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary to-transparent opacity-50" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary to-transparent opacity-50" />
+      <div className="h-0.5 w-12 bg-linear-to-r from-primary/0 via-primary to-primary/0" />
+      <p className="text-foreground/40 text-[10px] uppercase font-black tracking-[0.3em]">{label}</p>
     </motion.div>
   )
 }
@@ -120,23 +123,25 @@ export function FeatureCard({ title, description, icon, delay = 0 }: FeatureCard
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: delay * 0.1, duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+      transition={{ delay: delay * 0.1, duration: 0.8 }}
+      className="h-full"
     >
-      <GlassCard className="p-8 group h-full">
-        <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-primary to-accent-pink flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-primary/20">
+      <GlassCard className="p-10 group h-full border-white/5 bg-background-subtle/20">
+        <div className="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-primary mb-8 group-hover:bg-primary group-hover:text-background group-hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-all duration-500 shadow-2xl">
           {icon}
         </div>
         
-        <h3 className="text-xl font-heading font-bold text-foreground mb-3">
+        <h3 className="text-2xl font-heading font-black text-foreground mb-4 tracking-tight">
           {title}
         </h3>
-        <p className="text-foreground-muted text-sm leading-relaxed">
+        <p className="text-foreground/50 text-base font-medium leading-relaxed">
           {description}
         </p>
         
-        <div className="mt-6 pt-6 border-t border-black/8 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-           <span className="text-xs font-semibold text-primary">Learn more</span>
-           <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+        <div className="mt-8 pt-6 border-t border-white/5 flex items-center gap-3 opacity-30 group-hover:opacity-100 transition-all duration-500">
+           <span className="text-xs font-black uppercase tracking-widest text-primary">Core Signal</span>
+           <div className="grow h-px bg-primary/20" />
+           <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
         </div>
       </GlassCard>
     </motion.div>
@@ -156,20 +161,27 @@ export function StepCard({ number, title, description, delay = 0 }: StepCardProp
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ delay: delay * 0.1, duration: 0.6 }}
-      className="p-8 relative overflow-hidden group bg-white rounded-3xl border border-black/8 shadow-md hover:shadow-lg hover:border-primary/20 transition-all duration-300"
+      transition={{ delay: delay * 0.1, duration: 0.8 }}
+      className="p-10 relative overflow-hidden group bg-background-subtle/30 rounded-[2.5rem] border border-white/5 shadow-2xl hover:border-primary/40 transition-all duration-500"
     >
-      <div className="text-[5rem] font-heading font-black text-primary/10 leading-none absolute -bottom-2 -right-2 group-hover:text-primary/15 transition-colors duration-300">
-        {number}
+      <div className="absolute top-0 right-0 p-8">
+         <div className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-sm font-black text-foreground group-hover:bg-primary group-hover:text-background group-hover:border-primary transition-all duration-500">
+            {number}
+         </div>
       </div>
       
-      <div className="relative z-10">
-        <div className="text-xs font-semibold text-primary mb-4 tracking-wider uppercase flex items-center gap-2">
-          <div className="w-6 h-px bg-primary/30" />
-          Step {number}
+      <div className="relative z-10 pt-16">
+        <div className="text-[10px] font-black text-primary mb-6 tracking-[0.4em] uppercase flex items-center gap-3">
+          <div className="w-8 h-px bg-primary" />
+          Protocol {number}
         </div>
-        <h3 className="text-xl font-heading font-bold text-foreground mb-3">{title}</h3>
-        <p className="text-foreground-muted text-sm leading-relaxed max-w-[200px]">{description}</p>
+        <h3 className="text-3xl font-heading font-black text-foreground mb-4 tracking-tight">{title}</h3>
+        <p className="text-foreground/50 text-base font-bold leading-relaxed max-w-[240px]">{description}</p>
+      </div>
+      
+      {/* Visual noise background item */}
+      <div className="absolute -bottom-10 -left-10 text-[10rem] font-heading font-black text-white/2 select-none group-hover:text-primary/5 transition-colors duration-700">
+        0{number}
       </div>
     </motion.div>
   )
