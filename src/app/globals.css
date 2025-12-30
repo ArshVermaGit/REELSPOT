@@ -1,0 +1,313 @@
+@import "tailwindcss";
+
+/* ============================================
+   REELSPOT v3 - Fresh Light Theme
+   White / Blue / Pink Design System
+   ============================================ */
+
+:root {
+  /* Light Theme Base */
+  --background: #FAFBFC;
+  --background-subtle: #F1F5F9;
+  --background-elevated: #FFFFFF;
+  --foreground: #0F172A;
+  --foreground-muted: #64748B;
+  
+  /* Brand Colors - Blue & Pink */
+  --primary: #3B82F6;
+  --primary-light: #DBEAFE;
+  --primary-dark: #2563EB;
+  --accent-pink: #EC4899;
+  --accent-pink-light: #FCE7F3;
+  --accent-violet: #8B5CF6;
+  --accent-cyan: #06B6D4;
+  
+  /* UI Textures - Light Mode */
+  --border: rgba(0, 0, 0, 0.08);
+  --border-bright: rgba(0, 0, 0, 0.15);
+  --glass-surface: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(0, 0, 0, 0.06);
+
+  /* Status */
+  --success: #10B981;
+  --error: #EF4444;
+
+  /* Typography */
+  --font-heading: "Outfit", var(--font-geist-sans), sans-serif;
+  --font-body: "Inter", var(--font-geist-sans), sans-serif;
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-xl: 40px;
+  --radius-full: 9999px;
+
+  /* Shadows for Light Theme */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.15);
+
+  /* Animation Tokens */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+
+  /* Tailwind v4 Theme Mappings */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+  --color-primary: var(--primary);
+  --color-muted: var(--foreground-muted);
+  --color-border: var(--border);
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --radius-2xl: var(--radius-xl);
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--background);
+}
+
+/* Typography Overrides */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--foreground);
+}
+
+h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+h2 { font-size: clamp(2rem, 5vw, 3.5rem); }
+h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
+
+/* ========== Component Utilities ========== */
+
+/* Gradient Text */
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-prism {
+  background: linear-gradient(135deg, var(--primary), var(--accent-cyan), var(--accent-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Light Card Surface */
+.card-surface {
+  background: var(--background-elevated);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
+}
+
+/* Glass Effect - Light Version */
+.obsidian-surface {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+/* Soft glow for buttons */
+.btn-glow {
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+}
+
+.btn-glow:hover {
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+}
+
+/* Accent beam animation (simplified) */
+.magic-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--primary) 50%, 
+    transparent 100%
+  );
+  animation: beam-move 3s linear infinite;
+}
+
+@keyframes beam-move {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Subtle gradient mesh for backgrounds */
+.glow-mesh {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 30% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(236, 72, 153, 0.06) 0%, transparent 50%);
+  z-index: -1;
+}
+
+/* ========== Scrollbar - Light Theme ========== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-subtle);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* ========== Animations ========== */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.on-load-reveal {
+  animation: reveal-up 0.6s var(--ease-out-expo) forwards;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ========== Background Gradients - Light ========== */
+.bg-mesh-gradient {
+  background-color: var(--background);
+  background-image: 
+    radial-gradient(ellipse at 0% 0%, rgba(59, 130, 246, 0.06) 0px, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(236, 72, 153, 0.05) 0px, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(6, 182, 212, 0.04) 0px, transparent 50%);
+}
+
+/* Hero gradient background */
+.bg-hero-gradient {
+  background: linear-gradient(180deg, 
+    var(--background) 0%, 
+    var(--background-subtle) 100%
+  );
+}
+
+/* ========== Form Inputs - Light Theme ========== */
+.input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: var(--background-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input::placeholder {
+  color: var(--foreground-muted);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+select.input {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+/* ========== Container ========== */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+/* ========== Utility Classes ========== */
+.text-muted {
+  color: var(--foreground-muted);
+}
+
+.border-border {
+  border-color: var(--border);
+}
+
+/* Prism glow effect (simplified) */
+.prism-glow {
+  position: relative;
+}
+
+.prism-glow::after {
+  content: "";
+  position: absolute;
+  inset: -16px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1), transparent 70%);
+  z-index: -1;
+  border-radius: inherit;
+}
