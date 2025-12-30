@@ -6,49 +6,49 @@
    ============================================ */
 
 :root {
-  /* Light Theme Base */
-  --background: #FAFBFC;
-  --background-subtle: #F1F5F9;
-  --background-elevated: #FFFFFF;
-  --foreground: #0F172A;
-  --foreground-muted: #64748B;
+  /* Midnight Obsidian Theme Base */
+  --background: #030712;
+  --background-subtle: #0F172A;
+  --background-elevated: #1E293B;
+  --foreground: #F8FAFC;
+  --foreground-muted: #94A3B8;
   
-  /* Brand Colors - Blue & Pink */
-  --primary: #3B82F6;
-  --primary-light: #DBEAFE;
-  --primary-dark: #2563EB;
-  --accent-pink: #EC4899;
-  --accent-pink-light: #FCE7F3;
-  --accent-violet: #8B5CF6;
-  --accent-cyan: #06B6D4;
+  /* Brand Colors - Cyber Emerald & Electric Indigo */
+  --primary: #10B981;
+  --primary-light: #34D399;
+  --primary-dark: #059669;
+  --accent-cyan: #22D3EE;
+  --accent-indigo: #6366F1;
+  --accent-violet: #A855F7;
+  --accent-rose: #FB7185;
   
-  /* UI Textures - Light Mode */
-  --border: rgba(0, 0, 0, 0.08);
-  --border-bright: rgba(0, 0, 0, 0.15);
-  --glass-surface: rgba(255, 255, 255, 0.9);
-  --glass-border: rgba(0, 0, 0, 0.06);
+  /* UI Textures - Dark Mode Glass */
+  --border: rgba(255, 255, 255, 0.06);
+  --border-bright: rgba(255, 255, 255, 0.12);
+  --glass-surface: rgba(15, 23, 42, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.08);
 
   /* Status */
   --success: #10B981;
-  --error: #EF4444;
+  --error: #F43F5E;
 
   /* Typography */
   --font-heading: "Outfit", var(--font-geist-sans), sans-serif;
   --font-body: "Inter", var(--font-geist-sans), sans-serif;
 
   /* Radius */
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 24px;
-  --radius-xl: 40px;
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 28px;
+  --radius-xl: 48px;
   --radius-full: 9999px;
 
-  /* Shadows for Light Theme */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.15);
+  /* Shadows for Dark Theme */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
 
   /* Animation Tokens */
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -105,7 +105,7 @@ h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
 
 /* Gradient Text */
 .text-gradient {
-  background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+  background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -133,12 +133,12 @@ h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
   border-radius: var(--radius-lg);
 }
 
-/* Glass Effect - Light Version */
+/* Obsidian Glass Surface */
 .obsidian-surface {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-md);
+  background: var(--glass-surface);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-xl);
 }
 
 /* Soft glow for buttons */
@@ -175,8 +175,8 @@ h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
   position: absolute;
   inset: 0;
   background: 
-    radial-gradient(ellipse at 30% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(236, 72, 153, 0.06) 0%, transparent 50%);
+    radial-gradient(ellipse at 30% 20%, rgba(16, 185, 129, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 60%);
   z-index: -1;
 }
 
@@ -227,9 +227,9 @@ h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
 .bg-mesh-gradient {
   background-color: var(--background);
   background-image: 
-    radial-gradient(ellipse at 0% 0%, rgba(59, 130, 246, 0.06) 0px, transparent 50%),
-    radial-gradient(ellipse at 100% 0%, rgba(236, 72, 153, 0.05) 0px, transparent 50%),
-    radial-gradient(ellipse at 50% 100%, rgba(6, 182, 212, 0.04) 0px, transparent 50%);
+    radial-gradient(ellipse at 0% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(34, 211, 238, 0.06) 0px, transparent 50%);
 }
 
 /* Hero gradient background */
