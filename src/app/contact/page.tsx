@@ -2,40 +2,40 @@
 
 import { useState, FormEvent } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Bug, Lightbulb, Send, Loader2, CheckCircle } from 'lucide-react'
+import { Mail, Bug, Lightbulb, Send, Loader2, CheckCircle, ShieldCheck, Zap, Orbit } from 'lucide-react'
 import { GlassCard, GlowButton } from '@/components/ui'
 
 const contactMethods = [
   {
     icon: Mail,
-    title: 'Email Us',
-    description: "Send us an email and we'll respond within 24 hours",
+    title: 'Extraction Support',
+    description: "Neural bridge assistance for complex signal manifests.",
     link: 'mailto:support@reelspot.com',
     linkText: 'support@reelspot.com',
   },
   {
     icon: Bug,
-    title: 'Report Issue',
-    description: 'Found a bug or having trouble? Let us know',
+    title: 'Signal Leak',
+    description: 'Found a vulnerability or signal corruption? Report immediately.',
     link: 'mailto:bugs@reelspot.com',
     linkText: 'bugs@reelspot.com',
   },
   {
     icon: Lightbulb,
-    title: 'Suggestions',
-    description: "Have ideas to improve ReelSpot? We'd love to hear",
+    title: 'Protocol Growth',
+    description: "Architectural suggestions for the next system evolution.",
     link: 'mailto:ideas@reelspot.com',
     linkText: 'ideas@reelspot.com',
   },
 ]
 
 const subjectOptions = [
-  { value: '', label: 'Select a subject' },
-  { value: 'general', label: 'General Inquiry' },
-  { value: 'support', label: 'Technical Support' },
-  { value: 'bug', label: 'Bug Report' },
-  { value: 'feature', label: 'Feature Request' },
-  { value: 'other', label: 'Other' },
+  { value: '', label: 'Select Protocol' },
+  { value: 'general', label: 'General Signal' },
+  { value: 'support', label: 'Technical Bridge' },
+  { value: 'bug', label: 'Corruption Report' },
+  { value: 'feature', label: 'Architecture Request' },
+  { value: 'other', label: 'Other Vector' },
 ]
 
 export default function ContactPage() {
@@ -63,83 +63,97 @@ export default function ContactPage() {
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error || 'Failed to send message')
+        throw new Error(data.error || 'Connection handshake failed.')
       }
 
       setIsSuccess(true)
       setFormData({ name: '', email: '', subject: '', message: '' })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      setError(err instanceof Error ? err.message : 'Neural bridge disconnected.')
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <>
-      {/* Hero */}
-      <section className="relative py-24 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/8 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent-pink/6 rounded-full blur-[120px]" />
+    <main className="min-h-screen bg-background">
+      {/* Hyper-Hero */}
+      <section className="relative pt-40 pb-24 overflow-hidden px-6">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[140px]" />
+          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent-indigo/5 rounded-full blur-[120px]" />
         </div>
 
-        <div className="container relative z-10 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-bold text-foreground mb-6"
+        <div className="container relative z-10 text-center max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-3xl mb-10 shadow-2xl"
           >
-            Contact <span className="text-gradient">Us</span>
+             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+             <span className="text-[10px] font-black text-foreground uppercase tracking-[0.4em]">Subspace Communication</span>
+          </motion.div>
+          
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-6xl md:text-8xl font-heading font-black text-foreground mb-8 tracking-tighter"
+          >
+            SIGNAL <span className="text-foreground/20 italic">REACH</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-lg text-foreground-muted max-w-2xl mx-auto"
+            className="text-xl md:text-2xl text-foreground/50 font-medium max-w-2xl mx-auto leading-relaxed"
           >
-            Get in touch with us for any questions, feedback, or support
+            Establish a secure connection with the lead architects for signals, leaks, or protocol evolutions.
           </motion.p>
         </div>
       </section>
 
-      {/* Contact Form & Info */}
-      <section className="pb-24">
-        <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Contact Info */}
+      {/* Interface Section */}
+      <section className="pb-32 px-6">
+        <div className="container max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            {/* Intel Sidebar */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-5 space-y-10"
             >
-              <h2 className="text-2xl font-bold text-foreground mb-4">Let&apos;s Talk</h2>
-              <p className="text-foreground-muted mb-8">
-                We&apos;re here to help and answer any questions you might have. We look forward to hearing from you.
-              </p>
+              <div>
+                <h2 className="text-4xl font-heading font-black text-foreground mb-6 tracking-tight">Direct Access</h2>
+                <p className="text-foreground/50 text-xl font-medium leading-relaxed mb-12">
+                  Our neural network is always listening. Select the appropriate strata for your inquiry to ensure high-priority processing.
+                </p>
+              </div>
 
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {contactMethods.map((method, index) => (
                   <motion.div
                     key={method.title}
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
                   >
-                    <GlassCard className="p-5 flex gap-4">
-                      <div className="w-11 h-11 rounded-xl bg-linear-to-br from-primary to-accent-pink flex items-center justify-center shrink-0 shadow-md shadow-primary/20">
-                        <method.icon className="w-5 h-5 text-white" />
+                    <GlassCard className="p-8 flex gap-6 border-white/5 bg-background-subtle/20 group hover:border-primary/40 transition-all duration-500 rounded-4xl">
+                      <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-background transition-all duration-500 shadow-xl">
+                        <method.icon className="w-6 h-6" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-foreground mb-1">{method.title}</h3>
-                        <p className="text-sm text-foreground-muted mb-1">
+                        <h3 className="text-xl font-heading font-black text-foreground mb-2 tracking-tight">{method.title}</h3>
+                        <p className="text-sm font-bold text-foreground/40 mb-3 leading-relaxed">
                           {method.description}
                         </p>
                         <a
                           href={method.link}
-                          className="text-sm text-primary hover:underline"
+                          className="text-xs font-black text-primary uppercase tracking-[0.2em] hover:text-white transition-colors flex items-center gap-2"
                         >
                           {method.linkText}
+                          <Orbit className="w-3 h-3 group-hover:rotate-180 transition-transform duration-1000" />
                         </a>
                       </div>
                     </GlassCard>
@@ -148,118 +162,146 @@ export default function ContactPage() {
               </div>
             </motion.div>
 
-            {/* Contact Form */}
+            {/* Neural Form */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-7"
             >
-              <GlassCard className="p-8">
+              <GlassCard className="p-10 md:p-14 border-white/5 bg-background-subtle/30 shadow-[0_0_100px_rgba(0,0,0,0.5)] rounded-4xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-12 opacity-[0.02] pointer-events-none">
+                  <Send className="w-64 h-64" />
+                </div>
+                
                 {isSuccess ? (
-                  <div className="text-center py-10">
-                    <div className="w-16 h-16 mx-auto mb-5 rounded-full bg-success/10 flex items-center justify-center">
-                      <CheckCircle className="w-8 h-8 text-success" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-foreground mb-2">Message Sent!</h3>
-                    <p className="text-foreground-muted mb-6">
-                      Thank you for contacting us. We&apos;ll get back to you soon.
+                  <div className="text-center py-20 relative z-10">
+                    <motion.div 
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-24 h-24 mx-auto mb-10 rounded-[2rem] bg-primary/10 border border-primary/20 flex items-center justify-center shadow-2xl"
+                    >
+                      <CheckCircle className="w-12 h-12 text-primary" />
+                    </motion.div>
+                    <h3 className="text-4xl font-heading font-black text-foreground mb-6 tracking-tight">Signal Received</h3>
+                    <p className="text-foreground/50 text-lg font-bold mb-12 max-w-md mx-auto uppercase tracking-widest">
+                      Extraction receipt confirmed. Our architects will decrypt your manifest soon.
                     </p>
-                    <GlowButton onClick={() => setIsSuccess(false)}>
-                      Send Another Message
+                    <GlowButton onClick={() => setIsSuccess(false)} variant="secondary" className="px-12 py-5 rounded-2xl">
+                      Deliver New Signal
                     </GlowButton>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <h3 className="text-xl font-semibold text-foreground mb-6">Send us a Message</h3>
-
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
-                        Your Name <span className="text-error">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="input"
-                        placeholder="John Doe"
-                      />
+                  <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                    <div className="flex items-center gap-4 mb-12">
+                      <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                         <Zap className="w-5 h-5" />
+                      </div>
+                      <h3 className="text-2xl font-heading font-black text-foreground tracking-tight">Transmission Interface</h3>
                     </div>
 
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                        Email Address <span className="text-error">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="input"
-                        placeholder="john@example.com"
-                      />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-3">
+                        <label htmlFor="name" className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] ml-4">
+                          Extraction Identity
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-foreground placeholder:text-foreground/10 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all font-bold"
+                          placeholder="John Doe"
+                        />
+                      </div>
+
+                      <div className="space-y-3">
+                        <label htmlFor="email" className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] ml-4">
+                          Secure Frequency
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-foreground placeholder:text-foreground/10 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all font-bold"
+                          placeholder="john@extractions.io"
+                        />
+                      </div>
                     </div>
 
-                    <div>
-                      <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
-                        Subject <span className="text-error">*</span>
+                    <div className="space-y-3">
+                      <label htmlFor="subject" className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] ml-4">
+                        Protocol Stratum
                       </label>
                       <select
                         id="subject"
                         required
                         value={formData.subject}
                         onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        className="input"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-foreground focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all font-bold appearance-none cursor-pointer"
                       >
                         {subjectOptions.map((option) => (
-                          <option key={option.value} value={option.value}>
+                          <option key={option.value} value={option.value} className="bg-background">
                             {option.label}
                           </option>
                         ))}
                       </select>
                     </div>
 
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
-                        Message <span className="text-error">*</span>
+                    <div className="space-y-3">
+                      <label htmlFor="message" className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] ml-4">
+                        Signal Manifest
                       </label>
                       <textarea
                         id="message"
                         required
-                        rows={4}
+                        rows={6}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="input textarea"
-                        placeholder="How can we help you?"
+                        className="w-full bg-white/5 border border-white/10 rounded-4xl px-8 py-6 text-foreground placeholder:text-foreground/10 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all font-bold resize-none"
+                        placeholder="Detail your architecture or report corruption..."
                         maxLength={1000}
                       />
-                      <div className="text-right text-xs text-foreground-muted mt-1">
-                        {formData.message.length}/1000
+                      <div className="flex justify-between items-center px-4">
+                         <div className="flex items-center gap-2 opacity-20">
+                            <ShieldCheck className="w-3 h-3 text-primary" />
+                            <span className="text-[8px] font-black uppercase tracking-widest">Neural Encryption Enabled</span>
+                         </div>
+                         <div className="text-[9px] font-black text-foreground/20 uppercase tracking-widest">
+                           {formData.message.length}/1000 VECTORS
+                         </div>
                       </div>
                     </div>
 
                     {error && (
-                      <div className="p-4 rounded-xl bg-error/10 border border-error/20 text-error text-sm">
-                        {error}
-                      </div>
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="p-6 rounded-2xl bg-error/10 border border-error/20 text-error text-xs font-bold flex items-center gap-4"
+                      >
+                         <Zap className="w-5 h-5 shrink-0" />
+                         {error}
+                      </motion.div>
                     )}
 
                     <GlowButton
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full"
+                      size="lg"
+                      className="w-full rounded-4xl py-6"
                     >
                       {isSubmitting ? (
                         <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          Sending...
+                          <Loader2 className="w-6 h-6 animate-spin" />
+                          PROCESSING HANDSHAKE...
                         </>
                       ) : (
                         <>
-                          <Send className="w-5 h-5" />
-                          Send Message
+                          <Send className="w-6 h-6" />
+                          TRANSMIT SIGNAL
                         </>
                       )}
                     </GlowButton>
@@ -270,6 +312,7 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </>
+    </main>
   )
 }
+
