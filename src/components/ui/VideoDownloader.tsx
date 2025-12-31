@@ -4,7 +4,7 @@ import { useState, FormEvent, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, Download, Play, AlertCircle, Sparkles, X, Share2, Clipboard, Check, Terminal, ShieldCheck, Zap } from 'lucide-react'
 import { GlassCard } from './Cards'
-import { isValidUrl, detectPlatform, getPlatformColor } from '@/lib/utils'
+import { isValidUrl, detectPlatform } from '@/lib/utils'
 import { DownloadResult } from '@/types'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
@@ -67,7 +67,6 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
   }
 
   const platform = url ? detectPlatform(url) : null
-  const platformColor = platform ? getPlatformColor(platform) : null
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-12">
@@ -83,9 +82,9 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
             }}
             transition={{ type: 'spring', damping: 25, stiffness: 350 }}
             className={cn(
-              'relative bg-background-subtle/40 border-2 rounded-3xl overflow-hidden transition-all duration-500 backdrop-blur-3xl shadow-2xl',
+              'relative bg-white/2 border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 backdrop-blur-3xl shadow-2xl',
               isFocused 
-                ? 'border-primary shadow-[0_0_40px_rgba(16,185,129,0.2)]' 
+                ? 'border-white shadow-[0_0_40px_rgba(255,255,255,0.1)]' 
                 : 'border-white/5'
             )}
           >
@@ -98,8 +97,8 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
                   exit={{ opacity: 0 }}
                   className="absolute inset-0 pointer-events-none"
                 >
-                   <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary to-transparent opacity-50" />
-                   <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary to-transparent opacity-50" />
+                   <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-white/40 to-transparent opacity-50" />
+                   <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-white/40 to-transparent opacity-50" />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -114,7 +113,7 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
                       animate={{ scale: 1, opacity: 1, rotate: 0 }}
                       exit={{ scale: 0.5, opacity: 0, rotate: 90 }}
                     >
-                      <Loader2 className="w-7 h-7 text-primary animate-spin" />
+                      <Loader2 className="w-7 h-7 text-white animate-spin" />
                     </motion.div>
                   ) : (
                     <motion.div
@@ -125,7 +124,7 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
                     >
                       <Terminal className={cn(
                         "w-7 h-7 transition-all duration-500",
-                        isFocused ? "text-primary scale-110 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]" : "text-foreground/20"
+                        isFocused ? "text-white scale-110 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" : "text-white/20"
                       )} />
                     </motion.div>
                   )}
@@ -168,8 +167,8 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
                   className={cn(
                     "group/btn relative flex items-center gap-3 px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest transition-all duration-500 overflow-hidden",
                     url && !isLoading 
-                      ? "bg-primary text-background shadow-lg shadow-primary/20 hover:scale-105" 
-                      : "bg-white/5 text-foreground/20 border border-white/5 cursor-not-allowed"
+                      ? "bg-white text-black shadow-lg shadow-white/10 hover:scale-105 hover:bg-neutral-200" 
+                      : "bg-white/5 text-white/20 border border-white/5 cursor-not-allowed"
                   )}
                 >
                   <span className="relative z-10">Extract</span>
@@ -188,12 +187,9 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
                  initial={{ opacity: 0, y: 15, scale: 0.9 }}
                  animate={{ opacity: 1, y: 0, scale: 1 }}
                  exit={{ opacity: 0, y: 15, scale: 0.9 }}
-                 className="absolute -top-4 right-10 px-5 py-2 rounded-full bg-background border border-white/10 text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl flex items-center gap-3"
+                 className="absolute -top-4 right-10 px-5 py-2 rounded-full bg-black border border-white/20 text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl flex items-center gap-3"
                >
-                 <div className="w-2 h-2 rounded-full" style={{ 
-                   backgroundColor: platformColor || '#10B981',
-                   boxShadow: `0 0 10px ${platformColor || '#10B981'}`
-                 }} />
+                 <div className="w-2 h-2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,1)]" />
                  {platform} Detected
                </motion.div>
             )}
@@ -242,8 +238,8 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
                         unoptimized
                       />
                     ) : (
-                      <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-accent-indigo/10 flex items-center justify-center">
-                        <Play className="w-16 h-16 text-primary opacity-20" />
+                      <div className="absolute inset-0 bg-linear-to-br from-white/5 to-white/10 flex items-center justify-center">
+                        <Play className="w-16 h-16 text-white opacity-20" />
                       </div>
                     )}
                     <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-transparent opacity-80" />
@@ -255,9 +251,9 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.3 }}
                     >
-                      <div className="px-4 py-1.5 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 inline-flex items-center gap-2 mb-4">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                        <span className="text-[10px] font-black tracking-[0.2em] text-primary uppercase">{result.platform} Vector</span>
+                      <div className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 inline-flex items-center gap-2 mb-4">
+                        <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                        <span className="text-[10px] font-black tracking-[0.2em] text-white uppercase">{result.platform} Vector</span>
                       </div>
                       <h4 className="text-white font-heading font-black text-2xl leading-[1.1] tracking-tight line-clamp-2 drop-shadow-lg">
                         {result.title || 'Manifest Ready'}
@@ -268,23 +264,23 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
 
                 {/* Processing Controls */}
                 <div className="grow p-10 lg:p-12 flex flex-col">
-                  <div className="flex items-center justify-between mb-10 pb-8 border-b border-white/5">
+                   <div className="flex items-center justify-between mb-10 pb-8 border-b border-white/5">
                     <div>
-                      <span className="text-[10px] font-black text-primary uppercase tracking-[0.4em]">Available Strata</span>
-                      <p className="text-foreground/40 text-sm font-bold mt-1 uppercase tracking-widest">Select Output Quality</p>
+                      <span className="text-[10px] font-black text-white uppercase tracking-[0.4em]">Available Strata</span>
+                      <p className="text-white/40 text-sm font-bold mt-1 uppercase tracking-widest">Select Output Quality</p>
                     </div>
                     <div className="flex gap-3">
                        <button 
                          onClick={() => window.open(url, '_blank')}
-                         className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-primary/5 transition-all flex items-center justify-center text-foreground/40 hover:text-primary"
+                         className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 hover:border-white/50 hover:bg-white/10 transition-all flex items-center justify-center text-white/40 hover:text-white"
                        >
                          <Share2 className="w-5 h-5" />
                        </button>
                        <button 
                          onClick={handleCopy}
-                         className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-primary/5 transition-all flex items-center justify-center text-foreground/40 hover:text-primary"
+                         className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 hover:border-white/50 hover:bg-white/10 transition-all flex items-center justify-center text-white/40 hover:text-white"
                         >
-                         {copied ? <Check className="w-5 h-5 text-primary" /> : <Clipboard className="w-5 h-5" />}
+                         {copied ? <Check className="w-5 h-5 text-white" /> : <Clipboard className="w-5 h-5" />}
                        </button>
                     </div>
                   </div>
@@ -301,9 +297,9 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
                         transition={{ delay: 0.1 * i + 0.4 }}
                         className="flex items-center justify-between px-6 py-5 rounded-3xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-primary/10 transition-all duration-500 group/dl"
                       >
-                        <div className="flex flex-col">
-                          <span className="text-foreground font-black text-sm uppercase tracking-widest group-hover/dl:text-primary transition-colors">{dl.quality}</span>
-                          <div className="flex items-center gap-3 text-foreground/30 mt-1">
+                         <div className="flex flex-col">
+                          <span className="text-white font-black text-sm uppercase tracking-widest group-hover/dl:text-white transition-colors">{dl.quality}</span>
+                          <div className="flex items-center gap-3 text-white/30 mt-1">
                             <span className="text-[10px] font-bold uppercase tracking-widest">{dl.format}</span>
                             {dl.size && (
                               <>
@@ -313,7 +309,7 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
                             )}
                           </div>
                         </div>
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/20 group-hover/dl:bg-primary group-hover/dl:border-primary group-hover/dl:text-background transition-all duration-300 flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/20 group-hover/dl:bg-white group-hover/dl:border-white group-hover/dl:text-black transition-all duration-300 flex items-center justify-center">
                           <Download className="w-5 h-5" />
                         </div>
                       </motion.a>
@@ -322,17 +318,17 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
 
                   <div className="mt-auto pt-10 border-t border-white/5 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                       <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-                          <ShieldCheck className="w-6 h-6 text-primary" />
+                       <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+                          <ShieldCheck className="w-6 h-6 text-white" />
                        </div>
                        <div>
-                         <span className="text-xs font-black text-foreground uppercase tracking-widest block">Neural Verified</span>
-                         <span className="text-[10px] text-foreground/30 font-bold uppercase tracking-widest leading-none">Safe delivery enabled</span>
+                         <span className="text-xs font-black text-white uppercase tracking-widest block">Neural Verified</span>
+                         <span className="text-[10px] text-white/30 font-bold uppercase tracking-widest leading-none">Safe delivery enabled</span>
                        </div>
                     </div>
                     <button 
                       onClick={() => { setResult(null); setUrl(''); }}
-                      className="px-8 py-3.5 rounded-2xl border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 hover:text-white hover:bg-white/5 hover:border-white/20 transition-all"
+                      className="px-8 py-3.5 rounded-2xl border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white hover:bg-white/5 hover:border-white/20 transition-all"
                     >
                       Purge & Reset
                     </button>
@@ -347,12 +343,12 @@ export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
       {/* Background Micro-Animations */}
       {!result && !error && (
         <div className="flex justify-center items-center gap-12 opacity-20 pt-8">
-           <div className="flex items-center gap-3 grayscale hover:grayscale-0 transition-all duration-500 cursor-default">
-              <Zap className="w-4 h-4 text-primary" />
+           <div className="flex items-center gap-3 grayscale cursor-default">
+              <Zap className="w-4 h-4 text-white" />
               <span className="text-[10px] font-black uppercase tracking-[0.3em]">Ultra Speed</span>
            </div>
-           <div className="flex items-center gap-3 grayscale hover:grayscale-0 transition-all duration-500 cursor-default">
-              <ShieldCheck className="w-4 h-4 text-accent-indigo" />
+           <div className="flex items-center gap-3 grayscale cursor-default">
+              <ShieldCheck className="w-4 h-4 text-white" />
               <span className="text-[10px] font-black uppercase tracking-[0.3em]">Zero Logs</span>
            </div>
         </div>
