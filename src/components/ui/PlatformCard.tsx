@@ -44,42 +44,39 @@ export function PlatformCard({ platform, delay = 0, onClick }: PlatformCardProps
       className="group"
     >
       <GlassCard
-        className="p-6 h-full flex flex-col"
+        className="p-8 h-full flex flex-col border-white/5 bg-white/2"
         whileHover={{ scale: 1.02 }}
       >
-        {/* Platform Icon */}
+        {/* Platform Icon - Monochrome */}
         <div
           className={cn(
-            'relative w-16 h-16 rounded-2xl flex items-center justify-center mb-5 mx-auto',
-            'bg-linear-to-br shadow-lg transition-all duration-300',
-            info.gradient,
-            'group-hover:scale-110 group-hover:shadow-xl'
+            'relative w-20 h-20 rounded-3xl flex items-center justify-center mb-8 mx-auto',
+            'bg-white text-black shadow-2xl transition-all duration-500',
+            'group-hover:scale-110 group-hover:shadow-white/10'
           )}
         >
-          <IconComponent className="w-8 h-8 text-white" />
+          <IconComponent className="w-10 h-10" />
+          <div className="absolute inset-0 bg-white/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
 
         {/* Content */}
-        <h3 className="text-xl font-bold text-center mb-2 text-foreground group-hover:text-primary transition-colors">
+        <h3 className="text-2xl font-black text-center mb-3 text-white tracking-tight group-hover:text-neutral-300 transition-colors">
           {info.name}
         </h3>
-        <p className="text-foreground-muted text-sm text-center mb-5 grow">
+        <p className="text-white/40 text-sm text-center mb-8 grow font-medium leading-relaxed">
           {info.description}
         </p>
 
-        {/* Features */}
-        <ul className="space-y-2 mb-5">
+        {/* Features - Monochrome */}
+        <ul className="space-y-4 mb-8">
           {info.features.map((feature, index) => (
             <li
               key={index}
-              className="flex items-center gap-2.5 text-sm text-foreground-muted"
+              className="flex items-center gap-3.5 text-xs font-bold text-white/60 uppercase tracking-widest"
             >
               <div
-                className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
-                style={{ backgroundColor: `${info.color}15`, color: info.color }}
-              >
-                ✓
-              </div>
+                className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"
+              />
               {feature}
             </li>
           ))}
@@ -88,10 +85,10 @@ export function PlatformCard({ platform, delay = 0, onClick }: PlatformCardProps
         {/* Action Button */}
         <GlowButton
           variant="primary"
-          className="w-full"
+          className="w-full py-5 rounded-2xl"
           onClick={onClick}
         >
-          Download Now
+          Establish Bridge
         </GlowButton>
       </GlassCard>
     </motion.div>
@@ -131,8 +128,8 @@ export function PlatformIcon({
       whileHover={animated ? { scale: 1.1, y: -2 } : undefined}
       className={cn(
         'rounded-xl flex items-center justify-center',
-        'bg-white border border-black/10 shadow-sm',
-        'transition-all duration-200 hover:shadow-md hover:border-primary/20',
+        'bg-white/5 border border-white/10 shadow-sm',
+        'transition-all duration-200 hover:shadow-md hover:border-white/40',
         sizeClasses[size],
         className
       )}
@@ -140,9 +137,8 @@ export function PlatformIcon({
       <IconComponent
         className={cn(
           iconSizes[size],
-          'text-foreground-muted transition-colors duration-200'
+          'text-white transition-colors duration-200'
         )}
-        style={{ color: info.color }}
       />
     </motion.div>
   )
@@ -152,7 +148,7 @@ export function PlatformIconsRow() {
   const platforms = Object.keys(PLATFORMS) as Array<keyof typeof PLATFORMS>
 
   return (
-    <div className="flex items-center justify-center gap-3 flex-wrap">
+    <div className="flex items-center justify-center gap-4 flex-wrap">
       {platforms.map((platform, index) => {
         const info = PLATFORMS[platform]
         const IconComponent = ICON_MAP[info.icon] || Globe
@@ -169,15 +165,14 @@ export function PlatformIconsRow() {
             <Link
               href={`/platforms#${platform.toLowerCase()}`}
               className={cn(
-                'w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center',
-                'bg-white border border-black/10 shadow-sm',
-                'transition-all duration-200',
-                'hover:border-primary/30 hover:shadow-md'
+                'w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center',
+                'bg-white/5 border border-white/10 shadow-sm',
+                'transition-all duration-300',
+                'hover:border-white/50 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'
               )}
             >
               <IconComponent
-                className="w-6 h-6 md:w-7 md:h-7 transition-colors"
-                style={{ color: info.color }}
+                className="w-7 h-7 md:w-8 md:h-8 text-white group-hover:scale-110 transition-transform"
               />
             </Link>
           </motion.div>
