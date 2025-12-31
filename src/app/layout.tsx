@@ -42,9 +42,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${outfit.variable} font-body antialiased selection:bg-primary/20 selection:text-primary bg-background text-foreground`}
+        className={`${inter.variable} ${outfit.variable} font-body antialiased selection:bg-white/20 selection:text-white bg-background text-white`}
       >
         <Providers>
           <div className="flex flex-col min-h-screen bg-mesh-gradient">
