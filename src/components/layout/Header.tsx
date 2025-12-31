@@ -92,6 +92,21 @@ export function Header() {
                     <Shield className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
                   </Link>
                 )}
+
+                <Link
+                  href="/history"
+                  className={cn(
+                    "p-2.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/40 hover:bg-white/10 transition-all group",
+                    pathname === '/history' && "bg-white/20 border-white/40"
+                  )}
+                  title="Your History"
+                >
+                  <div className="w-4 h-4 flex items-center justify-center">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-white group-hover:scale-110 transition-transform">
+                      <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                </Link>
                 
                 <div className="h-8 w-px bg-white/10 mx-1" />
                 
