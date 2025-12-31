@@ -80,8 +80,8 @@ export default function ContactPage() {
       {/* Hyper-Hero */}
       <section className="relative pt-40 pb-24 overflow-hidden px-6">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[140px]" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent-indigo/5 rounded-full blur-[120px]" />
+          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-white/2 rounded-full blur-[140px]" />
+          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-white/1 rounded-full blur-[120px]" />
         </div>
 
         <div className="container relative z-10 text-center max-w-4xl mx-auto">
@@ -90,22 +90,22 @@ export default function ContactPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-3xl mb-10 shadow-2xl"
           >
-             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-             <span className="text-[10px] font-black text-foreground uppercase tracking-[0.4em]">Subspace Communication</span>
+             <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+             <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em]">Subspace Communication</span>
           </motion.div>
           
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-6xl md:text-8xl font-heading font-black text-foreground mb-8 tracking-tighter"
+            className="text-6xl md:text-8xl font-heading font-black text-white mb-8 tracking-tighter"
           >
-            SIGNAL <span className="text-foreground/20 italic">REACH</span>
+            SIGNAL <span className="text-white/10 italic">REACH</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-xl md:text-2xl text-foreground/50 font-medium max-w-2xl mx-auto leading-relaxed"
+            className="text-white/40 font-medium max-w-2xl mx-auto leading-relaxed uppercase tracking-widest text-sm md:text-2xl"
           >
             Establish a secure connection with the lead architects for signals, leaks, or protocol evolutions.
           </motion.p>
@@ -124,8 +124,8 @@ export default function ContactPage() {
               className="lg:col-span-5 space-y-10"
             >
               <div>
-                <h2 className="text-4xl font-heading font-black text-foreground mb-6 tracking-tight">Direct Access</h2>
-                <p className="text-foreground/50 text-xl font-medium leading-relaxed mb-12">
+                <h2 className="text-4xl font-heading font-black text-white mb-6 tracking-tight">Direct Access</h2>
+                <p className="text-white/40 text-xl font-medium leading-relaxed mb-12">
                   Our neural network is always listening. Select the appropriate strata for your inquiry to ensure high-priority processing.
                 </p>
               </div>
@@ -139,18 +139,18 @@ export default function ContactPage() {
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <GlassCard className="p-8 flex gap-6 border-white/5 bg-background-subtle/20 group hover:border-primary/40 transition-all duration-500 rounded-4xl">
-                      <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-background transition-all duration-500 shadow-xl">
+                    <GlassCard className="p-8 flex gap-6 border-white/5 bg-white/2 group hover:border-white/40 transition-all duration-500 rounded-4xl">
+                      <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-white group-hover:text-black transition-all duration-500 shadow-xl">
                         <method.icon className="w-6 h-6" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-heading font-black text-foreground mb-2 tracking-tight">{method.title}</h3>
-                        <p className="text-sm font-bold text-foreground/40 mb-3 leading-relaxed">
+                        <h3 className="text-xl font-heading font-black text-white mb-2 tracking-tight">{method.title}</h3>
+                        <p className="text-sm font-bold text-white/40 mb-3 leading-relaxed">
                           {method.description}
                         </p>
                         <a
                           href={method.link}
-                          className="text-xs font-black text-primary uppercase tracking-[0.2em] hover:text-white transition-colors flex items-center gap-2"
+                          className="text-xs font-black text-white/60 uppercase tracking-[0.2em] hover:text-white transition-colors flex items-center gap-2"
                         >
                           {method.linkText}
                           <Orbit className="w-3 h-3 group-hover:rotate-180 transition-transform duration-1000" />
@@ -169,7 +169,7 @@ export default function ContactPage() {
               viewport={{ once: true }}
               className="lg:col-span-7"
             >
-              <GlassCard className="p-10 md:p-14 border-white/5 bg-background-subtle/30 shadow-[0_0_100px_rgba(0,0,0,0.5)] rounded-4xl relative overflow-hidden">
+              <GlassCard className="p-10 md:p-14 border-white/5 bg-white/3 shadow-[0_0_100px_rgba(0,0,0,0.5)] rounded-4xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-12 opacity-[0.02] pointer-events-none">
                   <Send className="w-64 h-64" />
                 </div>
@@ -179,12 +179,12 @@ export default function ContactPage() {
                     <motion.div 
                       initial={{ scale: 0.5, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      className="w-24 h-24 mx-auto mb-10 rounded-[2rem] bg-primary/10 border border-primary/20 flex items-center justify-center shadow-2xl"
+                      className="w-24 h-24 mx-auto mb-10 rounded-4xl bg-white/5 border border-white/10 flex items-center justify-center shadow-2xl"
                     >
-                      <CheckCircle className="w-12 h-12 text-primary" />
+                      <CheckCircle className="w-12 h-12 text-white" />
                     </motion.div>
-                    <h3 className="text-4xl font-heading font-black text-foreground mb-6 tracking-tight">Signal Received</h3>
-                    <p className="text-foreground/50 text-lg font-bold mb-12 max-w-md mx-auto uppercase tracking-widest">
+                    <h3 className="text-4xl font-heading font-black text-white mb-6 tracking-tight">Signal Received</h3>
+                    <p className="text-white/40 text-lg font-bold mb-12 max-w-md mx-auto uppercase tracking-widest">
                       Extraction receipt confirmed. Our architects will decrypt your manifest soon.
                     </p>
                     <GlowButton onClick={() => setIsSuccess(false)} variant="secondary" className="px-12 py-5 rounded-2xl">
@@ -194,15 +194,15 @@ export default function ContactPage() {
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
                     <div className="flex items-center gap-4 mb-12">
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                      <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
                          <Zap className="w-5 h-5" />
                       </div>
-                      <h3 className="text-2xl font-heading font-black text-foreground tracking-tight">Transmission Interface</h3>
+                      <h3 className="text-2xl font-heading font-black text-white tracking-tight">Transmission Interface</h3>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div className="space-y-3">
-                        <label htmlFor="name" className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] ml-4">
+                        <label htmlFor="name" className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-4">
                           Extraction Identity
                         </label>
                         <input
@@ -211,13 +211,13 @@ export default function ContactPage() {
                           required
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-foreground placeholder:text-foreground/10 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all font-bold"
+                          className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-white/40 focus:bg-white/10 transition-all font-bold"
                           placeholder="John Doe"
                         />
                       </div>
 
                       <div className="space-y-3">
-                        <label htmlFor="email" className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] ml-4">
+                        <label htmlFor="email" className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-4">
                           Secure Frequency
                         </label>
                         <input
@@ -226,14 +226,14 @@ export default function ContactPage() {
                           required
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-foreground placeholder:text-foreground/10 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all font-bold"
+                          className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-white/40 focus:bg-white/10 transition-all font-bold"
                           placeholder="john@extractions.io"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-3">
-                      <label htmlFor="subject" className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] ml-4">
+                      <label htmlFor="subject" className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-4">
                         Protocol Stratum
                       </label>
                       <select
@@ -241,7 +241,7 @@ export default function ContactPage() {
                         required
                         value={formData.subject}
                         onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-foreground focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all font-bold appearance-none cursor-pointer"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-white/40 focus:bg-white/10 transition-all font-bold appearance-none cursor-pointer"
                       >
                         {subjectOptions.map((option) => (
                           <option key={option.value} value={option.value} className="bg-background">
@@ -252,7 +252,7 @@ export default function ContactPage() {
                     </div>
 
                     <div className="space-y-3">
-                      <label htmlFor="message" className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] ml-4">
+                      <label htmlFor="message" className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-4">
                         Signal Manifest
                       </label>
                       <textarea
@@ -261,16 +261,16 @@ export default function ContactPage() {
                         rows={6}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full bg-white/5 border border-white/10 rounded-4xl px-8 py-6 text-foreground placeholder:text-foreground/10 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all font-bold resize-none"
+                        className="w-full bg-white/5 border border-white/10 rounded-4xl px-8 py-6 text-white placeholder:text-white/10 focus:outline-none focus:border-white/40 focus:bg-white/10 transition-all font-bold resize-none"
                         placeholder="Detail your architecture or report corruption..."
                         maxLength={1000}
                       />
                       <div className="flex justify-between items-center px-4">
                          <div className="flex items-center gap-2 opacity-20">
-                            <ShieldCheck className="w-3 h-3 text-primary" />
+                            <ShieldCheck className="w-3 h-3 text-white" />
                             <span className="text-[8px] font-black uppercase tracking-widest">Neural Encryption Enabled</span>
                          </div>
-                         <div className="text-[9px] font-black text-foreground/20 uppercase tracking-widest">
+                         <div className="text-[9px] font-black text-white/20 uppercase tracking-widest">
                            {formData.message.length}/1000 VECTORS
                          </div>
                       </div>
@@ -291,7 +291,7 @@ export default function ContactPage() {
                       type="submit"
                       disabled={isSubmitting}
                       size="lg"
-                      className="w-full rounded-4xl py-6"
+                      className="w-full rounded-4xl py-6 shadow-[0_0_50px_rgba(255,255,255,0.05)]"
                     >
                       {isSubmitting ? (
                         <>
