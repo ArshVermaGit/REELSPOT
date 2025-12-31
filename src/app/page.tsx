@@ -1,11 +1,15 @@
 'use client'
 
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef } from 'react'
-import { Sparkles, Shield, Zap, Github, Cpu, Orbit, Layers, MousePointer2 } from 'lucide-react'
+import { useRef, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { Sparkles, Shield, Zap, Github, Cpu, Orbit, Layers, MousePointer2, Loader2 } from 'lucide-react'
 import { VideoDownloader, FeatureCard, AnimatedCounter, StepCard, GlowButton, PlatformGrid } from '@/components/ui'
 
-export default function HomePage() {
+function HomeContent() {
+  const searchParams = useSearchParams()
+  const initialUrl = searchParams.get('url') || ''
+  
   const containerRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -79,7 +83,7 @@ export default function HomePage() {
             className="relative"
           >
             <div className="absolute -inset-24 bg-white/2 rounded-full blur-[120px] pointer-events-none" />
-            <VideoDownloader />
+            <VideoDownloader initialUrl={initialUrl} />
           </motion.div>
         </div>
 
@@ -224,5 +228,19 @@ export default function HomePage() {
         </motion.div>
       </div>
     </div>
+  )
+}
+
+export default function HomePage() {
+  return (
+    <Suspense 
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-black">
+          <Loader2 className="w-8 h-8 text-white animate-spin" />
+        </div>
+      }
+    >
+      <HomeContent />
+    </Suspense>
   )
 }
