@@ -37,11 +37,14 @@ export function Header() {
         <div className="flex items-center justify-between">
           {/* Logo - Monochrome */}
           <Link href="/" className="flex items-center gap-3 group transition-transform active:scale-95">
-            <div className="relative">
-              <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all duration-500">
-                <span className="text-black font-heading font-black text-xl italic">R</span>
-              </div>
-              <div className="absolute -inset-1 bg-white/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative w-10 h-10">
+              <Image 
+                src="/logo.png" 
+                alt="REELSPOT Logo" 
+                width={40} 
+                height={40} 
+                className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] group-hover:drop-shadow-[0_0_25px_rgba(255,255,255,0.5)] transition-all duration-500"
+              />
             </div>
             <span className="text-2xl font-heading font-black tracking-tighter text-white">
               REEL<span className="text-white ml-1 opacity-20">SPOT</span>
