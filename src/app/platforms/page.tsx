@@ -1,11 +1,9 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { PlatformCard } from '@/components/ui'
-import { PLATFORMS } from '@/types'
+import { PlatformGrid } from '@/components/ui'
 
 export default function PlatformsPage() {
-  const platformKeys = Object.keys(PLATFORMS) as Array<keyof typeof PLATFORMS>
 
   return (
     <>
@@ -38,13 +36,7 @@ export default function PlatformsPage() {
       {/* Platforms Grid */}
       <section className="pb-24">
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {platformKeys.map((platform, index) => (
-              <div key={platform} id={platform.toLowerCase()}>
-                <PlatformCard platform={platform} delay={index} />
-              </div>
-            ))}
-          </div>
+          <PlatformGrid />
         </div>
       </section>
 
