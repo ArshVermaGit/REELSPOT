@@ -52,8 +52,8 @@ export default function AboutPage() {
       <section className="relative pt-40 pb-24 overflow-hidden">
         {/* Abstract Background Atoms */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-1/4 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[160px] animate-pulse" />
-          <div className="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-accent-indigo/5 rounded-full blur-[140px]" />
+          <div className="absolute top-0 right-1/4 w-[800px] h-[800px] bg-white/2 rounded-full blur-[160px] animate-pulse" />
+          <div className="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-white/1 rounded-full blur-[140px]" />
         </div>
 
         <div className="container relative z-10 px-6">
@@ -63,25 +63,25 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               className="flex items-center justify-center gap-4 mb-8"
             >
-                <div className="w-12 h-px bg-primary" />
-                <span className="text-xs font-black text-primary uppercase tracking-[0.5em]">System Origin</span>
-                <div className="w-12 h-px bg-primary" />
+                <div className="w-12 h-px bg-white/40" />
+                <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.5em]">System Origin</span>
+                <div className="w-12 h-px bg-white/40" />
             </motion.div>
             
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-6xl md:text-8xl font-heading font-black text-foreground mb-8 tracking-tighter"
+              className="text-6xl md:text-8xl font-heading font-black text-white mb-8 tracking-tighter"
             >
-              THE <span className="text-foreground/20 italic">ARCHITECTS</span>
+              THE <span className="text-white/10 italic">ARCHITECTS</span>
             </motion.h1>
             
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-xl md:text-2xl text-foreground/50 font-medium leading-relaxed"
+              className="text-white/40 font-medium leading-relaxed uppercase tracking-widest text-sm md:text-2xl"
             >
               Engineering the future of digital content extraction through hyper-premium design and neural precision.
             </motion.p>
@@ -100,15 +100,15 @@ export default function AboutPage() {
               viewport={{ once: true }}
               className="lg:col-span-5"
             >
-              <GlassCard className="p-12 border-white/5 bg-background-subtle/30 shadow-2xl relative overflow-hidden group">
+              <GlassCard className="p-12 border-white/5 bg-white/2 shadow-2xl relative overflow-hidden group rounded-4xl">
                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-opacity">
-                   <Cpu className="w-24 h-24 text-primary" />
+                   <Cpu className="w-24 h-24 text-white" />
                 </div>
                 
                 {/* Visual Profile */}
                 <div className="relative w-48 h-48 mb-10 group-hover:scale-105 transition-transform duration-700">
-                  <div className="absolute inset-0 bg-primary/20 rounded-3xl blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <div className="relative w-48 h-48 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-3xl bg-background-subtle">
+                  <div className="absolute inset-0 bg-white/10 rounded-3xl blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="relative w-48 h-48 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-3xl bg-black">
                     <Image
                       src="/images/arsh-verma.jpg"
                       alt="Arsh Verma"
@@ -120,11 +120,11 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                <h3 className="text-4xl font-heading font-black text-foreground mb-2 tracking-tight transition-colors">Arsh Verma</h3>
-                <p className="text-primary font-black uppercase tracking-[0.3em] text-[10px] mb-8">
+                <h3 className="text-4xl font-heading font-black text-white mb-2 tracking-tight transition-colors">Arsh Verma</h3>
+                <p className="text-white font-black uppercase tracking-[0.3em] text-[10px] mb-8">
                   LEAD ARCHITECT & VISIONARY
                 </p>
-                <p className="text-foreground/50 text-lg font-bold leading-relaxed mb-10">
+                <p className="text-white/40 text-lg font-bold leading-relaxed mb-10">
                   Dedicated to crafting digital instruments that redefine the boundary between functionality and art.
                 </p>
 
@@ -137,7 +137,7 @@ export default function AboutPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       whileHover={{ y: -5, scale: 1.1 }}
-                      className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-foreground/40 hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all shadow-xl"
+                      className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/50 hover:bg-white/10 transition-all shadow-xl"
                       title={link.label}
                     >
                       <link.icon className="w-6 h-6" />
@@ -149,8 +149,8 @@ export default function AboutPage() {
                 <div className="grid grid-cols-3 gap-8 pt-10 border-t border-white/5">
                   {devStats.map((stat) => (
                     <div key={stat.label}>
-                      <div className="text-2xl font-black text-foreground tracking-tighter">{stat.value}</div>
-                      <div className="text-[9px] font-black text-foreground/30 uppercase tracking-[0.2em] mt-1">{stat.label}</div>
+                      <div className="text-2xl font-black text-white tracking-tighter">{stat.value}</div>
+                      <div className="text-[9px] font-black text-white/30 uppercase tracking-[0.2em] mt-1">{stat.label}</div>
                     </div>
                   ))}
                 </div>
@@ -168,13 +168,13 @@ export default function AboutPage() {
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    <GlassCard className="p-10 flex flex-col md:flex-row gap-8 border-white/5 bg-background-subtle/20 group hover:border-primary/30 transition-all duration-500">
-                      <div className="shrink-0 w-16 h-16 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all duration-500 shadow-xl">
+                    <GlassCard className="p-10 flex flex-col md:flex-row gap-8 border-white/5 bg-white/2 group hover:border-white/30 transition-all duration-500 rounded-3xl">
+                      <div className="shrink-0 w-16 h-16 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500 shadow-xl">
                         <card.icon className="w-8 h-8" />
                       </div>
                       <div>
-                        <h3 className="text-2xl font-heading font-black text-foreground mb-3 tracking-tight">{card.title}</h3>
-                        <p className="text-foreground/50 text-base font-bold leading-relaxed">
+                        <h3 className="text-2xl font-heading font-black text-white mb-3 tracking-tight">{card.title}</h3>
+                        <p className="text-white/40 text-base font-bold leading-relaxed">
                           {card.description}
                         </p>
                       </div>
@@ -192,7 +192,7 @@ export default function AboutPage() {
               >
                 <div className="flex items-center gap-4 mb-10">
                    <div className="w-8 h-px bg-white/10" />
-                   <h2 className="text-xs font-black text-foreground/30 uppercase tracking-[0.5em]">TECH HORIZON</h2>
+                   <h2 className="text-xs font-black text-white/30 uppercase tracking-[0.5em]">TECH HORIZON</h2>
                 </div>
                 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -200,12 +200,12 @@ export default function AboutPage() {
                     <motion.div
                       key={tech.name}
                       whileHover={{ scale: 1.05, y: -5 }}
-                      className="p-6 rounded-4xl bg-background-subtle/40 border border-white/5 flex items-center gap-4 group"
+                      className="p-6 rounded-4xl bg-white/2 border border-white/5 flex items-center gap-4 group"
                     >
-                      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-background transition-all">
+                      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all">
                         <tech.icon className="w-6 h-6" />
                       </div>
-                      <span className="text-sm font-black text-foreground/60 group-hover:text-foreground mb-0">{tech.name}</span>
+                      <span className="text-xs font-black text-white/40 group-hover:text-white mb-0 uppercase tracking-widest leading-none">{tech.name}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -219,8 +219,8 @@ export default function AboutPage() {
       <section className="py-24 relative overflow-hidden">
          <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/5 to-transparent" />
          <div className="container relative z-10 px-6 text-center">
-            <h2 className="text-4xl md:text-6xl font-heading font-black text-foreground mb-10 tracking-tighter">
-               READY TO <span className="text-primary italic">EXTRACT?</span>
+            <h2 className="text-4xl md:text-6xl font-heading font-black text-white mb-10 tracking-tighter">
+               READY TO <span className="text-white/20 italic">EXTRACT?</span>
             </h2>
             <GlowButton size="lg" className="rounded-full">
                Initialize Protocol
