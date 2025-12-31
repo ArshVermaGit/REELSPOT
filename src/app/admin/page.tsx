@@ -267,8 +267,8 @@ export default function AdminPage() {
                     transition={{ delay: index * 0.05 }}
                     className={`p-4 rounded-xl border transition-colors ${
                       contact.read
-                        ? 'border-black/8 bg-white'
-                        : 'border-primary/30 bg-primary/5'
+                        ? 'border-white/5 bg-white/5'
+                        : 'border-primary/30 bg-primary/10'
                     }`}
                   >
                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
