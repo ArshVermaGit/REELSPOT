@@ -1,220 +1,333 @@
-<a name="readme-top"></a>
-
-<div align="center">
-  <br />
-  <div style="background-color: #000; padding: 20px; border-radius: 20px; display: inline-block;">
-     <h1 style="color: #fff; font-size: 50px; font-weight: 900; margin: 0;">REELSPOT</h1>
-  </div>
-  <h3 align="center">The Ultimate Premium Video Downloader</h3>
-
-  <p align="center">
-    A high-fidelity, stateless extraction interface for the modern web.
-    <br />
-    <a href="https://reelspot.vercel.app"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://reelspot.vercel.app">View Demo</a>
-    ·
-    <a href="https://github.com/ArshVermaGit/REELSPOT/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/ArshVermaGit/REELSPOT/issues">Request Feature</a>
-  </p>
-</div>
-
-<!-- BADGES -->
 <div align="center">
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.0-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Prisma](https://img.shields.io/badge/Prisma-5.0-2D3748?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-10.0-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+```
+██████╗ ███████╗███████╗██╗     ███████╗██████╗  ██████╗ ████████╗
+██╔══██╗██╔════╝██╔════╝██║     ██╔════╝██╔══██╗██╔═══██╗╚══██╔══╝
+██████╔╝█████╗  █████╗  ██║     ███████╗██████╔╝██║   ██║   ██║   
+██╔══██╗██╔══╝  ██╔══╝  ██║     ╚════██║██╔═══╝ ██║   ██║   ██║   
+██║  ██║███████╗███████╗███████╗███████║██║     ╚██████╔╝   ██║   
+╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚══════╝╚═╝      ╚═════╝    ╚═╝   
+```
+
+### *Where Pixels Meet Performance*
+
+**A monochromatic masterpiece in video extraction technology**
+
+[![Live Demo](https://img.shields.io/badge/🌐_Live-Demo-000000?style=for-the-badge)](https://reelspot.vercel.app)
+[![Documentation](https://img.shields.io/badge/📖_Read-Docs-1a1a1a?style=for-the-badge)](https://reelspot.vercel.app)
+[![Report Issue](https://img.shields.io/badge/🐛_Report-Bug-2a2a2a?style=for-the-badge)](https://github.com/ArshVermaGit/REELSPOT/issues)
+[![Request Feature](https://img.shields.io/badge/✨_Request-Feature-3a3a3a?style=for-the-badge)](https://github.com/ArshVermaGit/REELSPOT/issues)
+
+<br/>
+
+![Next.js](https://img.shields.io/badge/Next.js_15.0-000000?style=flat-square&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript_5.0-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind_v4-06B6D4?style=flat-square&logo=tailwind-css&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma_ORM-2D3748?style=flat-square&logo=prisma&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL_16-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=flat-square&logo=framer&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
 
 </div>
 
-<br />
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary><strong>Table of Contents</strong></summary>
-  <ol>
-    <li><a href="#about-the-project">About The Project</a></li>
-    <li><a href="#key-features">Key Features</a></li>
-    <li><a href="#built-with">Built With</a></li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ol>
-</details>
-
-<br />
+<br/>
 
 ---
 
-## ⚡ About The Project
+## 🎭 The Vision
 
-**REELSPOT** is not just another video downloader. It is a re-imagined extraction interface designed for visual perfection and speed. Built with a "Zero-Color" monochromatic aesthetic, it emphasizes content and functionality over distraction.
+> *In a world drowning in color noise, we chose the silence of monochrome.*
 
-We leverage advanced algorithms to fetch high-definition media from top social platforms including Instagram, YouTube, TikTok, X (Twitter), and Facebook. The user experience is enhanced with fluid glassmorphism, physics-based micro-interactions, and a stateless architecture that respects user privacy.
+**REELSPOT** isn't just another downloader—it's a statement. A rebellion against cluttered interfaces and privacy invasion. Built on principles of **minimalism**, **speed**, and **respect**, we've crafted an extraction platform that feels like art.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Imagine downloading your favorite content with the fluidity of cinema, the privacy of a vault, and the elegance of Swiss design. That's REELSPOT.
 
-## ✨ Key Features
+```
+┌─────────────────────────────────────────────────────────┐
+│  Paste URL  →  Detect Platform  →  Extract  →  Enjoy   │
+│              Zero Logs. Zero Friction.                   │
+└─────────────────────────────────────────────────────────┘
+```
 
-- **🎥 Multi-Vector Support:** Simultaneous compatibility with Instagram (Reels, Stores, Posts), YouTube (4K Video, MP3), TikTok (Watermark-free), X, and Facebook.
-- **💎 Hyper-Premium UI:** A layout built with `Framer Motion` for cinematic entrances, parallax effects, and glassmorphic overlays.
-- **🛡️ Privacy First:** Stateless "Zero-Log" architecture. We extract, deliver, and forget. No user data is stored persistently.
-- **⚡ Lightning Core:** Optimized API routes ensure near-instant resolution of video manifests.
-- **🔐 Secure Auth:** Integrated Google OAuth (via NextAuth.js) for optional premium features like download history.
-- **📱 Universal Response:** Flawless experience across desktop, tablet, and mobile devices.
+<br/>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+## 💫 What Makes Us Different
 
-## 🛠️ Built With
+<table>
+<tr>
+<td width="50%">
 
-This project relies on the cutting edge of the React ecosystem.
+### 🎯 **Precision Engineering**
+Multi-platform support engineered to perfection. Instagram, YouTube, TikTok, X, Facebook—all through one elegant interface.
 
-- **[Next.js 15](https://nextjs.org/)** - The React Framework for the Web (App Router).
-- **[TypeScript](https://www.typescriptlang.org/)** - For type-safe, robust code.
-- **[Tailwind CSS v4](https://tailwindcss.com/)** - Utility-first CSS framework for rapid UI development.
-- **[Prisma](https://www.prisma.io/)** - Next-generation Node.js and TypeScript ORM.
-- **[Framer Motion](https://www.framer.com/motion/)** - Production-ready animation library for React.
-- **[Lucide React](https://lucide.dev/)** - Beautiful & consistent icons.
-- **[NextAuth.js](https://next-auth.js.org/)** - Authentication solution for Next.js applications.
+</td>
+<td width="50%">
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### 🏛️ **Zero-Log Architecture**
+Your privacy is sacred. We process, deliver, and forget. No breadcrumbs. No surveillance. Just pure extraction.
 
-## 🚀 Getting Started
+</td>
+</tr>
+<tr>
+<td width="50%">
 
-Follow these steps to get a local copy up and running.
+### ⚡ **Lightning Core**
+Sub-second video manifest resolution. Optimized API routes that feel telepathic. Speed isn't a feature—it's our foundation.
 
-### Prerequisites
+</td>
+<td width="50%">
 
-- **Node.js** (v18 or higher)
-- **npm** or **yarn** or **pnpm**
-- **PostgreSQL Database** (Local or Cloud like Supabase/Neon)
-- **RapidAPI Keys** (for the backend logic)
+### 🎨 **Monochromatic Poetry**
+Glassmorphism meets brutalism. Physics-based animations. Every pixel serves a purpose in our zero-color aesthetic.
 
-### Installation
+</td>
+</tr>
+</table>
 
-1.  **Clone the repository**
+<br/>
 
-    ```sh
-    git clone https://github.com/ArshVermaGit/REELSPOT.git
-    cd REELSPOT
-    ```
+## 🎪 Feature Showcase
 
-2.  **Install packages**
+```javascript
+const features = {
+  platforms: [
+    "Instagram (Reels, Stories, Posts, IGTV)",
+    "YouTube (4K Video, 1080p, MP3 Audio)",
+    "TikTok (Watermark-free, HD)",
+    "X/Twitter (Videos, GIFs)",
+    "Facebook (Public Videos, Reels)"
+  ],
+  
+  userExperience: {
+    animations: "Framer Motion",
+    theme: "Monochromatic Glassmorphism",
+    responsive: "Desktop → Tablet → Mobile",
+    accessibility: "WCAG 2.1 AA Compliant"
+  },
+  
+  architecture: {
+    frontend: "Next.js 15 App Router",
+    backend: "Serverless Edge Functions",
+    database: "PostgreSQL + Prisma ORM",
+    auth: "NextAuth.js + OAuth 2.0",
+    state: "Stateless (Privacy First)"
+  }
+};
+```
 
-    ```sh
-    npm install
-    ```
+<br/>
 
-3.  **Configure Environment**
-    Create a `.env` file in the root directory and add your keys:
+## 🏗️ The Stack
 
-    ```env
-    # Database
-    DATABASE_URL="postgresql://user:password@localhost:5432/reelspot"
+Built with the bleeding edge of web technology:
 
-    # Authentication
-    NEXTAUTH_URL="http://localhost:3000"
-    NEXTAUTH_SECRET="super-secret-key-change-me"
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **Framework** | Next.js 15 | Server & Client rendering with App Router |
+| **Language** | TypeScript | Type-safe development experience |
+| **Styling** | Tailwind CSS v4 | Utility-first, zero-config styling |
+| **Database** | PostgreSQL + Prisma | Type-safe database operations |
+| **Animation** | Framer Motion | Cinematic page transitions & micro-interactions |
+| **Icons** | Lucide React | Beautiful, consistent iconography |
+| **Auth** | NextAuth.js | Secure Google OAuth integration |
+| **API** | RapidAPI | Video extraction endpoints |
 
-    # Google OAuth
-    GOOGLE_CLIENT_ID="your_google_client_id"
-    GOOGLE_CLIENT_SECRET="your_google_client_secret"
+<br/>
 
-    # RapidAPI (Universal Key)
-    RAPIDAPI_KEY="your_rapidapi_key"
-    ```
+## 🚀 Quick Start
 
-4.  **Database Setup**
+### Prerequisites Checklist
 
-    ```sh
-    npx prisma generate
-    npx prisma db push
-    ```
+- [ ] Node.js v18+ installed
+- [ ] Package manager (npm/yarn/pnpm)
+- [ ] PostgreSQL database (local or cloud)
+- [ ] RapidAPI account & key
 
-5.  **Run Development Server**
+<br/>
 
-    ```sh
-    npm run dev
-    ```
+### Installation Steps
 
-6.  **Verify**
-    Open [http://localhost:3000](http://localhost:3000) in your browser.
+**1️⃣ Clone the Repository**
+```bash
+git clone https://github.com/ArshVermaGit/REELSPOT.git
+cd REELSPOT
+```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+**2️⃣ Install Dependencies**
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
 
-## 🎮 Usage
+**3️⃣ Environment Configuration**
 
-1.  **Copy Link:** Navigate to your social media app and copy the link to the Reel, Video, or Post.
-2.  **Paste & Analyze:** Paste the link into the main input field on the home page. The system will auto-detect the platform.
-3.  **Select Quality:** For platforms like YouTube, choose your desired resolution (up to 4K) or format (MP3).
-4.  **Download:** Click the download button. The file will be processed and pushed to your device instantly.
+Create `.env` in the project root:
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+```env
+# ═══════════════════════════════════════════
+#  Database Configuration
+# ═══════════════════════════════════════════
+DATABASE_URL="postgresql://user:password@localhost:5432/reelspot"
 
-## 🛣️ Roadmap
+# ═══════════════════════════════════════════
+#  Authentication
+# ═══════════════════════════════════════════
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-ultra-secure-secret-key"
 
-- [x] Initial UI/UX Design (Monochromatic Theme)
-- [x] Core Video Downloader Implementation
-- [x] Authentication System (Google OAuth)
-- [x] Platform Grid & Modal Architecture
-- [ ] Backend API Integration for all platforms
-- [ ] User Dashboard & History
-- [ ] Bulk Download Support
-- [ ] Browser Extension
+# ═══════════════════════════════════════════
+#  Google OAuth Credentials
+# ═══════════════════════════════════════════
+GOOGLE_CLIENT_ID="your_google_client_id"
+GOOGLE_CLIENT_SECRET="your_google_client_secret"
 
-See the [open issues](https://github.com/ArshVermaGit/REELSPOT/issues) for a full list of proposed features (and known issues).
+# ═══════════════════════════════════════════
+#  RapidAPI Key (Video Extraction)
+# ═══════════════════════════════════════════
+RAPIDAPI_KEY="your_rapidapi_master_key"
+```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+**4️⃣ Database Initialization**
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+**5️⃣ Launch Development Server**
+```bash
+npm run dev
+```
+
+**6️⃣ Experience the Magic**
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+<br/>
+
+## 📖 Usage Guide
+
+```
+╔════════════════════════════════════════════════════════╗
+║  Step 1: Copy URL from your favorite platform         ║
+║  Step 2: Paste into REELSPOT's input field            ║
+║  Step 3: Auto-detection identifies the platform       ║
+║  Step 4: Select quality/format (4K, 1080p, MP3)       ║
+║  Step 5: Download instantly to your device            ║
+╚════════════════════════════════════════════════════════╝
+```
+
+### Platform-Specific Tips
+
+- **Instagram**: Works with Reels, Posts, Stories, and IGTV
+- **YouTube**: Choose between video (4K/1080p) or audio (MP3)
+- **TikTok**: Automatic watermark removal for clean downloads
+- **X/Twitter**: Supports both videos and GIF downloads
+- **Facebook**: Public videos only (respects privacy settings)
+
+<br/>
+
+## 🗺️ Roadmap to Greatness
+
+### ✅ Completed Milestones
+
+- [x] **Phase 1**: Monochromatic UI/UX foundation
+- [x] **Phase 2**: Core video extraction engine
+- [x] **Phase 3**: Google OAuth authentication
+- [x] **Phase 4**: Platform grid & modal architecture
+- [x] **Phase 5**: Glassmorphic component library
+
+### 🚧 In Progress
+
+- [ ] **Phase 6**: Complete backend API integration (All platforms)
+- [ ] **Phase 7**: User dashboard with download history
+- [ ] **Phase 8**: Bulk download queue system
+- [ ] **Phase 9**: Progressive Web App (PWA) support
+
+### 🔮 Future Vision
+
+- [ ] Browser extension (Chrome, Firefox, Edge)
+- [ ] Mobile app (React Native)
+- [ ] API for developers
+- [ ] AI-powered content suggestions
+- [ ] Collaborative playlists
+
+<br/>
 
 ## 🤝 Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+We believe in the power of community. Every contribution, no matter how small, makes REELSPOT better.
 
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
+```bash
+# Fork the project
+git clone https://github.com/YOUR_USERNAME/REELSPOT.git
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+# Create a feature branch
+git checkout -b feature/game-changing-feature
 
-## 📄 License
+# Make your magic happen
+git commit -m "✨ Add game-changing feature"
 
-Distributed under the MIT License. See `LICENSE` for more information.
+# Push to your fork
+git push origin feature/game-changing-feature
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+# Open a Pull Request and describe your vision
+```
 
-## 📬 Contact
+### Contribution Guidelines
 
-**Arsh Verma**
+- Write clean, self-documenting code
+- Follow the existing code style
+- Add tests for new features
+- Update documentation as needed
+- Be respectful and constructive in discussions
 
-- GitHub: [@ArshVermaGit](https://github.com/ArshVermaGit)
-- LinkedIn: [Arsh Verma](https://linkedin.com/in/arshvermadev)
-- X (Twitter): [@TheArshVerma](https://x.com/TheArshVerma)
-- Email: arshverma.dev@gmail.com
+<br/>
 
-Project Link: [https://github.com/ArshVermaGit/REELSPOT](https://github.com/ArshVermaGit/REELSPOT)
+## 📜 License
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for complete details.
 
----
+```
+Copyright © 2025 Arsh Verma
+
+Permission is hereby granted, free of charge, to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of this
+software, subject to the conditions in the MIT License.
+```
+
+<br/>
+
+## 🌟 Connect & Support
 
 <div align="center">
-  Built with ❤️ for the web.
+
+**Built by [Arsh Verma](https://github.com/ArshVermaGit)**
+
+[![GitHub](https://img.shields.io/badge/GitHub-@ArshVermaGit-181717?style=for-the-badge&logo=github)](https://github.com/ArshVermaGit)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Arsh_Verma-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/arshvermadev)
+[![X/Twitter](https://img.shields.io/badge/X-@TheArshVerma-000000?style=for-the-badge&logo=x)](https://x.com/TheArshVerma)
+[![Email](https://img.shields.io/badge/Email-arshverma.dev@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:arshverma.dev@gmail.com)
+
+<br/>
+
+**⭐ Star this repo** if you find it useful | **🐛 Report bugs** to help us improve | **💡 Suggest features** for the roadmap
+
+<br/>
+
+```
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  "Minimalism is not the absence of clutter,         ┃
+┃   it's the abundance of clarity."                    ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
+<br/>
+
+**Made with ♥️ and copious amounts of ☕**
+
+*[⬆ Back to Top](#)*
+
 </div>
