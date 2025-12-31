@@ -34,6 +34,10 @@ export const metadata: Metadata = {
     description: 'The ultimate video download experience.',
     creator: '@TheArshVerma',
   },
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
 }
 
 export default function RootLayout({
