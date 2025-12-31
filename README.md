@@ -85,7 +85,6 @@ Open [localhost:3000](http://localhost:3000) ✨
 - [x] Multi-platform support
 - [x] Backend API Integration for all platforms
 - [x] User Dashboard & History
-- [ ] Bulk Download Support
 - [x] Browser Extension
 
 ## 🤝 Contributing
