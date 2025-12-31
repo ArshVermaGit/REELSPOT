@@ -39,6 +39,7 @@ model User {
   email         String?    @unique
   emailVerified DateTime?
   image         String?
+  password      String? // Added for Credentials auth
   role          Role       @default(USER)
   createdAt     DateTime   @default(now())
   accounts      Account[]
