@@ -1,70 +1,70 @@
 @import "tailwindcss";
 
-/* ============================================
-   REELSPOT v3 - Fresh Light Theme
-   White / Blue / Pink Design System
-   ============================================ */
-
-:root {
-  /* Midnight Obsidian Theme Base */
-  --background: #030712;
-  --background-subtle: #0F172A;
-  --background-elevated: #1E293B;
-  --foreground: #F8FAFC;
-  --foreground-muted: #94A3B8;
-  
-  /* Brand Colors - Cyber Emerald & Electric Indigo */
-  --primary: #10B981;
-  --primary-light: #34D399;
-  --primary-dark: #059669;
-  --accent-cyan: #22D3EE;
-  --accent-indigo: #6366F1;
-  --accent-violet: #A855F7;
-  --accent-rose: #FB7185;
-  
-  /* UI Textures - Dark Mode Glass */
-  --border: rgba(255, 255, 255, 0.06);
-  --border-bright: rgba(255, 255, 255, 0.12);
-  --glass-surface: rgba(15, 23, 42, 0.8);
-  --glass-border: rgba(255, 255, 255, 0.08);
-
-  /* Status */
-  --success: #10B981;
-  --error: #F43F5E;
-
-  /* Typography */
-  --font-heading: "Outfit", var(--font-geist-sans), sans-serif;
-  --font-body: "Inter", var(--font-geist-sans), sans-serif;
-
-  /* Radius */
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 28px;
-  --radius-xl: 48px;
-  --radius-full: 9999px;
-
-  /* Shadows for Dark Theme */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
-
-  /* Animation Tokens */
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-
-  /* Tailwind v4 Theme Mappings */
+@theme {
   --color-background: var(--background);
+  --color-background-subtle: var(--background-subtle);
+  --color-background-elevated: var(--background-elevated);
   --color-foreground: var(--foreground);
-  --font-heading: var(--font-heading);
-  --font-body: var(--font-body);
+  --color-foreground-muted: var(--foreground-muted);
+  
   --color-primary: var(--primary);
-  --color-muted: var(--foreground-muted);
-  --color-border: var(--border);
+  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
+  
+  --color-accent-1: var(--accent-1);
+  --color-accent-2: var(--accent-2);
+  
   --color-success: var(--success);
   --color-error: var(--error);
-  --radius-2xl: var(--radius-xl);
+  
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+  
+  --radius-4xl: 2rem;
+  --radius-5xl: 3rem;
+}
+
+:root {
+  /* Monochromatic Zero-Color Theme */
+  --background: #000000;
+  --background-subtle: #0a0a0a;
+  --background-elevated: #1a1a1a;
+  --foreground: #ffffff;
+  --foreground-muted: #737373;
+  
+  /* Monochrome Accents */
+  --primary: #ffffff;
+  --primary-light: #f5f5f5;
+  --primary-dark: #a3a3a3;
+  --accent-1: #404040;
+  --accent-2: #171717;
+  
+  /* UI Components */
+  --border: rgba(255, 255, 255, 0.1);
+  --border-bright: rgba(255, 255, 255, 0.2);
+  --glass-surface: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.1);
+
+  /* Status (Keeping these neutral or using shades) */
+  --success: #ffffff;
+  --error: #404040;
+
+  /* Typography */
+  --font-heading: "Outfit", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.8);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.9);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 1);
 }
 
 /* Base Styles */
@@ -103,23 +103,23 @@ h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
 
 /* ========== Component Utilities ========== */
 
-/* Gradient Text */
+/* Monochrome Gradient Text */
 .text-gradient {
-  background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+  background: linear-gradient(135deg, #ffffff, #a3a3a3);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-prism {
-  background: linear-gradient(135deg, var(--primary), var(--accent-cyan), var(--accent-violet));
+  background: linear-gradient(135deg, #ffffff, #737373, #ffffff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, var(--primary), var(--accent-pink));
+  background: linear-gradient(135deg, #ffffff, #404040);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -143,11 +143,11 @@ h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
 
 /* Soft glow for buttons */
 .btn-glow {
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.1);
 }
 
 .btn-glow:hover {
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
 }
 
 /* Accent beam animation (simplified) */
@@ -175,8 +175,8 @@ h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
   position: absolute;
   inset: 0;
   background: 
-    radial-gradient(ellipse at 30% 20%, rgba(16, 185, 129, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 60%);
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 60%);
   z-index: -1;
 }
 
@@ -223,13 +223,13 @@ h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
   animation: float 4s ease-in-out infinite;
 }
 
-/* ========== Background Gradients - Light ========== */
+/* ========== Background Gradients - Monochrome ========== */
 .bg-mesh-gradient {
   background-color: var(--background);
   background-image: 
-    radial-gradient(ellipse at 0% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
-    radial-gradient(ellipse at 100% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
-    radial-gradient(ellipse at 50% 100%, rgba(34, 211, 238, 0.06) 0px, transparent 50%);
+    radial-gradient(ellipse at 0% 0%, rgba(255, 255, 255, 0.05) 0px, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(255, 255, 255, 0.03) 0px, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.02) 0px, transparent 50%);
 }
 
 /* Hero gradient background */
@@ -255,7 +255,7 @@ h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
 .input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
 .input::placeholder {
@@ -307,7 +307,7 @@ select.input {
   content: "";
   position: absolute;
   inset: -16px;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.1), transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.05), transparent 70%);
   z-index: -1;
   border-radius: inherit;
 }
