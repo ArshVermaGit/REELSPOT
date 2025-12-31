@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { Sparkles, Shield, Zap, Github, Cpu, Orbit, Layers, MousePointer2 } from 'lucide-react'
-import { VideoDownloader, FeatureCard, AnimatedCounter, StepCard, GlowButton } from '@/components/ui'
+import { VideoDownloader, FeatureCard, AnimatedCounter, StepCard, GlowButton, PlatformGrid } from '@/components/ui'
 
 export default function HomePage() {
   const containerRef = useRef(null)
@@ -19,8 +19,8 @@ export default function HomePage() {
     <div ref={containerRef} className="relative min-h-screen pt-40 pb-32 overflow-hidden bg-black">
       {/* Cinematic Background Elements - Monochrome */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-white/3 rounded-full blur-[160px] animate-pulse" />
-        <div className="absolute bottom-[20%] right-[-5%] w-[45%] h-[45%] bg-white/2 rounded-full blur-[140px]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-white/3 rounded-full blur-[100px]" />
+        <div className="absolute bottom-[20%] right-[-5%] w-[45%] h-[45%] bg-white/2 rounded-full blur-[80px]" />
         
         {/* Animated Grid */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] mix-blend-overlay" />
@@ -94,6 +94,33 @@ export default function HomePage() {
           </div>
           <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
         </div>
+
+        {/* Supported Platforms Section */}
+        <section className="py-20 mb-32 relative">
+          <div className="absolute inset-0 bg-white/2 skew-y-3 transform origin-top-left -z-10 h-full w-full rounded-[100px] blur-3xl opacity-20" />
+          
+          <div className="text-center mb-20">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-md"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              <span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">Universal Compatibility</span>
+            </motion.div>
+            
+            <h2 className="text-4xl md:text-7xl font-heading font-black text-white mb-6 tracking-tighter">
+              ALL SIGNALS <br /> <span className="text-white/20">ACCEPTED</span>
+            </h2>
+            <p className="max-w-2xl mx-auto text-white/40 font-medium leading-relaxed uppercase tracking-widest text-sm">
+              Advanced manifest extraction for every major social vector. 
+              Automatically optimized for maximum fidelity.
+            </p>
+          </div>
+
+          <PlatformGrid />
+        </section>
 
         {/* Features Section - Monochrome */}
         <section className="py-20 mb-32" id="features">
