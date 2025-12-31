@@ -3,10 +3,10 @@
 ```
 ██████╗ ███████╗███████╗██╗     ███████╗██████╗  ██████╗ ████████╗
 ██╔══██╗██╔════╝██╔════╝██║     ██╔════╝██╔══██╗██╔═══██╗╚══██╔══╝
-██████╔╝█████╗  █████╗  ██║     ███████╗██████╔╝██║   ██║   ██║   
-██╔══██╗██╔══╝  ██╔══╝  ██║     ╚════██║██╔═══╝ ██║   ██║   ██║   
-██║  ██║███████╗███████╗███████╗███████║██║     ╚██████╔╝   ██║   
-╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚══════╝╚═╝      ╚═════╝    ╚═╝   
+██████╔╝█████╗  █████╗  ██║     ███████╗██████╔╝██║   ██║   ██║
+██╔══██╗██╔══╝  ██╔══╝  ██║     ╚════██║██╔═══╝ ██║   ██║   ██║
+██║  ██║███████╗███████╗███████╗███████║██║     ╚██████╔╝   ██║
+╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚══════╝╚═╝      ╚═════╝    ╚═╝
 ```
 
 **Premium video extraction. Zero logs. Pure elegance.**
@@ -31,7 +31,9 @@ Paste URL → Auto-detect → Download → Enjoy
 ## 🎯 Features
 
 - **Multi-Platform** — Instagram • YouTube (4K) • TikTok • X • Facebook
-- **Privacy First** — Stateless architecture, no data retention
+- **📱 Universal Response:** Flawless experience across desktop, tablet, and mobile devices.
+- **📜 Signal Log:** Comprehensive history of all your extractions, securely stored and easily accessible.
+- **🔌 Neural Bridge:** Browser extension for one-click extraction from any supported platform.
 - **Lightning Fast** — Sub-second video extraction
 - **Beautiful UI** — Framer Motion animations + glassmorphism
 - **Secure Auth** — Google OAuth via NextAuth.js
@@ -45,8 +47,8 @@ const stack = {
   styling: "Tailwind CSS v4",
   database: "PostgreSQL + Prisma",
   animation: "Framer Motion",
-  auth: "NextAuth.js"
-}
+  auth: "NextAuth.js",
+};
 ```
 
 ## 🚀 Quick Start
@@ -71,14 +73,20 @@ npm run dev
 
 Open [localhost:3000](http://localhost:3000) ✨
 
+7.  **Extension Setup**
+    - Open Chrome and go to `chrome://extensions/`
+    - Enable "Developer mode" (top right)
+    - Click "Load unpacked"
+    - Select the `extension` folder in the project root
+
 ## 📋 Roadmap
 
 - [x] Monochromatic UI
 - [x] Multi-platform support
-- [x] OAuth authentication
-- [ ] Complete API integration
-- [ ] Download history
-- [ ] Browser extension
+- [x] Backend API Integration for all platforms
+- [x] User Dashboard & History
+- [ ] Bulk Download Support
+- [x] Browser Extension
 
 ## 🤝 Contributing
 
@@ -98,6 +106,6 @@ MIT License — see [LICENSE](LICENSE) for details.
 [![LinkedIn](https://img.shields.io/badge/-Arsh_Verma-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/arshvermadev)
 [![X](https://img.shields.io/badge/-@TheArshVerma-black?style=flat-square&logo=x)](https://x.com/TheArshVerma)
 
-*Made with ♥️ for the web*
+_Made with ♥️ for the web_
 
 </div>
