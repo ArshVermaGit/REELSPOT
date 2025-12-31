@@ -19,7 +19,7 @@ export function GlassCard({
   return (
     <motion.div
       className={cn(
-        'bg-white/3 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden relative group',
+        'bg-white/3 backdrop-blur-md border border-white/10 rounded-3xl shadow-2xl overflow-hidden relative group will-change-transform',
         hover && 'transition-all duration-300 hover:border-white/30 hover:shadow-white/5 hover:-translate-y-1',
         className
       )}
