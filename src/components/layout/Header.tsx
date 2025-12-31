@@ -35,21 +35,21 @@ export function Header() {
     >
       <nav className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo - Monochrome */}
           <Link href="/" className="flex items-center gap-3 group transition-transform active:scale-95">
             <div className="relative">
-              <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-primary to-accent-indigo flex items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(16,185,129,0.3)] group-hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transition-all duration-500">
-                <span className="text-white font-heading font-black text-xl italic">R</span>
+              <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all duration-500">
+                <span className="text-black font-heading font-black text-xl italic">R</span>
               </div>
-              <div className="absolute -inset-1 bg-primary/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute -inset-1 bg-white/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
-            <span className="text-2xl font-heading font-black tracking-tighter text-foreground">
-              REEL<span className="text-primary tracking-widest ml-1">SPOT</span>
+            <span className="text-2xl font-heading font-black tracking-tighter text-white">
+              REEL<span className="text-white ml-1 opacity-20">SPOT</span>
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1 bg-white/5 border border-white/10 p-1.5 rounded-full backdrop-blur-md">
+          {/* Desktop Navigation - Monochrome */}
+          <div className="hidden md:flex items-center gap-1 bg-white/3 border border-white/10 p-1.5 rounded-3xl backdrop-blur-md">
             {NAV_ITEMS.map((item) => {
               const isActive = pathname === item.href
               return (
@@ -57,17 +57,17 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'relative px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300',
+                    'relative px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300',
                     isActive
                       ? 'text-white'
-                      : 'text-foreground/60 hover:text-white'
+                      : 'text-white/40 hover:text-white'
                   )}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="nav-pill"
-                      className="absolute inset-0 bg-primary/10 border border-primary/20 rounded-full"
-                      transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                      className="absolute inset-0 bg-white/10 border border-white/20 rounded-full"
+                      transition={{ type: 'spring', bounce: 0.1, duration: 0.6 }}
                     />
                   )}
                   <span className="relative z-10">{item.label}</span>
@@ -76,17 +76,17 @@ export function Header() {
             })}
           </div>
 
-          {/* Auth & Actions */}
+          {/* Auth & Actions - Monochrome */}
           <div className="flex items-center gap-4">
             {session ? (
               <div className="hidden md:flex items-center gap-4">
                 {session.user?.role === 'ADMIN' && (
                   <Link
                     href="/admin"
-                    className="p-2.5 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/40 hover:bg-primary/10 transition-all group"
-                    title="Admin Console"
+                    className="p-2.5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/40 hover:bg-white/10 transition-all group"
+                    title="System Control"
                   >
-                    <Shield className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
+                    <Shield className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
                   </Link>
                 )}
                 
@@ -96,30 +96,30 @@ export function Header() {
                   onClick={() => signOut()}
                   className="flex items-center gap-3 pl-1 pr-4 py-1 rounded-full bg-white/5 border border-white/10 hover:border-white/20 transition-all group"
                 >
-                   <div className="w-8 h-8 rounded-full border border-white/20 p-0.5 overflow-hidden group-hover:border-primary/50 transition-colors">
+                   <div className="w-8 h-8 rounded-full border border-white/20 p-0.5 overflow-hidden group-hover:border-white/50 transition-colors">
                     {session.user?.image ? (
                       <Image
                         src={session.user.image}
                         alt={session.user.name || 'User'}
                         width={32}
                         height={32}
-                        className="w-full h-full rounded-full object-cover"
+                        className="w-full h-full rounded-full object-cover grayscale"
                       />
                     ) : (
-                      <User className="w-full h-full p-1.5 text-foreground/40" />
+                      <User className="w-full h-full p-1.5 text-white/20" />
                     )}
                   </div>
-                  <span className="text-sm font-semibold text-foreground/80 group-hover:text-white">{session.user?.name?.split(' ')[0]}</span>
-                  <LogOut className="w-3.5 h-3.5 text-foreground/30 group-hover:text-error transition-colors" />
+                  <span className="text-[10px] font-black uppercase tracking-widest text-white/60 group-hover:text-white">{session.user?.name?.split(' ')[0]}</span>
+                  <LogOut className="w-3.5 h-3.5 text-white/20 group-hover:text-white transition-colors" />
                 </button>
               </div>
             ) : (
               <button
                 onClick={() => signIn('google')}
-                className="hidden md:flex items-center gap-2 px-7 py-3 rounded-2xl bg-primary text-background text-sm font-bold hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+                className="hidden md:flex items-center gap-2 px-7 py-3 rounded-2xl bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-neutral-200 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)]"
               >
-                Sign In
-                <div className="w-1.5 h-1.5 rounded-full bg-background animate-pulse" />
+                Zero Access
+                <div className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
               </button>
             )}
 
@@ -161,12 +161,12 @@ export function Header() {
                     className={cn(
                       'flex items-center justify-between px-5 py-4 rounded-2xl text-lg font-bold transition-all',
                       pathname === item.href 
-                        ? 'text-primary bg-primary/10 border border-primary/20' 
-                        : 'text-foreground/60 hover:text-white hover:bg-white/5'
+                        ? 'text-white bg-white/10 border border-white/20' 
+                        : 'text-white/40 hover:text-white hover:bg-white/5'
                     )}
                   >
                     {item.label}
-                    <ChevronDown className={cn("w-5 h-5 -rotate-90 transition-transform", pathname === item.href && "text-primary")} />
+                    <ChevronDown className={cn("w-5 h-5 -rotate-90 transition-transform", pathname === item.href && "text-white")} />
                   </Link>
                 ))}
                 
@@ -181,7 +181,7 @@ export function Header() {
                   ) : (
                     <button
                       onClick={() => signIn('google')}
-                      className="w-full py-4 rounded-2xl bg-primary text-background font-black shadow-lg shadow-primary/20"
+                      className="w-full py-4 rounded-2xl bg-white text-black font-black shadow-lg shadow-white/5"
                     >
                       Sign In with Google
                     </button>
