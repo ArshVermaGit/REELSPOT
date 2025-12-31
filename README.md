@@ -207,7 +207,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - GitHub: [@ArshVermaGit](https://github.com/ArshVermaGit)
 - LinkedIn: [Arsh Verma](https://linkedin.com/in/arshvermadev)
 - X (Twitter): [@TheArshVerma](https://x.com/TheArshVerma)
-- Email: arshvermadev@gmail.com
+- Email: arshverma.dev@gmail.com
 
 Project Link: [https://github.com/ArshVermaGit/REELSPOT](https://github.com/ArshVermaGit/REELSPOT)
 
