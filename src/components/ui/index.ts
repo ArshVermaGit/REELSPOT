@@ -1,3 +1,5 @@
 export { GlassCard, GlowButton, AnimatedCounter, FeatureCard, StepCard } from './Cards'
 export { PlatformCard, PlatformIcon, PlatformIconsRow } from './PlatformCard'
 export { VideoDownloader } from './VideoDownloader'
+export { DownloadModal } from './DownloadModal'
+export { PlatformGrid } from './PlatformGrid'
