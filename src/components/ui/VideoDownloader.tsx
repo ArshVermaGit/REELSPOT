@@ -11,10 +11,11 @@ import Image from 'next/image'
 
 interface VideoDownloaderProps {
   onDownload?: (url: string, result: DownloadResult) => void
+  initialUrl?: string
 }
 
-export function VideoDownloader({ onDownload }: VideoDownloaderProps) {
-  const [url, setUrl] = useState('')
+export function VideoDownloader({ onDownload, initialUrl = '' }: VideoDownloaderProps) {
+  const [url, setUrl] = useState(initialUrl)
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<DownloadResult | null>(null)
   const [error, setError] = useState<string | null>(null)
