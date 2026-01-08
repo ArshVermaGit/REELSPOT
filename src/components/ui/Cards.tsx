@@ -139,7 +139,7 @@ export function FeatureCard({ title, description, icon, delay = 0 }: FeatureCard
         </p>
         
         <div className="mt-8 pt-6 border-t border-white/5 flex items-center gap-3 opacity-30 group-hover:opacity-100 transition-all duration-500">
-           <span className="text-xs font-black uppercase tracking-widest text-white">Core Signal</span>
+           <span className="text-xs font-black uppercase tracking-widest text-white">Learn More</span>
            <div className="grow h-px bg-white/20" />
            <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
         </div>
@@ -173,13 +173,12 @@ export function StepCard({ number, title, description, delay = 0 }: StepCardProp
       <div className="relative z-10 pt-16">
         <div className="text-[10px] font-black text-white/40 mb-6 tracking-[0.4em] uppercase flex items-center gap-3">
           <div className="w-8 h-px bg-white/20" />
-          Protocol {number}
+          Step {number}
         </div>
         <h3 className="text-3xl font-heading font-black text-white mb-4 tracking-tight">{title}</h3>
         <p className="text-white/40 text-base font-bold leading-relaxed max-w-[240px]">{description}</p>
       </div>
       
-      {/* Visual noise background item */}
       <div className="absolute -bottom-10 -left-10 text-[10rem] font-heading font-black text-white/5 select-none group-hover:text-white/10 transition-colors duration-700">
         0{number}
       </div>
