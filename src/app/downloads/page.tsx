@@ -37,18 +37,18 @@ export default async function DownloadsPage() {
         <div>
           <div className="flex items-center gap-4 mb-6">
               <div className="w-12 h-px bg-white/10" />
-              <span className="text-xs font-black text-white/40 uppercase tracking-[0.4em]">Personal Vault</span>
+              <span className="text-xs font-black text-white/40 uppercase tracking-[0.4em]">Your Downloads</span>
           </div>
           <h1 className="text-5xl md:text-7xl font-heading font-black text-white mb-4 tracking-tighter">
-            SAVED <span className="text-white/10 italic">SIGNALS</span>
+            SAVED <span className="text-white/10 italic">VIDEOS</span>
           </h1>
           <p className="text-white/40 font-medium max-w-xl uppercase tracking-widest text-sm md:text-xl">
-            Access your encrypted download history across the neural network.
+            Access your download history.
           </p>
         </div>
         <Link href="/">
           <GlowButton size="lg" className="rounded-full shadow-[0_0_50px_rgba(255,255,255,0.05)]">
-            Secure New Vector
+            Download More
           </GlowButton>
         </Link>
       </div>
@@ -58,13 +58,13 @@ export default async function DownloadsPage() {
           <div className="w-24 h-24 bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl">
             <DownloadIcon className="w-10 h-10 text-white/20" />
           </div>
-          <h2 className="text-3xl font-heading font-black text-white mb-4 tracking-tight">Vault is Empty</h2>
+          <h2 className="text-3xl font-heading font-black text-white mb-4 tracking-tight">No Downloads Yet</h2>
           <p className="text-white/20 font-bold mb-10 max-w-md mx-auto uppercase tracking-widest leading-none text-xs md:text-lg">
-            No signal manifests detected in your sectors.
+            Start downloading videos to see them here.
           </p>
           <Link href="/">
             <GlowButton variant="secondary" className="px-12 py-5 rounded-2xl">
-              Initialize Downloader
+              Start Downloading
             </GlowButton>
           </Link>
         </GlassCard>
@@ -72,7 +72,6 @@ export default async function DownloadsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {downloads.map((download) => (
             <GlassCard key={download.id} className="flex flex-col h-full overflow-hidden group border-white/5 bg-white/3 shadow-2xl rounded-4xl">
-              {/* Thumbnail */}
               <div className="relative aspect-video w-full overflow-hidden bg-white/5">
                 {download.thumbnail ? (
                   <Image
@@ -115,15 +114,14 @@ export default async function DownloadsPage() {
                 <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-background to-transparent opacity-60" />
               </div>
 
-              {/* Content */}
               <div className="p-8 flex flex-col grow">
                 <h3 className="text-lg font-heading font-black text-white mb-3 line-clamp-2 group-hover:text-white/60 transition-colors leading-tight tracking-tight">
-                  {download.videoTitle || 'Untitled Signal'}
+                  {download.videoTitle || 'Untitled Video'}
                 </h3>
                 <div className="flex items-center justify-between mt-auto pt-6 border-t border-white/5">
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20">{formatDistanceToNow(new Date(download.createdAt), { addSuffix: true })}</span>
                   <span className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/40 shadow-lg">
-                    {download.quality || 'MASTER'}
+                    {download.quality || 'HD'}
                   </span>
                 </div>
               </div>
