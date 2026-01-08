@@ -51,7 +51,7 @@ export default function RootLayout({
         className={`${inter.variable} ${outfit.variable} font-body antialiased selection:bg-white/20 selection:text-white bg-background text-white`}
       >
         <Providers>
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col min-h-screen bg-mesh-gradient">
             <Header />
             <main className="grow">{children}</main>
             <Footer />
