@@ -7,7 +7,6 @@ export default function PlatformsPage() {
 
   return (
     <>
-      {/* Hero */}
       <section className="relative py-24 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/8 rounded-full blur-[120px]" />
@@ -33,14 +32,12 @@ export default function PlatformsPage() {
         </div>
       </section>
 
-      {/* Platforms Grid */}
       <section className="pb-24">
         <div className="container">
           <PlatformGrid />
         </div>
       </section>
 
-      {/* Stats */}
       <section className="py-16 bg-black/3">
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
