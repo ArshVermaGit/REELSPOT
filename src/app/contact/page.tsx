@@ -8,34 +8,34 @@ import { GlassCard, GlowButton } from '@/components/ui'
 const contactMethods = [
   {
     icon: Mail,
-    title: 'Extraction Support',
-    description: "Neural bridge assistance for complex signal manifests.",
+    title: 'General Support',
+    description: "Need help with something? We're here to assist.",
     link: 'mailto:support@reelspot.com',
     linkText: 'support@reelspot.com',
   },
   {
     icon: Bug,
-    title: 'Signal Leak',
-    description: 'Found a vulnerability or signal corruption? Report immediately.',
+    title: 'Bug Report',
+    description: 'Found an issue? Report it and help us improve.',
     link: 'mailto:bugs@reelspot.com',
     linkText: 'bugs@reelspot.com',
   },
   {
     icon: Lightbulb,
-    title: 'Protocol Growth',
-    description: "Architectural suggestions for the next system evolution.",
+    title: 'Feature Request',
+    description: "Have a suggestion? We&apos;d love to hear it.",
     link: 'mailto:ideas@reelspot.com',
     linkText: 'ideas@reelspot.com',
   },
 ]
 
 const subjectOptions = [
-  { value: '', label: 'Select Protocol' },
-  { value: 'general', label: 'General Signal' },
-  { value: 'support', label: 'Technical Bridge' },
-  { value: 'bug', label: 'Corruption Report' },
-  { value: 'feature', label: 'Architecture Request' },
-  { value: 'other', label: 'Other Vector' },
+  { value: '', label: 'Select Subject' },
+  { value: 'general', label: 'General Inquiry' },
+  { value: 'support', label: 'Technical Support' },
+  { value: 'bug', label: 'Bug Report' },
+  { value: 'feature', label: 'Feature Request' },
+  { value: 'other', label: 'Other' },
 ]
 
 export default function ContactPage() {
@@ -63,13 +63,13 @@ export default function ContactPage() {
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error || 'Connection handshake failed.')
+        throw new Error(data.error || 'Failed to send message.')
       }
 
       setIsSuccess(true)
       setFormData({ name: '', email: '', subject: '', message: '' })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Neural bridge disconnected.')
+      setError(err instanceof Error ? err.message : 'Something went wrong.')
     } finally {
       setIsSubmitting(false)
     }
@@ -77,7 +77,6 @@ export default function ContactPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      {/* Hyper-Hero */}
       <section className="relative pt-40 pb-24 overflow-hidden px-6">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-white/2 rounded-full blur-[140px]" />
@@ -91,7 +90,7 @@ export default function ContactPage() {
             className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-3xl mb-10 shadow-2xl"
           >
              <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-             <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em]">Subspace Communication</span>
+             <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em]">Get In Touch</span>
           </motion.div>
           
           <motion.h1
@@ -99,7 +98,7 @@ export default function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-6xl md:text-8xl font-heading font-black text-white mb-8 tracking-tighter"
           >
-            SIGNAL <span className="text-white/10 italic">REACH</span>
+            CONTACT <span className="text-white/10 italic">US</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -107,16 +106,14 @@ export default function ContactPage() {
             transition={{ delay: 0.1 }}
             className="text-white/40 font-medium max-w-2xl mx-auto leading-relaxed uppercase tracking-widest text-sm md:text-2xl"
           >
-            Establish a secure connection with the lead architects for signals, leaks, or protocol evolutions.
+            Have a question or feedback? We&apos;d love to hear from you.
           </motion.p>
         </div>
       </section>
 
-      {/* Interface Section */}
       <section className="pb-32 px-6">
         <div className="container max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-            {/* Intel Sidebar */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -124,9 +121,9 @@ export default function ContactPage() {
               className="lg:col-span-5 space-y-10"
             >
               <div>
-                <h2 className="text-4xl font-heading font-black text-white mb-6 tracking-tight">Direct Access</h2>
+                <h2 className="text-4xl font-heading font-black text-white mb-6 tracking-tight">Quick Contact</h2>
                 <p className="text-white/40 text-xl font-medium leading-relaxed mb-12">
-                  Our neural network is always listening. Select the appropriate strata for your inquiry to ensure high-priority processing.
+                  Choose the best way to reach us based on your needs.
                 </p>
               </div>
 
@@ -162,7 +159,6 @@ export default function ContactPage() {
               </div>
             </motion.div>
 
-            {/* Neural Form */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -183,12 +179,12 @@ export default function ContactPage() {
                     >
                       <CheckCircle className="w-12 h-12 text-white" />
                     </motion.div>
-                    <h3 className="text-4xl font-heading font-black text-white mb-6 tracking-tight">Signal Received</h3>
+                    <h3 className="text-4xl font-heading font-black text-white mb-6 tracking-tight">Message Sent!</h3>
                     <p className="text-white/40 text-lg font-bold mb-12 max-w-md mx-auto uppercase tracking-widest">
-                      Extraction receipt confirmed. Our architects will decrypt your manifest soon.
+                      Thanks for reaching out. We&apos;ll get back to you soon.
                     </p>
                     <GlowButton onClick={() => setIsSuccess(false)} variant="secondary" className="px-12 py-5 rounded-2xl">
-                      Deliver New Signal
+                      Send Another
                     </GlowButton>
                   </div>
                 ) : (
@@ -197,13 +193,13 @@ export default function ContactPage() {
                       <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
                          <Zap className="w-5 h-5" />
                       </div>
-                      <h3 className="text-2xl font-heading font-black text-white tracking-tight">Transmission Interface</h3>
+                      <h3 className="text-2xl font-heading font-black text-white tracking-tight">Send a Message</h3>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div className="space-y-3">
                         <label htmlFor="name" className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-4">
-                          Extraction Identity
+                          Your Name
                         </label>
                         <input
                           type="text"
@@ -218,7 +214,7 @@ export default function ContactPage() {
 
                       <div className="space-y-3">
                         <label htmlFor="email" className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-4">
-                          Secure Frequency
+                          Email Address
                         </label>
                         <input
                           type="email"
@@ -227,14 +223,14 @@ export default function ContactPage() {
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                           className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-white/40 focus:bg-white/10 transition-all font-bold"
-                          placeholder="john@extractions.io"
+                          placeholder="john@example.com"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-3">
                       <label htmlFor="subject" className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-4">
-                        Protocol Stratum
+                        Subject
                       </label>
                       <select
                         id="subject"
@@ -253,7 +249,7 @@ export default function ContactPage() {
 
                     <div className="space-y-3">
                       <label htmlFor="message" className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-4">
-                        Signal Manifest
+                        Message
                       </label>
                       <textarea
                         id="message"
@@ -262,16 +258,16 @@ export default function ContactPage() {
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         className="w-full bg-white/5 border border-white/10 rounded-4xl px-8 py-6 text-white placeholder:text-white/10 focus:outline-none focus:border-white/40 focus:bg-white/10 transition-all font-bold resize-none"
-                        placeholder="Detail your architecture or report corruption..."
+                        placeholder="Tell us what's on your mind..."
                         maxLength={1000}
                       />
                       <div className="flex justify-between items-center px-4">
                          <div className="flex items-center gap-2 opacity-20">
                             <ShieldCheck className="w-3 h-3 text-white" />
-                            <span className="text-[8px] font-black uppercase tracking-widest">Neural Encryption Enabled</span>
+                            <span className="text-[8px] font-black uppercase tracking-widest">Secure</span>
                          </div>
                          <div className="text-[9px] font-black text-white/20 uppercase tracking-widest">
-                           {formData.message.length}/1000 VECTORS
+                           {formData.message.length}/1000
                          </div>
                       </div>
                     </div>
@@ -296,12 +292,12 @@ export default function ContactPage() {
                       {isSubmitting ? (
                         <>
                           <Loader2 className="w-6 h-6 animate-spin" />
-                          PROCESSING HANDSHAKE...
+                          Sending...
                         </>
                       ) : (
                         <>
                           <Send className="w-6 h-6" />
-                          TRANSMIT SIGNAL
+                          Send Message
                         </>
                       )}
                     </GlowButton>
@@ -315,4 +311,3 @@ export default function ContactPage() {
     </main>
   )
 }
-
