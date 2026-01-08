@@ -7,12 +7,10 @@ export function Footer() {
 
   return (
     <footer className="relative border-t border-white/10 bg-black overflow-hidden z-10">
-      {/* Background decoration - Monochrome */}
       <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[600px] h-[600px] bg-white/2 rounded-full blur-[120px]" />
       
       <div className="max-w-7xl mx-auto px-6 py-24 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-16">
-          {/* Brand & Mission */}
           <div className="md:col-span-4">
             <Link href="/" className="inline-flex items-center gap-3 mb-10 group">
               <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center shadow-lg shadow-white/10 group-hover:scale-110 transition-transform duration-500">
@@ -23,10 +21,8 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-white/40 text-base leading-relaxed max-w-sm mb-12 font-medium">
-              Elevating content management with visually perfect tools. 
-              The ultimate high-performance downloader reimagined for the modern creator.
+              The ultimate video downloader. Fast, free, and designed for creators.
             </p>
-            {/* Social Links */}
             <div className="flex gap-4">
               {[
                 { icon: Github, href: "https://github.com/ArshVermaGit", label: "GitHub" },
@@ -47,10 +43,9 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Navigation Columns */}
           <div className="md:col-span-8 grid grid-cols-2 lg:grid-cols-4 gap-12">
             <div className="lg:col-span-1">
-              <h4 className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-10">Core System</h4>
+              <h4 className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-10">Links</h4>
               <nav className="flex flex-col gap-5">
                 {NAV_ITEMS.map((item) => (
                   <Link
@@ -66,12 +61,12 @@ export function Footer() {
             </div>
 
             <div className="lg:col-span-1">
-              <h4 className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-10">Legal Protocol</h4>
+              <h4 className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-10">Legal</h4>
               <nav className="flex flex-col gap-5">
                 {[
                   { label: "Privacy Policy", href: "/privacy" },
-                  { label: "Support Center", href: "/contact" },
-                  { label: "Admin Access", href: "/admin" }
+                  { label: "Support", href: "/contact" },
+                  { label: "Admin", href: "/admin" }
                 ].map((item) => (
                   <Link key={item.label} href={item.href} className="text-white/40 hover:text-white text-xs font-black uppercase tracking-widest transition-colors group flex items-center gap-3">
                     <div className="w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-white transition-all" />
@@ -82,46 +77,45 @@ export function Footer() {
             </div>
 
             <div className="lg:col-span-2">
-              <h4 className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-10">Neural Status</h4>
+              <h4 className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em] mb-10">Status</h4>
               <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-4 text-white text-[10px] font-black bg-white/3 border border-white/10 rounded-2xl px-6 py-5 w-fit uppercase tracking-widest shadow-2xl">
                   <div className="relative">
                     <div className="w-2.5 h-2.5 rounded-full bg-white animate-pulse shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
                   </div>
-                  Systems Normalized
+                  All Systems Online
                 </div>
                 <div className="flex items-center gap-3 text-white/20 text-[10px] font-black uppercase tracking-[0.3em] pl-2">
                   <Globe className="w-4 h-4" />
-                   Universal Grid Active
+                   Available Worldwide
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom Metadata */}
         <div className="mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
           <div className="flex items-center gap-5">
              <div className="w-12 h-12 rounded-2xl border border-white/10 flex items-center justify-center p-3 bg-white/3 shadow-xl">
                 <Cpu className="w-6 h-6 text-white/60" />
              </div>
              <div>
-                <p className="text-white font-black text-xs uppercase tracking-widest">REELSPOT PRIME</p>
-                <p className="text-white/20 text-[10px] font-bold uppercase tracking-widest mt-1">© {currentYear} ZERO POINT CORE. BY ARSH VERMA.</p>
+                <p className="text-white font-black text-xs uppercase tracking-widest">ReelSpot</p>
+                <p className="text-white/20 text-[10px] font-bold uppercase tracking-widest mt-1">© {currentYear} Arsh Verma. All rights reserved.</p>
              </div>
           </div>
           
           <div className="flex items-center gap-8">
             <span className="text-[10px] text-white/20 font-black uppercase tracking-[0.4em]">
-              TS.5.X
+              TypeScript
             </span>
             <div className="w-1.5 h-1.5 rounded-full bg-white/5" />
             <span className="text-[10px] text-white/20 font-black uppercase tracking-[0.4em]">
-              NX.16.X
+              Next.js 16
             </span>
             <div className="w-1.5 h-1.5 rounded-full bg-white/5" />
             <span className="text-[10px] text-white/20 font-black uppercase tracking-[0.4em]">
-              PS.PG.V
+              PostgreSQL
             </span>
           </div>
         </div>
