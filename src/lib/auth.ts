@@ -13,6 +13,7 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
     }),
     CredentialsProvider({
       name: 'Credentials',
@@ -48,22 +49,44 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/signin',
-    error: '/auth/error',
+    error: '/auth/signin',
   },
   callbacks: {
-    session: async ({ session, token }) => {
-      if (session?.user && token.sub) {
-        session.user.id = token.sub;
+    async signIn({ user, account }) {
+      // Allow OAuth sign-ins
+      if (account?.provider === 'google') {
+        return true;
+      }
+      // Check credentials flow
+      if (account?.provider === 'credentials') {
+        return !!user;
+      }
+      return true;
+    },
+    async jwt({ token, user, account }) {
+      if (user) {
+        token.id = user.id;
+        // Fetch user role from database
+        const dbUser = await prisma.user.findUnique({
+          where: { id: user.id },
+          select: { role: true }
+        });
+        token.role = dbUser?.role || 'USER';
+      }
+      if (account) {
+        token.accessToken = account.access_token;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.role = (token.role as 'USER' | 'ADMIN') || 'USER';
       }
       return session;
     },
-    jwt: async ({ token, user }) => {
-      if (user) {
-        token.sub = user.id;
-      }
-      return token;
-    }
   },
 }
 
 export const handlers = NextAuth(authOptions)
+
