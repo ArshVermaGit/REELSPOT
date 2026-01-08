@@ -43,7 +43,7 @@ export default function HistoryPage() {
       const data = await res.json()
       setHistory(data)
     } catch {
-      setError('Could not access your signal logs.')
+      setError('Could not load your history.')
     } finally {
       setIsLoading(false)
     }
@@ -61,14 +61,13 @@ export default function HistoryPage() {
     <div className="min-h-screen pt-32 pb-20 px-6">
       <div className="max-w-5xl mx-auto space-y-8">
         
-        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <h1 className="text-4xl md:text-5xl font-heading font-black text-white mb-4 tracking-tight">
-              Signal <span className="text-white/40">Log</span>
+              Download <span className="text-white/40">History</span>
             </h1>
             <p className="text-white/60 font-medium max-w-lg">
-              Your comprehensive extraction history. Access previously processed signals and metadata securely.
+              Your recent downloads. Access previously downloaded videos here.
             </p>
           </div>
           <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest text-white/40">
@@ -77,7 +76,6 @@ export default function HistoryPage() {
           </div>
         </div>
 
-        {/* List */}
         {error ? (
           <GlassCard className="p-8 flex flex-col items-center justify-center text-center border-red-500/20 bg-red-500/5">
             <AlertCircle className="w-10 h-10 text-red-400 mb-4" />
@@ -88,15 +86,15 @@ export default function HistoryPage() {
             <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6">
                <Film className="w-8 h-8 text-white/20" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">No signals detected</h3>
+            <h3 className="text-2xl font-bold text-white mb-2">No downloads yet</h3>
             <p className="text-white/40 mb-8 max-w-sm">
-              Your extraction log is empty. Initialize a download to begin tracking your history.
+              Your download history is empty. Start downloading to see your history here.
             </p>
             <Link 
               href="/"
               className="px-8 py-3 rounded-xl bg-white text-black font-bold uppercase tracking-widest hover:bg-neutral-200 transition-colors"
             >
-              Start Extraction
+              Start Downloading
             </Link>
           </GlassCard>
         ) : (
@@ -109,7 +107,6 @@ export default function HistoryPage() {
                 transition={{ delay: index * 0.05 }}
               >
                 <GlassCard className="p-4 flex gap-4 md:gap-6 items-center hover:bg-white/5 transition-colors group">
-                  {/* Thumbnail */}
                   <div className="relative w-24 md:w-32 aspect-video bg-black/50 rounded-lg overflow-hidden shrink-0 border border-white/10">
                     {item.thumbnail ? (
                       <Image 
@@ -129,10 +126,9 @@ export default function HistoryPage() {
                     </div>
                   </div>
 
-                  {/* Info */}
                   <div className="flex-1 min-w-0">
                     <h3 className="text-white font-bold text-base md:text-lg mb-1 truncate pr-4">
-                      {item.videoTitle || 'Untitled Signal'}
+                      {item.videoTitle || 'Untitled Video'}
                     </h3>
                     <div className="flex items-center gap-4 text-xs font-medium text-white/40">
                       <span className="flex items-center gap-1.5">
@@ -147,7 +143,6 @@ export default function HistoryPage() {
                     </div>
                   </div>
 
-                  {/* Actions */}
                   <div className="flex items-center gap-2 md:gap-4 pl-4 border-l border-white/5">
                      <a 
                        href={item.videoUrl} 
