@@ -46,6 +46,27 @@ model User {
   accounts      Account[]
   sessions      Session[]
   history       DownloadHistory[]
+  settings      UserSettings?
+}
+
+model UserSettings {
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  downloadPath String  @default("/Downloads/ReelSpot")
+  autoHistory  Boolean @default(true)
+  darkMode     Boolean @default(false)
+  analytics    Boolean @default(true)
+  cookies      Boolean @default(true)
+
+  // Platform API Keys
+  INSTAGRAM_API_KEY    String?
+  YOUTUBE_API_KEY      String?
+  FACEBOOK_API_KEY     String?
+  TIKTOK_API_KEY       String?
+  GOOGLE_CLIENT_ID     String?
+  GOOGLE_CLIENT_SECRET String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
