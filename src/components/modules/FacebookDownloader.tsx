@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import styles from './FacebookDownloader.module.css';
 import { API_CONFIG } from '@/config/api';
+import { useUserSettings } from '@/hooks/useUserSettings';
 
 interface QualityOption {
   label: string;
@@ -52,6 +53,7 @@ const QUALITIES: QualityOption[] = [
 ];
 
 const FacebookDownloader: React.FC<ComponentProps> = ({ url }) => {
+  const { settings } = useUserSettings();
   const [isLoading, setIsLoading] = useState(true);
   const [selectedQuality, setSelectedQuality] = useState(1); // Default to 1080p
   const [status, setStatus] = useState<'idle' | 'downloading' | 'completed'>('idle');
@@ -212,7 +214,7 @@ const FacebookDownloader: React.FC<ComponentProps> = ({ url }) => {
         </div>
 
         <div className={styles.apiPlaceholder}>
-           Config: `{API_CONFIG.FACEBOOK_API_KEY}` (Secure Connection)
+           Config: {settings?.FACEBOOK_API_KEY ? 'Using Private Connection' : `System Default: ${API_CONFIG.FACEBOOK_API_KEY}`}
         </div>
       </div>
 
