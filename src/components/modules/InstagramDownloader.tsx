@@ -6,6 +6,7 @@ import { Download, ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react'
 import styles from './InstagramDownloader.module.css';
 import { API_CONFIG } from '@/config/api';
 import { saveToHistory } from '@/lib/history-utils';
+import { useUserSettings } from '@/hooks/useUserSettings';
 
 interface MediaItem {
   id: string;
@@ -32,6 +33,7 @@ const MOCK_DATA = {
 };
 
 const InstagramDownloader: React.FC<ComponentProps> = ({ url }) => {
+  const { settings } = useUserSettings();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [downloadStatus, setDownloadStatus] = useState<'idle' | 'downloading' | 'completed'>('idle');
   const [progress, setProgress] = useState(0);
@@ -204,7 +206,7 @@ const InstagramDownloader: React.FC<ComponentProps> = ({ url }) => {
         </button>
 
         <div className={styles.apiPlaceholder}>
-           API Config: `{API_CONFIG.INSTAGRAM_API_KEY}` (Configure in Settings)
+           API Config: {settings?.INSTAGRAM_API_KEY ? 'Using User Key (Active)' : `System Default: ${API_CONFIG.INSTAGRAM_API_KEY}`}
         </div>
       </div>
     </div>
