@@ -1,0 +1,112 @@
+.wrapper {
+  padding: var(--spacing-4xl) var(--spacing-xl);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing-4xl);
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  margin-bottom: var(--spacing-md);
+  color: var(--text-primary);
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.item {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.itemOpen {
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.question {
+  width: 100%;
+  padding: var(--spacing-xl) var(--spacing-2xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+.question:hover {
+  background: rgba(0, 0, 0, 0.01);
+}
+
+.icon {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: #3B82F6;
+}
+
+.itemOpen .icon {
+  transform: rotate(180deg);
+}
+
+.answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+  padding: 0 var(--spacing-2xl);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.itemOpen .answer {
+  max-height: 500px; /* High enough to fit content */
+  padding-bottom: var(--spacing-xl);
+  transition: max-height 0.4s cubic-bezier(1, 0, 1, 0);
+}
+
+.contactSection {
+  margin-top: var(--spacing-6xl);
+  text-align: center;
+  padding: var(--spacing-4xl);
+  background: var(--color-gray-50);
+  border-radius: 40px;
+}
+
+.contactBtn {
+  margin-top: var(--spacing-xl);
+  display: inline-block;
+  padding: var(--spacing-md) var(--spacing-3xl);
+  background: black;
+  color: white;
+  border-radius: var(--radius-2xl);
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.contactBtn:hover {
+  transform: scale(1.05);
+  background: #333;
+}
