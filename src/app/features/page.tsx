@@ -1,10 +1,6 @@
-'use client';
-
-import React from 'react';
 import { 
   Zap, Shield, Clock, 
-  Globe, Smartphone, Layers, 
-  Search, Download, Share2 
+  Globe, Smartphone, Layers
 } from 'lucide-react';
 import styles from './Features.module.css';
 
@@ -47,6 +43,8 @@ const features = [
   }
 ];
 
+import NumberCounter from '@/components/ui/NumberCounter';
+
 const FeaturesPage = () => {
   return (
     <div className={styles.wrapper}>
@@ -65,8 +63,8 @@ const FeaturesPage = () => {
         {features.map((f, i) => (
           <div 
             key={i} 
-            className={styles.featureCard}
-            style={{ animationDelay: `${i * 0.1}s` }}
+            className={`${styles.featureCard} reveal`}
+            style={{ transitionDelay: `${i * 100}ms` }}
           >
             <div className={styles.iconWrapper} style={{ backgroundColor: f.bg }}>
               {f.icon}
@@ -85,19 +83,19 @@ const FeaturesPage = () => {
         </p>
         
         <div className={styles.benefitGrid}>
-          <div className={styles.benefitItem}>
-            <h3>99.9%</h3>
+          <div className={`${styles.benefitItem} reveal`}>
+            <h3><NumberCounter end={99.9} suffix="%" duration={1500} /></h3>
             <p>UPTIME STATUS</p>
           </div>
-          <div className={styles.benefitItem}>
-            <h3>0.2s</h3>
+          <div className={`${styles.benefitItem} reveal`} style={{ transitionDelay: '100ms' }}>
+            <h3><NumberCounter end={0.2} suffix="s" duration={1000} /></h3>
             <p>AVG ANALYSIS TIME</p>
           </div>
-          <div className={styles.benefitItem}>
-            <h3>8K</h3>
+          <div className={`${styles.benefitItem} reveal`} style={{ transitionDelay: '200ms' }}>
+            <h3><NumberCounter end={8} suffix="K" duration={800} /></h3>
             <p>MAX RESOLUTION</p>
           </div>
-          <div className={styles.benefitItem}>
+          <div className={`${styles.benefitItem} reveal`} style={{ transitionDelay: '300ms' }}>
             <h3>24/7</h3>
             <p>SYSTEM MONITORING</p>
           </div>
