@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import styles from './Auth.module.css';
 
-import LogoutModal from './LogoutModal';
+import ConfirmationModal from '@/components/ui/ConfirmationModal';
 
 export default function UserDropdown() {
   const { data: session } = useSession();
@@ -86,10 +86,14 @@ export default function UserDropdown() {
         </>
       )}
 
-      <LogoutModal 
+      <ConfirmationModal 
         isOpen={isLogoutOpen} 
         onClose={() => setIsLogoutOpen(false)}
         onConfirm={() => signOut()}
+        title="Sign Out?"
+        description="You will need to sign in again to access your private history and sync your settings."
+        confirmLabel="Logout Now"
+        type="warning"
       />
     </div>
   );
