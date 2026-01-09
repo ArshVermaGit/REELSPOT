@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Download, Instagram, Youtube, Facebook, Music2, Search, Link2, CheckCircle2 } from 'lucide-react';
 import styles from './DownloadInterface.module.css';
+import { saveToHistory } from '@/lib/history-utils';
 import InstagramDownloader from './modules/InstagramDownloader';
 import YouTubeDownloader from './modules/YouTubeDownloader';
 import FacebookDownloader from './modules/FacebookDownloader';
@@ -63,6 +64,15 @@ const DownloadInterface = () => {
       if (currentProgress >= 100) {
         clearInterval(interval);
         setStatus('completed');
+        
+        // Save to History (Mock data for generic platforms)
+        saveToHistory({
+          title: `Video Download - ${platform || 'Generic'}`,
+          platform: platform?.toUpperCase() || 'EXTERNAL',
+          url: url,
+          thumbnail: '', // Potentially real thumb if we had it
+        });
+
         setTimeout(() => {
             // Reset after completion
             setProgress(0);
