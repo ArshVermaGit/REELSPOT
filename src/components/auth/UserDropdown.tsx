@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { 
   History, Settings, LogOut
 } from 'lucide-react';
@@ -60,10 +61,10 @@ export default function UserDropdown() {
               <p className="font-bold truncate">{session.user.name}</p>
               <p className="text-xs text-secondary truncate">{session.user.email}</p>
             </div>
-            <div className={styles.menuItem}>
-              <History size={18} />
-              <span>Download History</span>
-            </div>
+            <Link href="/history" className={styles.dropdownItem}>
+            <History size={18} />
+            <span>Download History</span>
+          </Link>
             <div className={styles.menuItem}>
               <Settings size={18} />
               <span>Settings</span>
