@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { 
-  User, History, Settings, LogOut
+  History, Settings, LogOut
 } from 'lucide-react';
 import styles from './Auth.module.css';
 
@@ -59,11 +59,6 @@ export default function UserDropdown() {
             <div className="px-4 py-3 border-b border-gray-100">
               <p className="font-bold truncate">{session.user.name}</p>
               <p className="text-xs text-secondary truncate">{session.user.email}</p>
-            </div>
-            
-            <div className={styles.menuItem}>
-              <User size={18} />
-              <span>My Profile</span>
             </div>
             <div className={styles.menuItem}>
               <History size={18} />
