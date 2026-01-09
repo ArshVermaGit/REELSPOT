@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { Download, Instagram, Youtube, Facebook, Music2, Search, Link2, CheckCircle2 } from 'lucide-react';
 import styles from './DownloadInterface.module.css';
 import InstagramDownloader from './modules/InstagramDownloader';
+import YouTubeDownloader from './modules/YouTubeDownloader';
+import FacebookDownloader from './modules/FacebookDownloader';
 
 type Platform = 'instagram' | 'youtube' | 'facebook' | 'tiktok' | null;
 type Status = 'idle' | 'analyzing' | 'success' | 'downloading' | 'completed' | 'error';
@@ -124,6 +126,14 @@ const DownloadInterface = () => {
           {platform === 'instagram' ? (
              <React.Suspense fallback={<div>Loading Module...</div>}>
                 <InstagramDownloader url={url} onReset={() => setStatus('idle')} />
+             </React.Suspense>
+          ) : platform === 'youtube' ? (
+             <React.Suspense fallback={<div>Loading Module...</div>}>
+                <YouTubeDownloader url={url} onReset={() => setStatus('idle')} />
+             </React.Suspense>
+          ) : platform === 'facebook' ? (
+             <React.Suspense fallback={<div>Loading Module...</div>}>
+                <FacebookDownloader url={url} onReset={() => setStatus('idle')} />
              </React.Suspense>
           ) : (
             <div className={styles.resultsArea}>
