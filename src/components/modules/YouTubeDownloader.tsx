@@ -6,6 +6,7 @@ import { Download, Play, CheckCircle2, Clock, FileText } from 'lucide-react';
 import styles from './YouTubeDownloader.module.css';
 import { API_CONFIG } from '@/config/api';
 import { saveToHistory } from '@/lib/history-utils';
+import { useUserSettings } from '@/hooks/useUserSettings';
 
 interface Chapter {
   time: string;
@@ -40,6 +41,7 @@ const MOCK_DATA = {
 };
 
 const YouTubeDownloader: React.FC<ComponentProps> = ({ url }) => {
+  const { settings } = useUserSettings();
   const [format, setFormat] = useState<'video' | 'audio'>('video');
   const [selectedQuality, setSelectedQuality] = useState(0);
   const [status, setStatus] = useState<'idle' | 'converting' | 'downloading' | 'completed'>('idle');
@@ -203,7 +205,7 @@ const YouTubeDownloader: React.FC<ComponentProps> = ({ url }) => {
         </button>
 
         <div className={styles.apiPlaceholder}>
-           API Config: `{API_CONFIG.YOUTUBE_API_KEY}` (Configure in Settings)
+           API Config: {settings?.YOUTUBE_API_KEY ? 'Using User Key (Active)' : `System Default: ${API_CONFIG.YOUTUBE_API_KEY}`}
         </div>
         
         {/* Helper to avoid unused url warning */}
