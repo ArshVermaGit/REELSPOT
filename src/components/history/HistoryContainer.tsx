@@ -1,39 +1,56 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { useSession } from 'next-auth/react';
 import { 
-  Search, Calendar, Filter, Download, Trash2, 
-  CheckCircle2, AlertTriangle, FileDown, 
-  Instagram, Youtube, Facebook, Music2, MoreVertical, X
+  Search, Download, Trash2, 
+  AlertTriangle, FileDown, 
+  Instagram, Youtube, Facebook, Music2
 } from 'lucide-react';
 import styles from './History.module.css';
 
-// --- Mock Data ---
-const MOCK_HISTORY = [
-  { id: '1', title: 'Top 10 Unity Tips for 2026', platform: 'YouTube', date: '2026-01-09T10:30:00Z', thumbnail: '' },
-  { id: '2', title: 'Beach Sunset Reel #Summer2026', platform: 'Instagram', date: '2026-01-09T08:15:00Z', thumbnail: '' },
-  { id: '3', title: 'Viral Dance Challenge Part 2', platform: 'TikTok', date: '2026-01-08T22:00:00Z', thumbnail: '' },
-  { id: '4', title: 'Coding Music - Deep Focus', platform: 'YouTube', date: '2026-01-07T14:20:00Z', thumbnail: '' },
-  { id: '5', title: 'Tech Review: New MacBook Pro M5', platform: 'YouTube', date: '2026-01-05T09:00:00Z', thumbnail: '' },
-  { id: '6', title: 'Modern Architecture Tour', platform: 'Facebook', date: '2025-12-28T11:45:00Z', thumbnail: '' },
-  { id: '7', title: 'Unity VR Implementation Guide', platform: 'YouTube', date: '2025-12-20T16:30:00Z', thumbnail: '' },
-  { id: '8', title: 'Morning Workout Routine', platform: 'Instagram', date: '2025-12-15T07:00:00Z', thumbnail: '' },
-];
+// --- Types ---
+interface HistoryItem {
+  id: string;
+  title: string;
+  platform: string;
+  date: string;
+  thumbnail?: string;
+  url?: string;
+}
 
 const HistoryContainer = () => {
+  const { status } = useSession();
   const [search, setSearch] = useState('');
   const [timeFilter, setTimeFilter] = useState('All');
   const [platformFilter, setPlatformFilter] = useState('All');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [items, setItems] = useState(MOCK_HISTORY);
+  const [items, setItems] = useState<HistoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState<{ type: 'single' | 'bulk' | 'clear', id?: string } | null>(null);
 
+  const fetchHistory = async () => {
+    try {
+      setIsLoading(true);
+      const res = await fetch('/api/history');
+      if (res.ok) {
+        const data = await res.json();
+        setItems(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch history:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // Simulate initial loading
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
+    if (status === 'authenticated') {
+      fetchHistory();
+    } else if (status === 'unauthenticated') {
+      setIsLoading(false);
+    }
+  }, [status]);
 
   // --- Filtering Logic ---
   const filteredItems = useMemo(() => {
@@ -75,20 +92,47 @@ const HistoryContainer = () => {
     a.click();
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (!showDeleteModal) return;
     
-    if (showDeleteModal.type === 'single') {
-      setItems(prev => prev.filter(i => i.id !== showDeleteModal.id));
-    } else if (showDeleteModal.type === 'bulk') {
-      setItems(prev => prev.filter(i => !selectedIds.includes(i.id)));
-      setSelectedIds([]);
-    } else if (showDeleteModal.type === 'clear') {
-      setItems([]);
-      setSelectedIds([]);
+    try {
+      if (showDeleteModal.type === 'single') {
+        const res = await fetch(`/api/history?id=${showDeleteModal.id}`, { method: 'DELETE' });
+        if (res.ok) setItems(prev => prev.filter(i => i.id !== showDeleteModal.id));
+      } else if (showDeleteModal.type === 'bulk') {
+        // Bulk delete would optimally be one request, but for simplicity here we loop or use a query param
+        // I'll implement clearAll if all are selected, or loop for now
+        for (const id of selectedIds) {
+          await fetch(`/api/history?id=${id}`, { method: 'DELETE' });
+        }
+        setItems(prev => prev.filter(i => !selectedIds.includes(i.id)));
+        setSelectedIds([]);
+      } else if (showDeleteModal.type === 'clear') {
+        const res = await fetch('/api/history?clearAll=true', { method: 'DELETE' });
+        if (res.ok) setItems([]);
+        setSelectedIds([]);
+      }
+    } catch (error) {
+      console.error("Delete failed:", error);
     }
     setShowDeleteModal(null);
   };
+
+  if (status === 'unauthenticated') {
+    return (
+      <div className={styles.emptyState}>
+        <div className={styles.emptyIcon}>🔒</div>
+        <h3 className="text-2xl font-black mb-2">Private History</h3>
+        <p className="text-gray-500 mb-8 font-medium">Please sign in to view and manage your download history.</p>
+        <button 
+          onClick={() => (window as any).dispatchEvent(new CustomEvent('open-login'))}
+          className="px-8 py-4 bg-black text-white rounded-2xl font-bold hover:scale-105 transition-all inline-block"
+        >
+          Sign In Now
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.historyWrapper}>
