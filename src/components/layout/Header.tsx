@@ -131,7 +131,7 @@ export function Header() {
               </div>
             ) : (
               <button
-                onClick={() => signIn('google')}
+                onClick={() => signIn('google', { callbackUrl: '/' })}
                 className="hidden md:flex items-center gap-2 px-7 py-3 rounded-2xl bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-neutral-200 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)]"
               >
                 Sign In
@@ -196,7 +196,7 @@ export function Header() {
                     </button>
                   ) : (
                     <button
-                      onClick={() => signIn('google')}
+                      onClick={() => signIn('google', { callbackUrl: '/' })}
                       className="w-full py-4 rounded-2xl bg-white text-black font-black shadow-lg shadow-white/5"
                     >
                       Sign In with Google
