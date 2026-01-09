@@ -19,7 +19,7 @@ export default async function DownloadsPage() {
   const session = await getServerSession(authOptions)
 
   if (!session) {
-    redirect('/api/auth/signin?callbackUrl=/downloads')
+    redirect('/auth/signin?callbackUrl=/downloads')
   }
 
   const downloads = await prisma.download.findMany({
