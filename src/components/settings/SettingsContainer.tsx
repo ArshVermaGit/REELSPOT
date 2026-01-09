@@ -8,6 +8,8 @@ import {
   AlertCircle, RefreshCw, Save, Eye, EyeOff,
   Globe, Moon, Sun, Download, Database, Lock
 } from 'lucide-react';
+import Modal from '../ui/Modal';
+import { HelpCircle, Info } from 'lucide-react';
 import styles from './Settings.module.css';
 import { UserSettings } from '@/types/settings';
 
@@ -18,7 +20,7 @@ const SettingsContainer = () => {
   const [activeTab, setActiveTab] = useState<Tab>('General');
   const [showKey, setShowKey] = useState<Record<string, boolean>>({});
   const [testStatus, setTestStatus] = useState<Record<string, 'idle' | 'loading' | 'success' | 'error'>>({});
-  const [expandedGuide, setExpandedGuide] = useState<string | null>(null);
+  const [guideModal, setGuideModal] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -94,6 +96,43 @@ const SettingsContainer = () => {
       setIsSaving(false);
     }
   };
+
+  // Sub-component for guides
+  const ApiGuide = ({ platform }: { platform: string }) => (
+    <Modal isOpen={!!guideModal} onClose={() => setGuideModal(null)} size="medium">
+      <div className={`${styles.header} flex items-center gap-3 p-6 border-b`}>
+        <div className="w-12 h-12 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center">
+          <Info size={24} />
+        </div>
+        <div>
+          <h3 className="text-xl font-black">{platform.replace(/_/g, ' ')} Setup</h3>
+          <p className="text-gray-500 font-medium">Follow these steps to get your key</p>
+        </div>
+      </div>
+      <div className="p-8 space-y-6">
+        <div className="flex gap-4">
+          <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold flex-shrink-0">1</div>
+          <p className="font-medium text-gray-700">Go to the <b>{platform.split('_')[0].toLowerCase()} developers</b> console and sign in.</p>
+        </div>
+        <div className="flex gap-4">
+          <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold flex-shrink-0">2</div>
+          <p className="font-medium text-gray-700">Create a new Project (or select existing) and navigate to <b>Credentials</b>.</p>
+        </div>
+        <div className="flex gap-4">
+          <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold flex-shrink-0">3</div>
+          <p className="font-medium text-gray-700">Generate an <b>API Key</b> (for platforms) or <b>OAuth ID</b> (for Google) and ensure <b>Public Access</b> is enabled.</p>
+        </div>
+        <div className="flex gap-4">
+          <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold flex-shrink-0">4</div>
+          <p className="font-medium text-gray-700">Copy the value and paste it into the secure input field on this page.</p>
+        </div>
+        <div className="bg-amber-50 p-4 rounded-2xl border border-amber-100 flex gap-3">
+          <AlertCircle className="text-amber-500 flex-shrink-0" size={20} />
+          <p className="text-sm text-amber-800 font-semibold italic">Keep your keys private! Never share them or commit them to public repos.</p>
+        </div>
+      </div>
+    </Modal>
+  );
 
   const renderToggle = (key: string, label: string) => (
     <div className={styles.toggleRow}>
@@ -188,7 +227,15 @@ const SettingsContainer = () => {
             <p className={styles.description}>Configure keys to enable advanced platform features.</p>
             {['INSTAGRAM_API_KEY', 'YOUTUBE_API_KEY', 'FACEBOOK_API_KEY', 'TIKTOK_API_KEY', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET'].map((k) => (
               <div key={k} className={styles.settingGroup}>
-                <label className={styles.label}>{k.replace(/_/g, ' ')}</label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className={styles.label}>{k.replace(/_/g, ' ')}</label>
+                  <button 
+                    className="flex items-center gap-1.5 text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full hover:bg-blue-100 transition-colors"
+                    onClick={() => setGuideModal(k)}
+                  >
+                    <HelpCircle size={14} /> Get Help
+                  </button>
+                </div>
                 <div className={styles.secureInputWrapper}>
                   <input 
                     type={showKey[k] ? 'text' : 'password'} 
@@ -211,22 +258,9 @@ const SettingsContainer = () => {
                      'Test'}
                   </button>
                 </div>
-                <div className={styles.guideBox}>
-                  <div className={styles.guideHeader} onClick={() => setExpandedGuide(expandedGuide === k ? null : k)}>
-                    SETUP GUIDE {expandedGuide === k ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                  </div>
-                  {expandedGuide === k && (
-                    <div className={styles.guideContent}>
-                      <ol>
-                        <li>Navigate to the developer dashboard of the platform.</li>
-                        <li>Create a new credential/key and copy the value.</li>
-                        <li>Paste it here to enable personalized features.</li>
-                      </ol>
-                    </div>
-                  )}
-                </div>
               </div>
             ))}
+            {guideModal && <ApiGuide platform={guideModal} />}
           </div>
         )}
 
