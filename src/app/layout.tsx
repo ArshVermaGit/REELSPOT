@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     "Download videos from Instagram, YouTube, TikTok, and Facebook instantly.",
 };
 
+import Footer from '@/components/Footer';
+
 export default function RootLayout({
   children,
 }: {
@@ -18,8 +20,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <AuthProvider>
-          <Navbar />
-          {children}
+          <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+          </div>
         </AuthProvider>
       </body>
     </html>
