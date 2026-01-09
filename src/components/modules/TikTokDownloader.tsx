@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import styles from './TikTokDownloader.module.css';
 import { API_CONFIG } from '@/config/api';
+import { useUserSettings } from '@/hooks/useUserSettings';
 
 interface Creator {
   username: string;
@@ -36,6 +37,7 @@ const MOCK_DATA = {
 };
 
 const TikTokDownloader: React.FC<ComponentProps> = ({ url }) => {
+  const { settings } = useUserSettings();
   const [noWatermark, setNoWatermark] = useState(true);
   const [status, setStatus] = useState<'idle' | 'downloading' | 'completed'>('idle');
   const [progress, setProgress] = useState(0);
@@ -161,7 +163,7 @@ const TikTokDownloader: React.FC<ComponentProps> = ({ url }) => {
         </button>
 
         <div className={styles.apiPlaceholder}>
-           TikTok Config: `{API_CONFIG.TIKTOK_API_KEY}` (Region: Global)
+           TikTok Config: {settings?.TIKTOK_API_KEY ? 'Using Private API' : `System Default: ${API_CONFIG.TIKTOK_API_KEY}`}
         </div>
       </div>
 
