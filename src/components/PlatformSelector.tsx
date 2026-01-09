@@ -1,121 +1,110 @@
-import { Instagram, Youtube, Facebook } from "lucide-react";
-import { useState } from "react";
+'use client';
 
-const TikTokIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-  </svg>
-);
+import React, { useEffect, useRef, useState } from 'react';
+import { Instagram, Youtube, Facebook, Music2 } from 'lucide-react';
+import styles from './PlatformSelector.module.css';
 
 const platforms = [
   {
-    name: "Instagram",
+    id: 'instagram',
+    name: 'Instagram',
     icon: Instagram,
-    formats: ["Reels", "Posts", "Stories", "IGTV"],
-    downloads: "2.5M+",
-    color: "hover:text-pink-500",
+    formats: 'Reels, Stories, Posts',
+    count: 500,
+    color: '#E1306C'
   },
   {
-    name: "YouTube",
+    id: 'youtube',
+    name: 'YouTube',
     icon: Youtube,
-    formats: ["Videos", "Shorts", "MP3", "Playlists"],
-    downloads: "5.2M+",
-    color: "hover:text-red-500",
+    formats: 'Videos, Shorts, Audio',
+    count: 850,
+    color: '#FF0000'
   },
   {
-    name: "Facebook",
+    id: 'facebook',
+    name: 'Facebook',
     icon: Facebook,
-    formats: ["Videos", "Reels", "Stories", "Posts"],
-    downloads: "1.8M+",
-    color: "hover:text-blue-500",
+    formats: 'Videos, Reels',
+    count: 420,
+    color: '#1877F2'
   },
   {
-    name: "TikTok",
-    icon: TikTokIcon,
-    formats: ["Videos", "Stories", "No Watermark"],
-    downloads: "3.1M+",
-    color: "hover:text-foreground",
-  },
+    id: 'tiktok',
+    name: 'TikTok',
+    icon: Music2,
+    formats: 'Videos, No Watermark',
+    count: 900,
+    color: '#000000'
+  }
 ];
 
 const PlatformSelector = () => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const handleRipple = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    const ripple = document.createElement('span');
+    const rect = card.getBoundingClientRect();
+    
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+    
+    ripple.style.width = ripple.style.height = `${size}px`;
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
+    ripple.className = styles.ripple;
+    
+    card.appendChild(ripple);
+    
+    setTimeout(() => {
+      ripple.remove();
+    }, 600);
+  };
 
   return (
-    <section id="platforms" className="bg-secondary/30 py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="mb-16 text-center">
-          <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
-            Supported Platforms
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Download from your favorite social media platforms with just one click
-          </p>
-        </div>
-
-        {/* Platform Cards */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {platforms.map((platform, index) => {
-            const Icon = platform.icon;
-            const isHovered = hoveredIndex === index;
-
-            return (
-              <div
-                key={platform.name}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                className="platform-card group relative overflow-hidden rounded-2xl border border-border bg-background p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-                style={{
-                  animationDelay: `${index * 100}ms`,
-                }}
-              >
-                {/* Ripple effect background */}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br from-secondary/50 to-transparent transition-opacity duration-500 ${
-                    isHovered ? "opacity-100" : "opacity-0"
-                  }`}
-                />
-
-                {/* Content */}
-                <div className="relative z-10">
-                  {/* Icon */}
-                  <div
-                    className={`mb-6 inline-flex rounded-xl bg-secondary p-4 transition-all duration-300 ${
-                      isHovered ? platform.color : "text-muted-foreground"
-                    } ${isHovered ? "scale-110" : "scale-100"}`}
-                  >
-                    <Icon className="h-8 w-8" />
-                  </div>
-
-                  {/* Name */}
-                  <h3 className="mb-2 text-xl font-bold text-foreground">
-                    {platform.name}
-                  </h3>
-
-                  {/* Formats */}
-                  <div className="mb-4 flex flex-wrap gap-2">
-                    {platform.formats.map((format) => (
-                      <span
-                        key={format}
-                        className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground"
-                      >
-                        {format}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Download count */}
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
-                    <span className="text-sm font-medium text-muted-foreground">
-                      {platform.downloads} downloads
-                    </span>
-                  </div>
-                </div>
+    <section ref={sectionRef} className={styles.section}>
+      <div className="container">
+        <div className={styles.grid}>
+          {platforms.map((platform, index) => (
+            <div
+              key={platform.id}
+              className={`${styles.card} ${styles.cardIdle} ${isVisible ? styles.animateEntrance : ''}`}
+              style={{ 
+                animationDelay: `${index * 150}ms`,
+                opacity: isVisible ? 1 : 0 // Ensure hidden until animate
+              }}
+              onClick={handleRipple}
+            >
+              <div className={styles.iconWrapper} style={{ color: platform.color }}>
+                <platform.icon size={48} strokeWidth={1.5} />
               </div>
-            );
-          })}
+              <h3 className={styles.platformName}>{platform.name}</h3>
+              <p className={styles.formatList}>{platform.formats}</p>
+              <div className={styles.counter}>
+                {isVisible ? platform.count : 0}K+ Downloads
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
