@@ -3,8 +3,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { signIn } from 'next-auth/react';
-import { X, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import styles from './Auth.module.css';
+
+import Modal from '@/components/ui/Modal';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -26,15 +28,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={onClose}>
-          <X size={20} />
-        </button>
-        
+    <Modal isOpen={isOpen} onClose={onClose} size="small">
+      <div className="pt-4 pb-2">
         <h2 className={styles.title}>Welcome Back</h2>
         <p className={styles.subtitle}>Sign in to save your history and sync across devices</p>
 
@@ -67,6 +63,6 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           <span className="text-sm font-medium">Remember me for 30 days</span>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }
