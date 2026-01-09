@@ -3,12 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { Menu, X, User } from 'lucide-react';
 import styles from './Navbar.module.css';
+import LoginModal from './auth/LoginModal';
+import UserDropdown from './auth/UserDropdown';
 
 const Navbar = () => {
+  const { data: session } = useSession();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -60,10 +65,17 @@ const Navbar = () => {
             {/* Actions & Mobile Toggle */}
             <div className={styles.actions}>
               
-              {/* Profile/Login (Placeholder) */}
-              <button className={styles.avatarButton} aria-label="User Profile">
-                <User size={20} />
-              </button>
+              {session ? (
+                <UserDropdown />
+              ) : (
+                <button 
+                  className={styles.avatarButton} 
+                  onClick={() => setIsLoginOpen(true)}
+                  aria-label="Sign In"
+                >
+                  <User size={20} />
+                </button>
+              )}
 
               {/* Hamburger Button */}
               <button 
@@ -78,6 +90,8 @@ const Navbar = () => {
           </div>
         </div>
       </header>
+
+      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 
       {/* Mobile Menu Overlay */}
       <div 
