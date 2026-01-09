@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Download, ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react';
 import styles from './InstagramDownloader.module.css';
 import { API_CONFIG } from '@/config/api';
+import { saveToHistory } from '@/lib/history-utils';
 
 interface MediaItem {
   id: string;
@@ -69,6 +70,15 @@ const InstagramDownloader: React.FC<ComponentProps> = ({ url }) => {
         clearInterval(interval);
         setDownloadStatus('completed');
         setShowConfetti(true);
+
+        // Save to History
+        saveToHistory({
+          title: `Instagram ${type === 'story' ? 'Story' : 'Post'} - ${data.user.username}`,
+          platform: 'INSTAGRAM',
+          url: url,
+          thumbnail: data.posts[currentIndex].thumbnail,
+        });
+
         setTimeout(() => setShowConfetti(false), 5000);
       }
     }, 100);
