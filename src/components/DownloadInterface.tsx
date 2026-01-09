@@ -6,6 +6,7 @@ import styles from './DownloadInterface.module.css';
 import InstagramDownloader from './modules/InstagramDownloader';
 import YouTubeDownloader from './modules/YouTubeDownloader';
 import FacebookDownloader from './modules/FacebookDownloader';
+import TikTokDownloader from './modules/TikTokDownloader';
 
 type Platform = 'instagram' | 'youtube' | 'facebook' | 'tiktok' | null;
 type Status = 'idle' | 'analyzing' | 'success' | 'downloading' | 'completed' | 'error';
@@ -134,6 +135,10 @@ const DownloadInterface = () => {
           ) : platform === 'facebook' ? (
              <React.Suspense fallback={<div>Loading Module...</div>}>
                 <FacebookDownloader url={url} onReset={() => setStatus('idle')} />
+             </React.Suspense>
+          ) : platform === 'tiktok' ? (
+             <React.Suspense fallback={<div>Loading Module...</div>}>
+                <TikTokDownloader url={url} onReset={() => setStatus('idle')} />
              </React.Suspense>
           ) : (
             <div className={styles.resultsArea}>
