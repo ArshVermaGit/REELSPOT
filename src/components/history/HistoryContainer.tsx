@@ -4,10 +4,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { 
   Search, Download, Trash2, 
-  AlertTriangle, FileDown, 
+  FileDown, 
   Instagram, Youtube, Facebook, Music2
 } from 'lucide-react';
 import styles from './History.module.css';
+import ConfirmationModal from '@/components/ui/ConfirmationModal';
 
 // --- Types ---
 interface HistoryItem {
@@ -27,6 +28,7 @@ const HistoryContainer = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [items, setItems] = useState<HistoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState<{ type: 'single' | 'bulk' | 'clear', id?: string } | null>(null);
 
   const fetchHistory = async () => {
@@ -95,13 +97,12 @@ const HistoryContainer = () => {
   const confirmDelete = async () => {
     if (!showDeleteModal) return;
     
+    setIsDeleting(true);
     try {
       if (showDeleteModal.type === 'single') {
         const res = await fetch(`/api/history?id=${showDeleteModal.id}`, { method: 'DELETE' });
         if (res.ok) setItems(prev => prev.filter(i => i.id !== showDeleteModal.id));
       } else if (showDeleteModal.type === 'bulk') {
-        // Bulk delete would optimally be one request, but for simplicity here we loop or use a query param
-        // I'll implement clearAll if all are selected, or loop for now
         for (const id of selectedIds) {
           await fetch(`/api/history?id=${id}`, { method: 'DELETE' });
         }
@@ -114,8 +115,10 @@ const HistoryContainer = () => {
       }
     } catch (error) {
       console.error("Delete failed:", error);
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteModal(null);
     }
-    setShowDeleteModal(null);
   };
 
   if (status === 'unauthenticated') {
@@ -125,7 +128,7 @@ const HistoryContainer = () => {
         <h3 className="text-2xl font-black mb-2">Private History</h3>
         <p className="text-gray-500 mb-8 font-medium">Please sign in to view and manage your download history.</p>
         <button 
-          onClick={() => (window as any).dispatchEvent(new CustomEvent('open-login'))}
+          onClick={() => window.dispatchEvent(new CustomEvent('open-login'))}
           className="px-8 py-4 bg-black text-white rounded-2xl font-bold hover:scale-105 transition-all inline-block"
         >
           Sign In Now
@@ -258,30 +261,16 @@ const HistoryContainer = () => {
         </div>
       )}
 
-      {/* Delete/Clear Modal */}
-      {showDeleteModal && (
-        <div className={styles.modalBackdrop}>
-          <div className={styles.confirmModal}>
-            <div className={styles.dangerIcon}>
-              <AlertTriangle size={32} />
-            </div>
-            <h2 className="text-2xl font-black mb-2">
-              {showDeleteModal.type === 'clear' ? 'Clear All History?' : 'Delete Items?'}
-            </h2>
-            <p className="text-gray-500 font-medium">
-              This action cannot be undone. Are you sure you want to proceed?
-            </p>
-            <div className={styles.modalBtns}>
-              <button className={`${styles.modalBtn} ${styles.cancelBtn}`} onClick={() => setShowDeleteModal(null)}>
-                Cancel
-              </button>
-              <button className={`${styles.modalBtn} ${styles.confirmBtn}`} onClick={confirmDelete}>
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmationModal 
+        isOpen={!!showDeleteModal} 
+        onClose={() => setShowDeleteModal(null)}
+        onConfirm={confirmDelete}
+        title={showDeleteModal?.type === 'clear' ? 'Clear History?' : 'Delete Items?'}
+        description="This action will permanently remove these items from your private history stash. It cannot be undone."
+        confirmLabel={showDeleteModal?.type === 'clear' ? 'Clear All' : 'Delete Now'}
+        type="danger"
+        isLoading={isDeleting}
+      />
 
     </div>
   );
