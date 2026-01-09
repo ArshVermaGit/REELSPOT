@@ -11,6 +11,8 @@ import YouTubeDownloader from './modules/YouTubeDownloader';
 import FacebookDownloader from './modules/FacebookDownloader';
 import TikTokDownloader from './modules/TikTokDownloader';
 import { UserSettings } from '@/types/settings';
+import PreviewModal from './ui/PreviewModal';
+import StatusModal from './ui/StatusModal';
 
 type Platform = 'instagram' | 'youtube' | 'facebook' | 'tiktok' | null;
 type Status = 'idle' | 'analyzing' | 'success' | 'downloading' | 'completed' | 'error';
@@ -24,6 +26,7 @@ const DownloadInterface = () => {
   const [status, setStatus] = useState<Status>('idle');
   const [progress, setProgress] = useState(0);
   const [selectedQuality, setSelectedQuality] = useState<Quality>('HD');
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   // Character States (Simple Emoji representation for now, can be SVGs)
   const getCharacter = () => {
@@ -36,8 +39,6 @@ const DownloadInterface = () => {
       default: return '🙂'; // Idle smile
     }
   };
-
-  /* Removed useEffect to avoid sync state update warning. Logic moved to handleUrlChange */
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newUrl = e.target.value;
@@ -159,7 +160,11 @@ const DownloadInterface = () => {
             <div className={styles.resultsArea}>
               <div className={styles.mediaInfo}>
                 {/* Mock Thumbnail */}
-                <div className={styles.thumbnail} style={{ background: '#ddd' }} /> {/* Placeholder for real thumb */}
+                <div 
+                  className={styles.thumbnail} 
+                  style={{ background: '#ddd', cursor: 'zoom-in' }} 
+                  onClick={() => setIsPreviewOpen(true)}
+                /> 
                 
                 <div className={styles.details}>
                   <h3 className={styles.videoTitle}>Best Video Ever - {platform || 'Video'}</h3>
@@ -210,6 +215,20 @@ const DownloadInterface = () => {
         </>
       )}
 
+      <PreviewModal 
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        mediaUrl="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&auto=format&fit=crop&q=60"
+        title={`Preview: Video from ${platform || 'Web'}`}
+      />
+      
+      <StatusModal 
+        isOpen={status === 'completed'} 
+        onClose={() => setStatus('success')} 
+        type="success" 
+        title="Download Ready!" 
+        message="Your media has been successfully processed and filtered. It's now saved to your primary storage."
+      />
     </div>
   );
 };
