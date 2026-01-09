@@ -22,7 +22,14 @@ const Navbar = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    const handleOpenLogin = () => setIsLoginOpen(true);
+    window.addEventListener('open-login', handleOpenLogin as EventListener);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('open-login', handleOpenLogin as EventListener);
+    };
   }, []);
 
   const toggleMobileMenu = () => {
