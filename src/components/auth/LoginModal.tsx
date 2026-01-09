@@ -12,7 +12,19 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      await signIn('google');
+    } catch (error) {
+      console.error("Sign in failed:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -28,16 +40,21 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
         <button 
           className={styles.googleButton}
-          onClick={() => signIn('google')}
+          disabled={isLoading}
+          onClick={handleGoogleSignIn}
         >
-          <Image 
-            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
-            alt="Google" 
-            width={18}
-            height={18}
-            unoptimized
-          />
-          Continue with Google
+          {isLoading ? (
+            <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <Image 
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
+              alt="Google" 
+              width={18}
+              height={18}
+              unoptimized
+            />
+          )}
+          {isLoading ? 'Connecting...' : 'Continue with Google'}
         </button>
 
         <div 
