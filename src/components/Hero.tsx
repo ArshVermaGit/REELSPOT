@@ -1,6 +1,7 @@
 import React from 'react';
-import { Download, Instagram, Facebook, Youtube, Music2 } from 'lucide-react';
+import { Instagram, Facebook, Youtube, Music2 } from 'lucide-react';
 import styles from './Hero.module.css';
+import DownloadInterface from './DownloadInterface';
 
 const Hero = () => {
   return (
@@ -18,17 +19,9 @@ const Hero = () => {
             Download Media, <span className={styles.gradientText}>Effortlessly</span>
           </h2>
 
-          {/* Input Area */}
-          <div className={`${styles.inputWrapper} animate-fade-in`} style={{ animationDelay: '0.2s' }}>
-            <input 
-              type="text" 
-              className={styles.mainInput} 
-              placeholder="Paste your link here..." 
-            />
-            <button className={styles.downloadButton}>
-              <Download size={24} />
-              <span>Download</span>
-            </button>
+          {/* Smart Download Interface */}
+          <div className="w-full relative z-20">
+             <DownloadInterface />
           </div>
 
           {/* Floating Icons Background Elements */}
