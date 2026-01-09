@@ -1,19 +1,24 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { Download, Instagram, Youtube, Facebook, Music2, Search, Link2, CheckCircle2 } from 'lucide-react';
 import styles from './DownloadInterface.module.css';
 import { saveToHistory } from '@/lib/history-utils';
+import { useUserSettings } from '@/hooks/useUserSettings';
 import InstagramDownloader from './modules/InstagramDownloader';
 import YouTubeDownloader from './modules/YouTubeDownloader';
 import FacebookDownloader from './modules/FacebookDownloader';
 import TikTokDownloader from './modules/TikTokDownloader';
+import { UserSettings } from '@/types/settings';
 
 type Platform = 'instagram' | 'youtube' | 'facebook' | 'tiktok' | null;
 type Status = 'idle' | 'analyzing' | 'success' | 'downloading' | 'completed' | 'error';
 type Quality = 'HD' | 'SD' | 'Audio';
 
 const DownloadInterface = () => {
+  useSession();
+  const { settings } = useUserSettings();
   const [url, setUrl] = useState('');
   const [platform, setPlatform] = useState<Platform>(null);
   const [status, setStatus] = useState<Status>('idle');
@@ -196,7 +201,9 @@ const DownloadInterface = () => {
               </div>
 
               <div className={styles.apiKeyPlaceholder}>
-                API Configuration: Using Demo Key (Configure in Settings)
+                {platform && settings && (settings[`${(platform as string).toUpperCase()}_API_KEY` as keyof UserSettings] as string)
+                  ? `Using your private ${platform} API Key` 
+                  : 'Using System Default Key (Configure in Settings)'}
               </div>
             </div>
           )}
