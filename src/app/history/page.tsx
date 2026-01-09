@@ -1,8 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useSession, signIn } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
@@ -28,7 +27,7 @@ export default function HistoryPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      redirect('/auth/signin?callbackUrl=/history')
+      signIn('google', { callbackUrl: '/history' })
     }
 
     if (status === 'authenticated') {
