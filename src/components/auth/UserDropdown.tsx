@@ -65,10 +65,10 @@ export default function UserDropdown() {
             <History size={18} />
             <span>Download History</span>
           </Link>
-            <div className={styles.menuItem}>
-              <Settings size={18} />
-              <span>Settings</span>
-            </div>
+          <Link href="/settings" className={styles.dropdownItem}>
+            <Settings size={18} />
+            <span>Settings</span>
+          </Link>
             
             <div className="pt-2 mt-2 border-t border-gray-100">
               <div 
