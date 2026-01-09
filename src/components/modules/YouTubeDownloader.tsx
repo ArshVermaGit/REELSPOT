@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Download, Play, CheckCircle2, Clock, FileText } from 'lucide-react';
 import styles from './YouTubeDownloader.module.css';
 import { API_CONFIG } from '@/config/api';
+import { saveToHistory } from '@/lib/history-utils';
 
 interface Chapter {
   time: string;
@@ -74,6 +75,14 @@ const YouTubeDownloader: React.FC<ComponentProps> = ({ url }) => {
         if (p >= 100) {
           clearInterval(interval);
           setStatus('completed');
+
+          // Save to History
+          saveToHistory({
+            title: MOCK_DATA.title,
+            platform: 'YOUTUBE',
+            url: url,
+            thumbnail: MOCK_DATA.thumbnail,
+          });
         }
       }, 50);
     }, 1500);
