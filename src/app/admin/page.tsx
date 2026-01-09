@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { useSession } from 'next-auth/react'
+import { useSession, signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { 
   MessageSquare, 
@@ -78,7 +78,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/api/auth/signin')
+      signIn('google', { callbackUrl: '/admin' })
     }
   }, [status, router])
 
