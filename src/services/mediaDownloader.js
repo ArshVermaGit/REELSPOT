@@ -154,11 +154,22 @@ export const downloadMedia = async ({
 
     } catch (error) {
         console.error("Download pipeline error:", error);
+        
+        let finalError = error.message;
+        
+        // Use our utility if it's an API error (mocked here, but in real life axios error)
+        // For demonstration, let's pretend network error is common
+        if(error.message === 'Network Error') {
+             // Let the UI/Toast know via helper
+        }
+        
          await saveToHistory(userId, {
             platform,
             download_status: 'failed',
-            error_message: error.message
+            error_message: finalError,
+            title: mediaTitle // ensure we save title even on fail if possible
         });
-        return { success: false, error: error.message };
+        
+        return { success: false, error: finalError };
     }
 };
