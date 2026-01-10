@@ -1,63 +1,70 @@
--- Database Schema for Reelspot
+-- Enable pgcrypto for UUID generation and potential encryption
+extensions [
+  "pgcrypto"
+];
 
--- 1. Table: users (Managed by Supabase Auth, but usually we extend it or rely on auth.users)
--- Note: 'auth.users' is automatically created.
-
--- 2. Table: api_keys
-create table if not exists public.api_keys (
+-- API Keys Table
+create table api_keys (
   id uuid default gen_random_uuid() primary key,
-  user_id uuid references auth.users(id) on delete cascade not null,
-  platform text not null check (platform in ('instagram', 'youtube', 'facebook', 'tiktok')),
-  api_key text not null, -- In a real app, this should be encrypted using pgcrypto or similar
+  user_id uuid references auth.users(id) not null,
+  platform text not null,
+  api_key text not null, -- In a real prod app, use pgcrypto functions to encrypt this column
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
   unique(user_id, platform)
 );
 
--- Enable RLS
-alter table public.api_keys enable row level security;
-
--- Policies for api_keys
-create policy "Users can view their own api keys" 
-on public.api_keys for select 
-using (auth.uid() = user_id);
-
-create policy "Users can insert their own api keys" 
-on public.api_keys for insert 
-with check (auth.uid() = user_id);
-
-create policy "Users can update their own api keys" 
-on public.api_keys for update 
-using (auth.uid() = user_id);
-
-create policy "Users can delete their own api keys" 
-on public.api_keys for delete 
-using (auth.uid() = user_id);
-
-
--- 3. Table: download_history
-create table if not exists public.download_history (
+-- Download History Table
+create table download_history (
   id uuid default gen_random_uuid() primary key,
-  user_id uuid references auth.users(id) on delete cascade not null,
+  user_id uuid references auth.users(id) not null,
   platform text not null,
   media_url text not null,
-  media_type text check (media_type in ('reel', 'story', 'post', 'video', 'short')),
-  format text check (format in ('mp4', 'mp3', 'jpg', 'png')),
-  quality text check (quality in ('1080p', '720p', '480p', '360p', 'audio')),
-  file_size bigint,
-  download_status text check (download_status in ('pending', 'processing', 'completed', 'failed')) default 'pending',
+  media_type text, -- 'video', 'image', 'reel', 'story'
+  format text, -- 'mp4', 'mp3', 'jpg'
+  quality text, -- '1080p', 'HD'
+  file_size bigint, -- bytes
+  download_status text not null, -- 'completed', 'failed'
+  
+  -- New Metadata Columns
+  title text,
+  thumbnail_url text,
+  author text,
+  duration text,
   error_message text,
+  metadata jsonb default '{}'::jsonb, -- Store extra platform specific info
+
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
--- Enable RLS
-alter table public.download_history enable row level security;
+-- RLS Policies
+alter table api_keys enable row level security;
+alter table download_history enable row level security;
 
--- Policies for download_history
-create policy "Users can view their own history" 
-on public.download_history for select 
-using (auth.uid() = user_id);
+create policy "Users can view their own api keys"
+  on api_keys for select
+  using (auth.uid() = user_id);
 
-create policy "Users can insert their own history" 
-on public.download_history for insert 
-with check (auth.uid() = user_id);
+create policy "Users can insert/update their own api keys"
+  on api_keys for insert
+  with check (auth.uid() = user_id);
+
+create policy "Users can update their own api keys"
+  on api_keys for update
+  using (auth.uid() = user_id);
+
+create policy "Users can delete their own api keys"
+  on api_keys for delete
+  using (auth.uid() = user_id);
+
+create policy "Users can view their own history"
+  on download_history for select
+  using (auth.uid() = user_id);
+
+create policy "Users can insert their own history"
+  on download_history for insert
+  with check (auth.uid() = user_id);
+  
+create policy "Users can delete their own history"
+  on download_history for delete
+  using (auth.uid() = user_id);
