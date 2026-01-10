@@ -62,11 +62,25 @@ const fetchInstagramData = async (url, apiKey) => {
             }]
         };
     } catch (error) {
-        if (error.response?.status === 400 || error.response?.status === 401) {
-            throw new MediaError('Invalid API Key or Media ID', 'API_ERROR');
+        if (error.response) {
+            const status = error.response.status;
+            if (status === 401 || status === 403) {
+                 throw new MediaError('Instagram API Key Invalid or Expired', 'AUTH_EXPIRED', false);
+            }
+            if (status === 429) {
+                 throw new MediaError('Instagram Rate Limit Exceeded', 'RATE_LIMIT', true);
+            }
+            if (status === 400) {
+                 throw new MediaError('Invalid Media ID or Private Post', 'INVALID_ID', false);
+            }
         }
+        
         // Fallback for demo if API fails/is invalid (since User might not have real token yet)
         console.warn("API call failed, seemingly due to invalid token. Using simulation for UI flow.");
+        // We throw if it was a distinct AUTH error, otherwise we might fallback to simulation
+        if (error instanceof MediaError) throw error; 
+        
+        // Only return mock if NOT a hard auth error we want to show
         return {
              title: 'Instagram Media (Simulated)',
              thumbnail: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000',
@@ -109,6 +123,18 @@ const fetchYoutubeData = async (url, apiKey) => {
             ]
         };
     } catch (error) {
+        if (error.response) {
+             const status = error.response.status;
+             if (status === 403) {
+                 // Check if it's quota
+                 const reason = error.response.data?.error?.errors?.[0]?.reason;
+                 if (reason === 'quotaExceeded') {
+                      throw new MediaError('YouTube API Quota Exceeded', 'RATE_LIMIT', true);
+                 }
+                 throw new MediaError('YouTube API Key Restricted or Invalid', 'AUTH_EXPIRED', false);
+             }
+             if (status === 404) throw new MediaError('Video not found', 'NOT_FOUND', false);
+        }
         throw new MediaError(error.response?.data?.error?.message || 'YouTube API Error', 'API_ERROR');
     }
 };
