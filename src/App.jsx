@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { ApiKeyProvider } from './contexts/ApiKeyContext'
+import { DownloadProvider } from './contexts/DownloadContext'
+import { useNetworkStatus } from './hooks/useNetworkStatus'
 import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
@@ -12,10 +14,12 @@ import ErrorBoundary from './components/ErrorBoundary'
 import { Toaster } from 'react-hot-toast'
 
 function App() {
+  const isOnline = useNetworkStatus(); // Hook initializes listeners
   return (
     <Router>
       <AuthProvider>
         <ApiKeyProvider>
+            <DownloadProvider>
             <ErrorBoundary>
             <div className="min-h-screen bg-background font-sans antialiased text-foreground">
                 <Toaster position="top-center" />
@@ -38,6 +42,7 @@ function App() {
                 </main>
             </div>
             </ErrorBoundary>
+            </DownloadProvider>
         </ApiKeyProvider>
       </AuthProvider>
     </Router>
