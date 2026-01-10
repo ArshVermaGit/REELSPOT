@@ -10,6 +10,36 @@ const PreferencesForm = ({ settings, onUpdate }) => {
             
             <div className="space-y-6">
                 
+                {/* Default Download Settings */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 border-b border-zinc-100">
+                    <div>
+                        <label className="block text-sm font-medium mb-2">Default Format</label>
+                        <select 
+                            value={settings.default_format}
+                            onChange={(e) => onUpdate({ default_format: e.target.value })}
+                            className="w-full p-2.5 border border-zinc-200 rounded-lg text-sm bg-white"
+                        >
+                            <option value="mp4">MP4 (Video)</option>
+                            <option value="mp3">MP3 (Audio)</option>
+                            <option value="jpg">JPG (Image)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium mb-2">Default Quality</label>
+                        <select 
+                            value={settings.default_quality}
+                            onChange={(e) => onUpdate({ default_quality: e.target.value })}
+                            className="w-full p-2.5 border border-zinc-200 rounded-lg text-sm bg-white"
+                        >
+                            <option value="best">Best Available</option>
+                            <option value="1080p">1080p</option>
+                            <option value="720p">720p</option>
+                            <option value="480p">480p</option>
+                            <option value="audio_high">High Quality Audio</option>
+                        </select>
+                    </div>
+                </div>
+
                 {/* Auto Download */}
                 <div className="flex items-center justify-between">
                     <div>
@@ -63,6 +93,20 @@ const PreferencesForm = ({ settings, onUpdate }) => {
                         <option value="1000">Last 1000 items</option>
                         <option value="0">Unlimited</option>
                     </select>
+
+                     <div className="mt-4">
+                        <label className="block text-sm font-medium mb-2">Auto-delete Downloads after</label>
+                        <select 
+                            value={settings.auto_delete_days}
+                            onChange={(e) => onUpdate({ auto_delete_days: parseInt(e.target.value) })}
+                            className="w-full p-2 border border-zinc-200 rounded-lg text-sm"
+                        >
+                            <option value="0">Never</option>
+                            <option value="7">7 Days</option>
+                            <option value="30">30 Days</option>
+                            <option value="90">90 Days</option>
+                        </select>
+                    </div>
                 </div>
 
             </div>
