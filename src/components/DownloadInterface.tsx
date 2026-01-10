@@ -13,6 +13,7 @@ import TikTokDownloader from './modules/TikTokDownloader';
 import { UserSettings } from '@/types/settings';
 import PreviewModal from './ui/PreviewModal';
 import StatusModal from './ui/StatusModal';
+import ReelBot from './ui/ReelBot';
 
 type Platform = 'instagram' | 'youtube' | 'facebook' | 'tiktok' | null;
 type Status = 'idle' | 'analyzing' | 'success' | 'downloading' | 'completed' | 'error';
@@ -27,18 +28,6 @@ const DownloadInterface = () => {
   const [progress, setProgress] = useState(0);
   const [selectedQuality, setSelectedQuality] = useState<Quality>('HD');
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-
-  // Character States (Simple Emoji representation for now, can be SVGs)
-  const getCharacter = () => {
-    switch (status) {
-      case 'analyzing': return '🤔'; // Thinking
-      case 'success': return '🤩'; // Starry eyes
-      case 'downloading': return '😎'; // Cool
-      case 'completed': return '🥳'; // Party
-      case 'error': return '😵'; // Dizzy
-      default: return '🙂'; // Idle smile
-    }
-  };
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newUrl = e.target.value;
@@ -103,13 +92,21 @@ const DownloadInterface = () => {
       
       {/* Character Feedback */}
       <div className={styles.characterContainer}>
-        <div className={`${styles.character} ${status === 'analyzing' ? styles.charThinking : ''}`}>
-          {getCharacter()}
-        </div>
+        <ReelBot 
+          mood={
+            status === 'analyzing' ? 'idle' : 
+            status === 'success' ? 'happy' : 
+            status === 'downloading' ? 'happy' : 
+            status === 'completed' ? 'happy' : 
+            status === 'error' ? 'error' : 'idle'
+          } 
+          size={100}
+          className={status === 'analyzing' ? styles.charThinking : ''}
+        />
       </div>
 
       {/* Main Input Area */}
-      <div className={styles.inputWrapper}>
+      <div className={`${styles.inputWrapper} input-glow`}>
         <div className={`${styles.platformIcon} ${platform ? styles.platformIconActive : ''}`}>
           {getPlatformIcon()}
         </div>
@@ -122,7 +119,7 @@ const DownloadInterface = () => {
           onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
         />
         <button 
-          className={styles.analyzeButton}
+          className={`${styles.analyzeButton} btn-press`}
           onClick={handleAnalyze}
           disabled={status === 'analyzing' || !url}
         >
@@ -192,7 +189,7 @@ const DownloadInterface = () => {
               {/* Download Button */}
               <div className={styles.downloadAction}>
                 <button 
-                  className={styles.downloadButton}
+                  className={`${styles.downloadButton} btn-press`}
                   onClick={handleDownload}
                   disabled={status === 'downloading' || status === 'completed'}
                 >
