@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from '../hooks/useHistory';
-import HistoryCard from '../components/HistoryCard';
-import { Search, Filter, Trash2, DownloadCloud, AlertCircle } from 'lucide-react';
+import HistoryCard from '../components/history/HistoryCard';
+import LoadingScreen from '../components/shared/LoadingSpinner';
+import { Search, Filter, Trash2, DownloadCloud } from 'lucide-react';
 import { clsx } from 'clsx';
 import { downloadMedia } from '../services/mediaDownloader';
 import toast from 'react-hot-toast';
