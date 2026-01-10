@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { 
   Key, Shield, Palette, 
-  ChevronDown, ChevronUp, CheckCircle2, 
+  CheckCircle2, 
   AlertCircle, RefreshCw, Save, Eye, EyeOff,
   Globe, Moon, Sun, Download, Database, Lock
 } from 'lucide-react';
@@ -12,6 +12,7 @@ import Modal from '../ui/Modal';
 import { HelpCircle, Info } from 'lucide-react';
 import styles from './Settings.module.css';
 import { UserSettings } from '@/types/settings';
+import Skeleton from '@/components/ui/Skeleton';
 
 type Tab = 'General' | 'API Keys' | 'Appearance' | 'Privacy';
 
@@ -154,7 +155,7 @@ const SettingsContainer = () => {
         <p className="text-gray-500 mb-8 font-medium">Please sign in to manage your API keys and preferences.</p>
         <button 
           onClick={() => window.dispatchEvent(new CustomEvent('open-login'))}
-          className="px-8 py-4 bg-black text-white rounded-2xl font-bold hover:scale-105 transition-all inline-block"
+          className="px-8 py-4 bg-black text-white rounded-xl font-bold inline-block"
         >
           Sign In Now
         </button>
@@ -165,9 +166,24 @@ const SettingsContainer = () => {
   if (isLoading) {
     return (
       <div className={styles.settingsWrapper}>
-        <div className="flex flex-col gap-4">
-          <div className="h-10 w-48 bg-gray-200 rounded-lg animate-pulse" />
-          <div className="h-96 w-full bg-gray-50 rounded-3xl animate-pulse" />
+        <Skeleton width="200px" height="48px" className="mb-8" />
+        <div className="flex gap-4 mb-8">
+          {[1,2,3,4].map(i => <Skeleton key={i} width="100px" height="40px" />)}
+        </div>
+        <div className={styles.contentArea}>
+          <div className="space-y-8">
+            <div className="flex items-center gap-4">
+               <Skeleton width="32px" height="32px" variant="circular" />
+               <Skeleton width="200px" height="32px" />
+            </div>
+            {[1,2,3].map(i => (
+              <div key={i} className="space-y-4">
+                <Skeleton width="150px" height="20px" />
+                <Skeleton width="100%" height="20px" />
+                <Skeleton width="100%" height="48px" />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -191,7 +207,7 @@ const SettingsContainer = () => {
 
       <div className={styles.contentArea}>
         {activeTab === 'General' && (
-          <div className="animate-fade-in">
+          <div>
             <h2 className={styles.sectionTitle}><Globe size={24} /> General</h2>
             <div className={styles.settingGroup}>
               <label className={styles.label}>Download Location</label>
@@ -222,7 +238,7 @@ const SettingsContainer = () => {
         )}
 
         {activeTab === 'API Keys' && (
-          <div className="animate-fade-in">
+          <div>
             <h2 className={styles.sectionTitle}><Key size={24} /> API Configuration</h2>
             <p className={styles.description}>Configure keys to enable advanced platform features.</p>
             {['INSTAGRAM_API_KEY', 'YOUTUBE_API_KEY', 'FACEBOOK_API_KEY', 'TIKTOK_API_KEY', 'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET'].map((k) => (
@@ -265,7 +281,7 @@ const SettingsContainer = () => {
         )}
 
         {activeTab === 'Appearance' && (
-          <div className="animate-fade-in">
+          <div>
             <h2 className={styles.sectionTitle}><Palette size={24} /> UI Customization</h2>
             <div className={styles.settingGroup}>
               <label className={styles.label}>Theme Mode</label>
@@ -286,7 +302,7 @@ const SettingsContainer = () => {
         )}
 
         {activeTab === 'Privacy' && (
-          <div className="animate-fade-in">
+          <div>
             <h2 className={styles.sectionTitle}><Shield size={24} /> Privacy Controls</h2>
             <div className={styles.settingGroup}>
               <label className={styles.label}>Usage Tracking</label>
