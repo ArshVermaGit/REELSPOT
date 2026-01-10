@@ -6,11 +6,22 @@ import Button from '../shared/Button';
 const ApiKeyCard = ({ platform, keyData, onUpdate, onDelete, onTestStatus }) => {
     const [showKey, setShowKey] = useState(false);
     const [isTestLoading, setIsTestLoading] = useState(false);
+    const [testResult, setTestResult] = useState(null); // { success: true, latency: '45ms' }
 
     const handleTest = async () => {
         setIsTestLoading(true);
-        await onTestStatus(platform);
+        setTestResult(null);
+        
+        const start = Date.now();
+        const success = await onTestStatus(platform);
+        const end = Date.now();
+        
         setIsTestLoading(false);
+        if (success) {
+            setTestResult({ success: true, latency: `${end - start}ms` });
+             // Clear success message after 3s
+            setTimeout(() => setTestResult(null), 3000);
+        }
     };
 
     const statusColors = {
@@ -54,6 +65,13 @@ const ApiKeyCard = ({ platform, keyData, onUpdate, onDelete, onTestStatus }) => 
                     </div>
                 ) : (
                     <p className="text-zinc-400 text-sm mt-1">No API key configured</p>
+                )}
+
+                {/* Test Feedback */}
+                {testResult && (
+                    <div className="mt-2 text-xs font-bold text-green-600 flex items-center gap-1 animate-in fade-in slide-in-from-top-1">
+                        <CheckCircle size={12} /> Live • {testResult.latency}
+                    </div>
                 )}
             </div>
 
