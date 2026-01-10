@@ -3,6 +3,7 @@ import { supabase } from './supabase';
 
 /**
  * Advanced Media Downloader Service
+ * Handles media analysis, downloading, and history tracking.
  */
 
 // --- Mock Data Generators ---
@@ -44,52 +45,121 @@ export const getMediaInfo = async ({ url, platform, apiKey }) => {
     // Return Mock Metadata
     return {
         title: `${platform.charAt(0).toUpperCase() + platform.slice(1)} Media`,
-        thumbnail: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', // Generic placeholder
+        thumbnail: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop',
         duration: '0:30',
         author: '@sample_user',
         formats: getMockFormats(platform)
     };
 };
 
-// History Tracker
+/**
+ * Saves download record to history with all metadata.
+ */
 const saveToHistory = async (userId, metadata) => {
-    if (!userId) return;
+    if (!userId) {
+        console.warn('No userId provided, skipping history save');
+        return null;
+    }
+    
     try {
-        const { error } = await supabase.from('download_history').insert({
+        const record = {
             user_id: userId,
-            ...metadata,
+            platform: metadata.platform || 'unknown',
+            media_url: metadata.mediaUrl || metadata.media_url || '',
+            media_type: metadata.mediaType || metadata.media_type || 'video',
+            format: metadata.format || 'mp4',
+            quality: metadata.quality || 'unknown',
+            file_size: metadata.fileSize || metadata.file_size || 0,
+            download_status: metadata.downloadStatus || metadata.download_status || 'completed',
+            error_message: metadata.errorMessage || metadata.error_message || null,
+            title: metadata.title || 'Untitled',
+            thumbnail_url: metadata.thumbnailUrl || metadata.thumbnail_url || null,
+            author: metadata.author || null,
+            duration: metadata.duration || null,
+            metadata: metadata.extraMetadata || {},
             created_at: new Date().toISOString()
-        });
-        if (error) console.error('Failed to save history:', error);
+        };
+
+        const { data, error } = await supabase
+            .from('download_history')
+            .insert(record)
+            .select()
+            .single();
+            
+        if (error) {
+            console.error('Failed to save history:', error);
+            return null;
+        }
+        
+        console.log('History saved:', data?.id);
+        return data;
     } catch (err) {
         console.error('History API error:', err);
+        return null;
     }
 };
 
-// File Downloader (Blob)
+/**
+ * Downloads file as blob with progress tracking.
+ */
 const downloadFile = async (url, onProgress) => {
     try {
-        // NOTE: In a real scenario, big files or CORS restrictions need a proxy.
-        // For this demo, we use axios. 
+        const startTime = Date.now();
+        let lastLoaded = 0;
+        let lastTime = startTime;
+        
         const response = await axios.get(url, {
             responseType: 'blob',
             onDownloadProgress: (progressEvent) => {
-                const total = progressEvent.total;
+                const total = progressEvent.total || 0;
                 const loaded = progressEvent.loaded;
-                if (total) {
+                
+                if (total > 0) {
                     const percentage = Math.round((loaded * 100) / total);
-                    // Estimate speed (rough)
-                    // In a real app we'd keep track of start time or last chunk time
+                    
+                    // Calculate speed
+                    const now = Date.now();
+                    const timeDiff = (now - lastTime) / 1000; // seconds
+                    const byteDiff = loaded - lastLoaded;
+                    
+                    let speed = '0 MB/s';
+                    if (timeDiff > 0.1) {
+                        const bytesPerSec = byteDiff / timeDiff;
+                        if (bytesPerSec > 1024 * 1024) {
+                            speed = `${(bytesPerSec / (1024 * 1024)).toFixed(1)} MB/s`;
+                        } else if (bytesPerSec > 1024) {
+                            speed = `${(bytesPerSec / 1024).toFixed(0)} KB/s`;
+                        } else {
+                            speed = `${bytesPerSec.toFixed(0)} B/s`;
+                        }
+                        lastLoaded = loaded;
+                        lastTime = now;
+                    }
+                    
+                    // Calculate time remaining
+                    const elapsed = (now - startTime) / 1000;
+                    const estimatedTotal = (elapsed / (loaded / total));
+                    const remaining = Math.max(0, estimatedTotal - elapsed);
+                    let timeRemaining = '--';
+                    if (remaining < 60) {
+                        timeRemaining = `${Math.round(remaining)}s`;
+                    } else if (remaining < 3600) {
+                        timeRemaining = `${Math.round(remaining / 60)}m`;
+                    } else {
+                        timeRemaining = `${Math.round(remaining / 3600)}h`;
+                    }
+                    
                     onProgress({
                         loaded,
                         total,
                         percentage,
-                        speed: 'MB/s', 
-                        timeRemaining: 'Calculating...' 
+                        speed,
+                        timeRemaining
                     });
                 }
             }
         });
+        
         return { success: true, blob: response.data, size: response.data.size };
     } catch (error) {
         console.error("Blob download failed", error);
@@ -98,8 +168,19 @@ const downloadFile = async (url, onProgress) => {
 };
 
 /**
+ * Formats file size for display.
+ */
+const formatFileSize = (bytes) => {
+    if (!bytes || bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+};
+
+/**
  * Main Download Function
- * Now simpler: takes a direct downloadUrl (extracted from getMediaInfo formats)
+ * Handles the complete download pipeline: fetch, save, and track.
  */
 export const downloadMedia = async ({
     downloadUrl,
@@ -108,19 +189,23 @@ export const downloadMedia = async ({
     quality,
     onProgress,
     userId,
-    mediaTitle // For history/filename
+    mediaTitle,
+    mediaThumbnail,
+    mediaUrl, // Original source URL
+    author,
+    duration
 }) => {
     try {
         if (!downloadUrl) throw new Error("No download URL provided");
         
-        // 1. Download
+        // 1. Download the file
         const result = await downloadFile(downloadUrl, onProgress);
         
         if (!result.success) {
-             throw new Error("Download failed - Network Error.");
+             throw new Error(result.error || "Download failed - Network Error.");
         }
 
-        // 2. Create Link
+        // 2. Create download link and trigger download
         const blobUrl = window.URL.createObjectURL(result.blob);
         const ext = format || 'mp4';
         const safeTitle = (mediaTitle || 'download').replace(/[^a-z0-9]/gi, '_').toLowerCase();
@@ -135,41 +220,38 @@ export const downloadMedia = async ({
         window.URL.revokeObjectURL(blobUrl);
         document.body.removeChild(a);
 
-        // 3. Save History
+        // 3. Save to history with all metadata
         await saveToHistory(userId, {
             platform,
-            media_url: '...', // Should pass actual URL or url prop
-            media_type: ext === 'mp3' ? 'audio' : 'video',
+            mediaUrl: mediaUrl || downloadUrl,
+            mediaType: ext === 'mp3' ? 'audio' : 'video',
             format: ext,
             quality: quality,
-            file_size: result.size,
-            download_status: 'completed',
-            // New Fields
+            fileSize: result.size,
+            downloadStatus: 'completed',
             title: mediaTitle,
-            // We would need thumbnail/author passed in options to save them here
-            // For now, these are optional in schema
+            thumbnailUrl: mediaThumbnail,
+            author: author,
+            duration: duration
         });
 
-        return { success: true };
+        return { success: true, fileName, size: formatFileSize(result.size) };
 
     } catch (error) {
         console.error("Download pipeline error:", error);
         
-        let finalError = error.message;
-        
-        // Use our utility if it's an API error (mocked here, but in real life axios error)
-        // For demonstration, let's pretend network error is common
-        if(error.message === 'Network Error') {
-             // Let the UI/Toast know via helper
-        }
-        
-         await saveToHistory(userId, {
+        // Save failed attempt to history
+        await saveToHistory(userId, {
             platform,
-            download_status: 'failed',
-            error_message: finalError,
-            title: mediaTitle // ensure we save title even on fail if possible
+            mediaUrl: mediaUrl || downloadUrl,
+            mediaType: format === 'mp3' ? 'audio' : 'video',
+            format: format,
+            quality: quality,
+            downloadStatus: 'failed',
+            errorMessage: error.message,
+            title: mediaTitle
         });
         
-        return { success: false, error: finalError };
+        return { success: false, error: error.message };
     }
 };
