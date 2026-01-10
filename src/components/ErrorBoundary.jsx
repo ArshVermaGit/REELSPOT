@@ -27,7 +27,7 @@ class ErrorBoundary extends React.Component {
           </p>
           
           {/* Dev Details */}
-          {process.env.NODE_ENV === 'development' && (
+          {import.meta.env.DEV && (
              <details className="mb-8 w-full max-w-lg bg-white p-4 rounded-xl border border-zinc-200 text-left overflow-auto shadow-sm max-h-60 scrollbar-thin">
                  <summary className="cursor-pointer text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-2 flex items-center gap-2">
                     <span>View Stack Trace</span>
