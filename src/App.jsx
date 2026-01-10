@@ -4,6 +4,7 @@ import { ApiKeyProvider } from './contexts/ApiKeyContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
+import AuthCallback from './pages/AuthCallback'
 import Dashboard from './pages/Dashboard'
 import History from './pages/History'
 import Settings from './pages/Settings'
@@ -22,6 +23,7 @@ function App() {
                 <main>
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/auth/callback" element={<AuthCallback />} />
                     
                     {/* Protected Routes */}
                     <Route element={<ProtectedRoute />}>
