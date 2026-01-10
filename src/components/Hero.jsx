@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Download, Link as LinkIcon, Instagram, Youtube, Facebook, Music2, CheckCircle2, XCircle, AlertCircle, Key } from 'lucide-react';
-import { clsx } from 'clsx';
 import FloatingIcons from './FloatingIcons';
-import { detectPlatform, validateUrl } from '../services/platformDetector';
 import { useApiKeys } from '../contexts/ApiKeyContext';
 import ApiKeyModal from './ApiKeyModal';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 import { downloadMedia } from '../services/mediaDownloader';
 import DownloadProgress from './DownloadProgress';
+import DownloadForm from './DownloadForm';
 
 const PlatformIcon = ({ platform }) => {
     switch (platform) {
@@ -29,97 +27,48 @@ const Hero = () => {
     const [modalPlatform, setModalPlatform] = useState(null);
 
     // Download State
-    const [isDownloading, setIsDownloading] = useState(false);
+    const [downloadStatus, setDownloadStatus] = useState('idle'); // 'initializing' | 'downloading' | 'processing' | 'success' | 'error'
     const [downloadProgress, setDownloadProgress] = useState({ percentage: 0, loaded: 0, speed: '' });
+    const [activeDownloadTitle, setActiveDownloadTitle] = useState('');
 
-    const [url, setUrl] = useState('');
-    const [isHovered, setIsHovered] = useState(false);
-    const [validationState, setValidationState] = useState({
-        isValid: false,
-        platform: 'unknown',
-        mediaType: 'unknown',
-        loading: false,
-        error: null
-    });
-
-    // Debounce validation
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (!url) {
-                setValidationState({ isValid: false, platform: 'unknown', mediaType: 'unknown', loading: false, error: null });
-                return;
-            }
-
-            setValidationState(prev => ({ ...prev, loading: true }));
-             
-            const result = detectPlatform(url);
-            setValidationState({
-                isValid: result.isValid,
-                platform: result.platform,
-                mediaType: result.mediaType,
-                loading: false,
-                error: !result.isValid && url.length > 5 ? 'Unsupported or invalid URL' : null
-            });
-            
-        }, 300);
-
-        return () => clearTimeout(timer);
-    }, [url]);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        if (!user) {
-            toast.error("Please sign in to download content.");
-            return;
-        }
-
-        if (validationState.isValid) {
-            // Check if we have an API key for this platform
-            if (!hasApiKey(validationState.platform)) {
-                setModalPlatform(validationState.platform);
-                setIsModalOpen(true);
-                return;
-            }
-
-            // Start Download
-            setIsDownloading(true);
+    const handleDownloadStart = async (options) => {
+        // options: { downloadUrl, platform, format, quality, mediaTitle }
+        try {
+            setDownloadStatus('initializing');
             setDownloadProgress({ percentage: 0, loaded: 0, speed: '' });
-            
-            try {
-                const apiKey = getApiKey(validationState.platform);
-                const result = await downloadMedia({
-                    url,
-                    platform: validationState.platform,
-                    mediaId: validationState.mediaId, // Ensure this is returned from detectPlatform
-                    apiKey,
-                    format: 'mp4', // Default for now, can be state
-                    onProgress: (progress) => setDownloadProgress(progress),
-                    userId: user.id
-                });
+            setActiveDownloadTitle(options.mediaTitle);
 
-                if (result.success) {
-                    toast.success("Download completed successfully!");
-                } else {
-                    toast.error(`Download failed: ${result.error}`);
+            // Fetch apiKey for final check? Not strictly needed if logic is separated, but passed just in case
+            // The downloadMedia function now takes downloadUrl directly
+            
+            // Small delay for UI smoothness "Initializing..."
+            await new Promise(r => setTimeout(r, 800));
+            setDownloadStatus('downloading');
+
+            const result = await downloadMedia({
+                ...options,
+                userId: user.id,
+                onProgress: (prog) => {
+                    setDownloadProgress(prog);
+                    if(prog.percentage === 100) setDownloadStatus('processing');
                 }
-            } catch (error) {
-                toast.error("An unexpected error occurred.");
-                console.error(error);
-            } finally {
-                setIsDownloading(false);
+            });
+
+            if (result.success) {
+                setDownloadStatus('success');
+                toast.success("Download completed successfully!");
+            } else {
+                setDownloadStatus('error');
+                toast.error(`Download failed: ${result.error}`);
             }
+
+        } catch (error) {
+            console.error(error);
+            setDownloadStatus('error');
+            toast.error("Unexpected error occurred.");
         }
     };
-
-    const getBorderColor = () => {
-        if (!url) return 'border-zinc-200 focus:border-black';
-        if (validationState.loading) return 'border-blue-300 focus:border-blue-500';
-        if (validationState.isValid) return 'border-green-500 focus:border-green-500 shadow-green-100';
-        if (validationState.error) return 'border-red-300 focus:border-red-500 shadow-red-100';
-        return 'border-zinc-200 focus:border-black';
-    };
-
+    
     return (
         <div className="relative min-h-[90vh] flex flex-col justify-center items-center overflow-hidden bg-white text-black">
             {/* Background Elements */}
@@ -134,10 +83,15 @@ const Hero = () => {
 
             {/* Download Progress Modal */}
             <DownloadProgress
-                isOpen={isDownloading}
+                isOpen={downloadStatus !== 'idle'}
+                status={downloadStatus}
                 progress={downloadProgress}
-                onClose={() => setIsDownloading(false)}
-                platform={validationState.platform}
+                onClose={() => setDownloadStatus('idle')}
+                onRetry={() => {
+                    setDownloadStatus('idle');
+                    toast("Please click download again to retry.");
+                }}
+                fileName={activeDownloadTitle}
             />
 
             <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
@@ -158,88 +112,20 @@ const Hero = () => {
                     Download Media, <span className="text-black font-semibold">Effortlessly</span>
                 </p>
 
-                {/* Input Form */}
-                <form
-                    onSubmit={handleSubmit}
-                    className="w-full max-w-[600px] flex flex-col items-center gap-6 animate-fade-in opacity-0"
+                {/* Input Form Replacement */}
+                <div 
+                    className="w-full flex justify-center animate-fade-in opacity-0"
                     style={{ animationDelay: '0.4s' }}
                 >
-                    <div className="relative w-full group">
-                        {/* Left Icon (Dynamic) */}
-                        <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-300">
-                            <PlatformIcon platform={validationState.platform === 'unknown' ? 'default' : validationState.platform} />
-                        </div>
-
-                        {/* Input Field */}
-                        <input
-                            type="url"
-                            value={url}
-                            onChange={(e) => setUrl(e.target.value)}
-                            placeholder="Paste your link here..."
-                            className={clsx(
-                                "w-full h-16 pl-12 pr-12 rounded-2xl border-2 text-lg placeholder:text-zinc-400 focus:outline-none focus:shadow-xl transition-all duration-300",
-                                getBorderColor()
-                            )}
-                            required
-                        />
-
-                        {/* Right Status Indicator */}
-                        <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
-                            {validationState.loading && (
-                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-zinc-600"></div>
-                            )}
-                            {!validationState.loading && validationState.isValid && (
-                                <CheckCircle2 size={24} className="text-green-500 animate-in fade-in zoom-in duration-200" />
-                            )}
-                            {!validationState.loading && validationState.error && (
-                                <XCircle size={24} className="text-red-500 animate-in fade-in zoom-in duration-200" />
-                            )}
-                        </div>
-                    </div>
-                    
-                    {/* Helper Text for Error or Missing Key */}
-                    {validationState.error && (
-                        <div className="text-red-500 text-sm font-medium flex items-center gap-1 animate-in slide-in-from-top-1">
-                             <AlertCircle size={14} />
-                             {validationState.error}
-                        </div>
-                    )}
-
-                    {!validationState.error && validationState.isValid && user && !hasApiKey(validationState.platform) && (
-                         <div className="text-amber-500 text-sm font-medium flex items-center gap-1 animate-in slide-in-from-top-1">
-                            <Key size={14} />
-                            API Key setup required for {validationState.platform}
-                       </div>
-                    )}
-                    
-                    {/* Media Type Badge */}
-                    {validationState.isValid && (
-                        <div className="text-zinc-500 text-sm font-medium animate-in slide-in-from-top-1 bg-zinc-100 px-3 py-1 rounded-full">
-                           Detected: <span className="capitalize text-black">{validationState.platform} {validationState.mediaType}</span>
-                        </div>
-                    )}
-
-                    <button
-                        type="submit"
-                        disabled={!validationState.isValid}
-                        className={clsx(
-                            "relative overflow-hidden group bg-black text-white px-12 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform",
-                            "hover:scale-105 hover:shadow-2xl hover:shadow-black/20",
-                            "active:scale-95",
-                            "disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
-                        )}
-                        style={{ animationDelay: '0.6s' }}
-                        onMouseEnter={() => setIsHovered(true)}
-                        onMouseLeave={() => setIsHovered(false)}
-                    >
-                        <div className="flex items-center gap-3 relative z-10">
-                            <Download size={20} className={clsx("transition-transform duration-300", isHovered ? "translate-y-1" : "")} />
-                            <span>Download Now</span>
-                        </div>
-                        {/* Subtle sheen effect on hover */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                    </button>
-                </form>
+                    <DownloadForm 
+                        onDownloadStart={handleDownloadStart}
+                        onApiKeyRequired={(plat) => {
+                            setModalPlatform(plat);
+                            setIsModalOpen(true);
+                        }}
+                        user={user}
+                    />
+                </div>
 
             </div>
         </div>
