@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import { Shield, CheckCircle, AlertCircle, RefreshCw, Trash2, Edit2, Activity } from 'lucide-react';
+import { Shield, CheckCircle, AlertCircle, RefreshCw, Trash2, Edit2, Activity, Clock } from 'lucide-react';
 import { clsx } from 'clsx';
-// Actually FloatingIcons exports default, need to grab specific icons or standard PlatformIcon from Hero (but Hero doesn't export it well).
-// I will just simple icons here.
 import { Instagram, Youtube, Facebook, Music2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+
+const timeAgo = (date) => {
+    if (!date) return 'Never';
+    const diff = Math.floor((new Date() - new Date(date)) / 1000);
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    return `${Math.floor(diff / 86400)}d ago`;
+};
 
 const getIcon = (p) => {
     switch(p) {
@@ -16,10 +23,13 @@ const getIcon = (p) => {
     }
 };
 
-const ApiKeyCard = ({ platform, apiKey, onUpdate, onDelete }) => {
+const ApiKeyCard = ({ platform, keyData, onUpdate, onDelete, onTestStatus }) => {
+    // keyData is the full DB object now
+    const apiKey = keyData?.api_key;
     const [testing, setTesting] = useState(false);
-    const [status, setStatus] = useState(apiKey ? 'active' : 'missing'); // active, missing, invalid
-    const [latency, setLatency] = useState(null);
+    
+    // Use DB status or fallback
+    const status = !apiKey ? 'missing' : (keyData?.status || 'active'); 
 
     const handleTest = async () => {
         if (!apiKey) return;
@@ -29,21 +39,22 @@ const ApiKeyCard = ({ platform, apiKey, onUpdate, onDelete }) => {
         // Mock API Test
         await new Promise(r => setTimeout(r, 1000 + Math.random() * 500));
         
-        // Random success/fail for demo (simulating auth check)
-        // In real app, call backend endpoint to verify key
-        const success = Math.random() > 0.1; 
+        const success = Math.random() > 0.1; // 90% success rate
+        const latency = Date.now() - start;
         
-        setLatency(Date.now() - start);
-        setStatus(success ? 'active' : 'invalid');
+        const newStatus = success ? 'active' : 'invalid';
+        
+        if (onTestStatus) {
+            await onTestStatus(platform, newStatus, latency);
+        }
+        
         setTesting(false);
-        
         if (success) toast.success(`Connection to ${platform} successful!`);
-        else toast.error(`Connection to ${platform} failed. check your key.`);
+        else toast.error(`Connection to ${platform} failed.`);
     };
 
-    // Mask key: "sk_live...ab12"
     const displayKey = apiKey 
-        ? `${apiKey.substring(0, 4)}...${apiKey.substring(apiKey.length - 4)}` 
+        ? `••••••••${apiKey.substring(apiKey.length - 4)}` 
         : 'Not configured';
 
     return (
@@ -61,17 +72,25 @@ const ApiKeyCard = ({ platform, apiKey, onUpdate, onDelete }) => {
                     {status === 'active' && <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full flex items-center gap-1"><CheckCircle size={10} /> Active</span>}
                     {status === 'missing' && <span className="px-2 py-0.5 bg-zinc-100 text-zinc-500 text-xs font-bold rounded-full">Not Configured</span>}
                     {status === 'invalid' && <span className="px-2 py-0.5 bg-red-100 text-red-600 text-xs font-bold rounded-full flex items-center gap-1"><AlertCircle size={10} /> Invalid</span>}
+                    {status === 'expired' && <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">Expired</span>}
                 </div>
                 
                 <p className="text-zinc-500 font-mono text-sm bg-zinc-50 inline-block px-2 py-1 rounded border border-zinc-100 mb-2">
                     {displayKey}
                 </p>
 
-                {latency && (
-                    <p className="text-xs text-zinc-400 flex items-center justify-center sm:justify-start gap-1">
-                        <Activity size={12} /> Latency: {latency}ms
-                    </p>
-                )}
+                <div className="flex items-center justify-center sm:justify-start gap-4 text-xs text-zinc-400">
+                    {keyData?.last_tested_at && (
+                        <p className="flex items-center gap-1">
+                            <Clock size={12} /> Tested: {timeAgo(keyData.last_tested_at)}
+                        </p>
+                    )}
+                    {keyData?.quota_usage > 0 && (
+                        <p className="flex items-center gap-1">
+                            <Activity size={12} /> Usage: {keyData.quota_usage} reqs
+                        </p>
+                    )}
+                </div>
             </div>
 
             {/* Actions */}
@@ -97,9 +116,7 @@ const ApiKeyCard = ({ platform, apiKey, onUpdate, onDelete }) => {
 
                 {apiKey && (
                     <button 
-                        onClick={() => {
-                            if(window.confirm(`Delete ${platform} API Key? This will stop downloads.`)) onDelete(platform);
-                        }}
+                        onClick={onDelete}
                         className="p-3 rounded-xl bg-zinc-50 text-red-500 hover:bg-red-500 hover:text-white transition-all"
                         title="Delete Key"
                     >
