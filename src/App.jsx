@@ -27,34 +27,41 @@ function App() {
   }, [isOnline]);
 
   return (
-    <Router>
+    <ErrorBoundary>
       <AuthProvider>
         <ApiKeyProvider>
             <DownloadProvider>
-            <ErrorBoundary>
-            <div className="font-sans antialiased text-foreground">
-                <Toaster position="top-center" />
-                <Layout>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/auth/callback" element={<AuthCallback />} />
-                        
-                        {/* Protected Routes */}
-                        <Route element={<ProtectedRoute />}>
-                            <Route path="/dashboard" element={<Dashboard />} />
-                            <Route path="/history" element={<History />} />
-                            <Route path="/settings" element={<Settings />} />
-                        </Route>
-                        
-                        <Route path="*" element={<Home />} />
-                    </Routes>
-                </Layout>
-            </div>
-            </ErrorBoundary>
+                <Router>
+                    <div className="font-sans antialiased text-foreground">
+                        <Toaster position="top-right" toastOptions={{
+                            className: 'font-semibold',
+                            style: {
+                                borderRadius: '12px',
+                                background: '#333',
+                                color: '#fff',
+                            },
+                        }} />
+                        <Layout>
+                            <Routes>
+                                <Route path="/" element={<Home />} />
+                                <Route path="/auth/callback" element={<AuthCallback />} />
+                                
+                                {/* Protected Routes */}
+                                <Route element={<ProtectedRoute />}>
+                                    <Route path="/dashboard" element={<Dashboard />} />
+                                    <Route path="/history" element={<History />} />
+                                    <Route path="/settings" element={<Settings />} />
+                                </Route>
+                                
+                                <Route path="*" element={<Home />} />
+                            </Routes>
+                        </Layout>
+                    </div>
+                </Router>
             </DownloadProvider>
         </ApiKeyProvider>
       </AuthProvider>
-    </Router>
+    </ErrorBoundary>
   )
 }
 
