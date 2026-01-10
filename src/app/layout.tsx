@@ -10,6 +10,8 @@ export const metadata: Metadata = {
 };
 
 import Footer from '@/components/Footer';
+import ScrollProgress from '@/components/ui/ScrollProgress';
+import ScrollToTop from '@/components/ui/ScrollToTop';
 
 export default function RootLayout({
   children,
@@ -21,11 +23,13 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <div className="min-h-screen flex flex-col">
+            <ScrollProgress />
             <Navbar />
             <main className="flex-grow">
               {children}
             </main>
             <Footer />
+            <ScrollToTop />
           </div>
         </AuthProvider>
       </body>
