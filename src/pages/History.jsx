@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { useHistory } from '../hooks/useHistory';
 import HistoryCard from '../components/history/HistoryCard';
-import LoadingScreen from '../components/shared/LoadingSpinner';
-import { Search, Filter, Trash2, DownloadCloud } from 'lucide-react';
-import { clsx } from 'clsx';
-import { downloadMedia } from '../services/mediaDownloader';
+import HistoryFilters from '../components/history/HistoryFilters';
+import HistoryStats from '../components/history/HistoryStats';
+import { Trash2, CheckSquare, Square } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../contexts/AuthContext';
-import { useApiKeys } from '../contexts/ApiKeyContext';
+import { clsx } from 'clsx';
+import { useNavigate } from 'react-router-dom';
 
 const History = () => {
     const { user } = useAuth();
-    const { getApiKey } = useApiKeys();
+    const navigate = useNavigate();
+    
+    const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
+
     const { 
         history, 
         loading, 
@@ -23,154 +26,139 @@ const History = () => {
         setSort, 
         stats, 
         deleteItem, 
-        clearHistory 
+        selectedIds,
+        toggleSelect,
+        selectAll,
+        bulkDelete,
+        clearHistory
     } = useHistory();
 
     const handleRedownload = async (item) => {
-        toast.success(`Restarting download for ${item.title}...`);
-        // Note: For a "real" redownload, we likely need to re-fetch the fresh direct link 
-        // because the old one might be expired.
-        // We reuse the logic from mediaDownloader but bypass analysis if we trust the metadata?
-        // Actually, safer to treat it as a fresh download request using the original URL.
-        try {
-             // Basic trigger - in a real app better to integrate with the Hero's download manager logic
-             // For now, standalone helper call:
-             // getApiKey might be needed?
-             const apiKey = getApiKey(item.platform); 
-             
-             // Wait, downloadMedia now expects a downloadUrl (direct link).
-             // If we didn't store the direct link or if it expired, we must re-analyze.
-             // Let's assume for this "Re-download" we need to start over.
-             // Simplified: Just redirect to Home with URL pre-filled? Or Show a toast saying "Copying URL..."
-             
-             navigator.clipboard.writeText(item.media_url);
-             toast.success("URL copied! Paste on Home to download again.");
-             
-             // True re-download implementation requires checking if direct link is valid or re-fetching.
-             // Given the architecture, guiding user to Home is safer UX than failing on expired links.
-        } catch (e) {
-            console.error(e);
-        }
+        // Redirect to home with URL to restart process cleanly
+        navigator.clipboard.writeText(item.media_url);
+        toast.success("URL copied! Paste on Home to download again.");
+        navigate('/');
     };
 
     return (
-        <div className="min-h-screen bg-zinc-50/50 pt-20 pb-12">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-zinc-50/50 pt-24 pb-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
-                {/* Header Stats */}
-                <div className="mb-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-black text-white p-6 rounded-2xl shadow-xl shadow-black/5">
-                        <div className="flex items-center gap-4">
-                            <div className="p-3 bg-white/10 rounded-xl">
-                                <DownloadCloud size={24} />
-                            </div>
-                            <div>
-                                <p className="text-white/60 text-sm font-medium">Total Downloads</p>
-                                <h2 className="text-3xl font-bold">{stats.totalDownloads}</h2>
-                            </div>
-                        </div>
+                {/* Header */}
+                <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <h1 className="text-3xl font-[800] tracking-tight mb-2">Download History</h1>
+                        <p className="text-zinc-500">Track and manage your media downloads.</p>
                     </div>
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-zinc-100">
-                        <div className="flex items-center gap-4">
-                             <div className="p-3 bg-zinc-100 rounded-xl text-zinc-600">
-                                <Filter size={24} />
-                            </div>
-                            <div>
-                                <p className="text-zinc-500 text-sm font-medium">Data Downloaded</p>
-                                <h2 className="text-3xl font-bold text-zinc-900">{(stats.totalSize / (1024*1024)).toFixed(0)} MB</h2>
-                            </div>
+                    {/* Bulk Actions Header Control */}
+                    {selectedIds.size > 0 && (
+                        <div className="flex items-center gap-3 bg-black text-white px-4 py-2 rounded-xl shadow-lg animate-in fade-in slide-in-from-bottom-2">
+                            <span className="font-medium text-sm">{selectedIds.size} Selected</span>
+                            <div className="h-4 w-px bg-white/20" />
+                            <button 
+                                onClick={bulkDelete}
+                                className="flex items-center gap-2 hover:text-red-300 transition-colors text-sm font-medium"
+                            >
+                                <Trash2 size={16} /> Delete
+                            </button>
                         </div>
-                    </div>
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-zinc-100">
-                        <div className="flex items-center gap-4">
-                            <div className="p-3 bg-green-100 rounded-xl text-green-600">
-                                <AlertCircle size={24} />
-                            </div>
-                            <div>
-                                <p className="text-zinc-500 text-sm font-medium">Success Rate</p>
-                                <h2 className="text-3xl font-bold text-zinc-900">
-                                    {stats.totalDownloads > 0 ? ((stats.successCount / stats.totalDownloads) * 100).toFixed(0) : 0}%
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
+                    )}
                 </div>
 
-                {/* Toolbar */}
-                <div className="bg-white p-4 rounded-2xl shadow-sm border border-zinc-100 mb-8 sticky top-24 z-10 flex flex-col md:flex-row gap-4 justify-between items-center">
-                    {/* Search */}
-                    <div className="relative w-full md:w-96">
-                        <Search className="absolute left-3 top-3 text-zinc-400" size={20} />
-                        <input 
-                            type="text" 
-                            placeholder="Search by title, URL..." 
-                            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 bg-zinc-50 focus:bg-white focus:border-black transition-colors outline-none"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
+                {/* Analytics */}
+                <HistoryStats stats={stats} />
+
+                {/* Filters & Control Bar */}
+                <HistoryFilters 
+                    filter={filter} 
+                    setFilter={setFilter} 
+                    search={search} 
+                    setSearch={setSearch} 
+                    sort={sort} 
+                    setSort={setSort}
+                    viewMode={viewMode}
+                    setViewMode={setViewMode}
+                    totalItems={history.length}
+                />
+
+                {/* Bulk Select All */}
+                <div className="mb-4 flex items-center justify-between pl-1">
+                    <button 
+                        onClick={selectAll}
+                        className="text-sm font-medium text-zinc-500 hover:text-black flex items-center gap-2 transition-colors"
+                    >
+                         {selectedIds.size > 0 && selectedIds.size === history.length ? (
+                             <CheckSquare size={18} className="text-black" />
+                         ) : (
+                             <Square size={18} />
+                         )}
+                         {selectedIds.size === history.length ? 'Deselect All' : 'Select All'}
+                    </button>
+
+                    {/* Clear All History Button */}
+                    {history.length > 0 && (
+                        <button 
+                            onClick={() => {
+                                if(window.confirm('Are you sure you want to delete ALL history? This cannot be undone.')) clearHistory();
+                            }}
+                            className="text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-2"
+                        >
+                            <Trash2 size={14} /> Clear All
+                        </button>
+                    )}
+                </div>
+
+                {/* Grid/List Content */}
+                {loading ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+                        {[1,2,3,4,5,6].map(i => (
+                            <div key={i} className="h-64 bg-zinc-200 rounded-2xl"></div>
+                        ))}
                     </div>
-
-                    {/* Filters & Sort */}
-                    <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
-                        <select 
-                            className="px-4 py-2.5 rounded-xl border border-zinc-200 bg-white text-sm font-medium hover:bg-zinc-50 transition-colors outline-none"
-                            value={filter.platform}
-                            onChange={(e) => setFilter(prev => ({ ...prev, platform: e.target.value }))}
-                        >
-                            <option value="All">All Platforms</option>
-                            <option value="instagram">Instagram</option>
-                            <option value="youtube">YouTube</option>
-                            <option value="facebook">Facebook</option>
-                            <option value="tiktok">TikTok</option>
-                        </select>
-
-                        <select 
-                            className="px-4 py-2.5 rounded-xl border border-zinc-200 bg-white text-sm font-medium hover:bg-zinc-50 transition-colors outline-none"
-                            value={sort}
-                            onChange={(e) => setSort(e.target.value)}
-                        >
-                            <option value="newest">Newest First</option>
-                            <option value="oldest">Oldest First</option>
-                            <option value="size_desc">Largest Size</option>
-                        </select>
-
-                        {/* Clear History Button */}
-                        {history.length > 0 && (
-                             <button 
+                ) : history.length === 0 ? (
+                    <div className="text-center py-24 bg-white rounded-3xl border border-zinc-100 shadow-sm border-dashed">
+                        <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mx-auto mb-4 text-zinc-300">
+                             <CheckSquare size={32} />
+                        </div>
+                        <h3 className="text-xl font-bold text-zinc-900 mb-2">No history found</h3>
+                        <p className="text-zinc-500 max-w-sm mx-auto mb-6">
+                            {search || filter.platform !== 'All' 
+                                ? "No downloads match your current filters. Try adjusting them." 
+                                : "You haven't downloaded any media yet. Start your collection now!"}
+                        </p>
+                        {(search || filter.platform !== 'All') ? (
+                            <button 
                                 onClick={() => {
-                                    if(window.confirm('Are you sure you want to clear all history?')) clearHistory();
+                                    setSearch('');
+                                    setFilter({ platform: 'All', type: 'All', status: 'All', format: 'All', dateRange: 'All' });
                                 }}
-                                className="px-4 py-2.5 rounded-xl border border-transparent bg-red-50 text-red-600 hover:bg-red-100 text-sm font-medium transition-colors"
+                                className="text-black font-semibold hover:underline"
                             >
-                                <Trash2 size={18} />
+                                Clear all filters
+                            </button>
+                        ) : (
+                            <button 
+                                onClick={() => navigate('/')}
+                                className="bg-black text-white px-6 py-3 rounded-xl font-medium hover:scale-105 transition-transform"
+                            >
+                                Start Downloading
                             </button>
                         )}
                     </div>
-                </div>
-
-                {/* Grid */}
-                {loading ? (
-                    <div className="text-center py-20 text-zinc-400">Loading history...</div>
-                ) : history.length === 0 ? (
-                    <div className="text-center py-20">
-                        <div className="w-20 h-20 bg-zinc-100 rounded-full flex items-center justify-center mx-auto mb-6 text-zinc-400">
-                             <DownloadCloud size={40} />
-                        </div>
-                        <h3 className="text-xl font-bold text-zinc-900 mb-2">No history found</h3>
-                        <p className="text-zinc-500">
-                            {search || filter.platform !== 'All' 
-                                ? "Try adjusting your filters" 
-                                : "Start downloading to see your history here"}
-                        </p>
-                    </div>
                 ) : (
-                    <div className="grid grid-cols-1 gap-4">
+                    <div className={clsx(
+                        "grid gap-4 transition-all",
+                        viewMode === 'grid' ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"
+                    )}>
                         {history.map(item => (
                             <HistoryCard 
                                 key={item.id} 
-                                item={item} 
+                                item={item}
+                                isSelected={selectedIds.has(item.id)}
+                                onSelect={toggleSelect}
                                 onDelete={deleteItem}
                                 onRedownload={handleRedownload}
+                                viewMode={viewMode}
                             />
                         ))}
                     </div>
