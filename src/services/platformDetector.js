@@ -3,7 +3,7 @@
  * Handles regex matching for Instagram, YouTube, Facebook, and TikTok.
  */
 
-const PLATFORMS = {
+export const PLATFORMS = {
     INSTAGRAM: 'instagram',
     YOUTUBE: 'youtube',
     FACEBOOK: 'facebook',
@@ -11,7 +11,7 @@ const PLATFORMS = {
     UNKNOWN: 'unknown'
 };
 
-const MEDIA_TYPES = {
+export const MEDIA_TYPES = {
     VIDEO: 'video',
     REEL: 'reel',
     STORY: 'story',
@@ -22,18 +22,17 @@ const MEDIA_TYPES = {
 
 // Comprehensive Regex Patterns
 const PATTERNS = {
-    // Matches: /p/ID, /reel/ID, /reels/ID, /tv/ID, /stories/user/ID
+    // Instagram: Matches /p/, /reel/, /reels/, /tv/, /stories/
     INSTAGRAM: /(?:instagr\.am|instagram\.com)\/(p|reel|reels|stories|tv)\/([a-zA-Z0-9_-]+)/,
     
-    // Matches: youtube.com/watch?v=ID, youtu.be/ID, /shorts/ID, /embed/ID
+    // YouTube: Matches watch?v=, youtu.be/, shorts/, embed/
     YOUTUBE: /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/,
     YOUTUBE_SHORTS: /(?:youtube\.com\/shorts\/)([^"&?\/\s]{11})/,
     
-    // Matches: facebook.com/watch?v=ID, /videos/ID, /reel/ID, fb.watch/ID
+    // Facebook: Matches watch, videos, reel, stories
     FACEBOOK: /(?:facebook\.com|fb\.watch)\/(?:watch\/?\?v=|videos\/|reel\/|stories\/|groups\/[^/]+\/posts\/)([^/?&]+)/,
-    // Note: FB regex is tricky due to many formats. fb.watch often redirects.
     
-    // Matches: tiktok.com/@user/video/ID, tiktok.com/v/ID, vt.tiktok.com/ID
+    // TikTok: Matches @user/video/ID, v/ID, vt.tiktok.com/ID
     TIKTOK: /(?:tiktok\.com\/)(?:@[\w.-]+\/video\/|v\/)([\d]+)|(?:vt\.tiktok\.com\/)([\w]+)/
 };
 
@@ -68,14 +67,14 @@ export const extractMediaId = (url, platform) => {
         switch (platform) {
             case PLATFORMS.INSTAGRAM:
                 match = url.match(PATTERNS.INSTAGRAM);
-                // Group 2 is usually the ID, but for stories/username/id logic might differ
-                // Our regex: (p|reel|...)\/([ID])
-                // For /stories/username/12345, the regex needs to be smarter or we handle it here.
-                // Current regex captures "stories" as group 1.
-                if(match && match[1] === 'stories' && url.includes('/stories/')) {
-                     // Try to grab the last numeric part
+                // Handle story URLs: /stories/username/12345
+                if(url.includes('/stories/')) {
                      const parts = url.split('/').filter(p => p);
-                     return parts[parts.length - 1]; 
+                     // If structure is instagram.com/stories/username/ID ...
+                     // Last part should be ID.
+                     const lastPart = parts[parts.length - 1];
+                     // Basic check if it looks like an ID (numeric)
+                     if (/^\d+$/.test(lastPart)) return lastPart;
                 }
                 return match ? match[2] : null;
 
@@ -116,44 +115,48 @@ export const detectPlatform = (url) => {
     const cleanUrl = url.trim();
 
     // 2. Instagram Detection
-    if (PATTERNS.INSTAGRAM.test(cleanUrl)) {
-        const match = cleanUrl.match(PATTERNS.INSTAGRAM);
-        const typeStr = match[1];
+    if (cleanUrl.includes('instagram.com') || cleanUrl.includes('instagr.am')) {
         let type = MEDIA_TYPES.POST;
-        if (['reel', 'reels'].includes(typeStr)) type = MEDIA_TYPES.REEL;
-        else if (typeStr === 'stories') type = MEDIA_TYPES.STORY;
-        else if (typeStr === 'tv') type = MEDIA_TYPES.VIDEO;
+        if (cleanUrl.includes('/reel/') || cleanUrl.includes('/reels/')) type = MEDIA_TYPES.REEL;
+        else if (cleanUrl.includes('/stories/')) type = MEDIA_TYPES.STORY;
+        else if (cleanUrl.includes('/tv/')) type = MEDIA_TYPES.VIDEO;
 
         const id = extractMediaId(cleanUrl, PLATFORMS.INSTAGRAM);
-        return { platform: PLATFORMS.INSTAGRAM, mediaType: type, mediaId: id, isValid: true };
+        // Valid if we found an ID (except for stories which might be tricky, but general posts need ID)
+        // For stories, allow if URL looks correct even if extractMediaId simple matching failed previously
+        const isValid = !!id || cleanUrl.includes('/stories/');
+        
+        return { platform: PLATFORMS.INSTAGRAM, mediaType: type, mediaId: id, isValid: isValid };
     }
 
     // 3. YouTube Detection
-    if (cleanUrl.match(PATTERNS.YOUTUBE) || cleanUrl.match(PATTERNS.YOUTUBE_SHORTS)) {
+    if (cleanUrl.match(/youtu\.?be/)) {
         const isShort = PATTERNS.YOUTUBE_SHORTS.test(cleanUrl);
         const id = extractMediaId(cleanUrl, PLATFORMS.YOUTUBE);
         return { 
             platform: PLATFORMS.YOUTUBE, 
             mediaType: isShort ? MEDIA_TYPES.SHORT : MEDIA_TYPES.VIDEO, 
             mediaId: id, 
-            isValid: true 
+            isValid: !!id 
         };
     }
 
     // 4. Facebook Detection
-    if (PATTERNS.FACEBOOK.test(cleanUrl)) {
+    if (cleanUrl.includes('facebook.com') || cleanUrl.includes('fb.watch')) {
         let type = MEDIA_TYPES.VIDEO;
         if (cleanUrl.includes('/reel/')) type = MEDIA_TYPES.REEL;
         else if (cleanUrl.includes('/stories/')) type = MEDIA_TYPES.STORY;
         
         const id = extractMediaId(cleanUrl, PLATFORMS.FACEBOOK);
-        return { platform: PLATFORMS.FACEBOOK, mediaType: type, mediaId: id, isValid: true };
+        // FB URLs are diverse, loosen valid check slightly or rely on regex match
+        const hasMatch = PATTERNS.FACEBOOK.test(cleanUrl);
+        return { platform: PLATFORMS.FACEBOOK, mediaType: type, mediaId: id, isValid: hasMatch };
     }
 
     // 5. TikTok Detection
-    if (PATTERNS.TIKTOK.test(cleanUrl)) {
+    if (cleanUrl.includes('tiktok.com')) {
         const id = extractMediaId(cleanUrl, PLATFORMS.TIKTOK);
-        return { platform: PLATFORMS.TIKTOK, mediaType: MEDIA_TYPES.VIDEO, mediaId: id, isValid: true };
+        return { platform: PLATFORMS.TIKTOK, mediaType: MEDIA_TYPES.VIDEO, mediaId: id, isValid: !!id };
     }
 
     return { platform: PLATFORMS.UNKNOWN, mediaType: MEDIA_TYPES.UNKNOWN, mediaId: null, isValid: false };
