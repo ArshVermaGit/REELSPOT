@@ -1,129 +1,63 @@
 .section {
-  padding: var(--spacing-3xl) 0;
+  padding: 80px var(--spacing-xl) 120px;
   background-color: var(--color-white);
-  overflow: hidden;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: var(--spacing-lg);
-  perspective: 1000px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-xl);
 }
 
-@media (min-width: 640px) {
+@media (max-width: 1024px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 640px) {
   .grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr;
   }
 }
 
 .card {
-  position: relative;
-  background: var(--color-white);
+  background: var(--color-gray-50);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
-  padding: var(--spacing-xl);
+  padding: var(--spacing-2xl);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  transition: all var(--transition-normal);
-  cursor: pointer;
-  overflow: hidden;
-  /* opacity: 0; Removed to ensure visibility */
-  /* transform: translateY(30px); Removed to ensure visibility */
-}
-
-/* Idle Pulse Animation */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
-}
-
-.cardIdle:not(:hover) {
-  animation: pulse 4s ease-in-out infinite;
-}
-
-/* Hover Effects */
-.card:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--shadow-xl);
-  border-color: transparent;
+  position: relative;
 }
 
 .iconWrapper {
   margin-bottom: var(--spacing-md);
-  transition: transform var(--transition-normal);
-  filter: grayscale(100%);
-  opacity: 0.7;
-}
-
-.card:hover .iconWrapper {
-  filter: grayscale(0%);
-  opacity: 1;
-  transform: scale(1.1);
+  color: var(--color-black);
 }
 
 .platformName {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: var(--spacing-xs);
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
   color: var(--text-primary);
 }
 
 .formatList {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--text-secondary);
   margin-bottom: var(--spacing-lg);
 }
 
 .counter {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--color-gray-400);
-  transition: color var(--transition-normal);
-}
-
-.card:hover .counter {
+  font-size: 0.875rem;
+  font-weight: 700;
   color: var(--color-black);
-}
-
-/* Entrance Animation */
-@keyframes slideUpFade {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animateEntrance {
-  animation: slideUpFade 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-/* Ripple Effect */
-.ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.05);
-  transform: scale(0);
-  animation: ripple 0.6s linear;
-  pointer-events: none;
-}
-
-@keyframes ripple {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
+  background: white;
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
 }
