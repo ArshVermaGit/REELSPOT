@@ -7,7 +7,7 @@ const ProtectedRoute = () => {
   const location = useLocation()
 
   if (loading) {
-    return <LoadingScreen message="Checking authorization..." />
+    return <LoadingScreen message="Verifying access..." />
   }
 
   if (!user) {
