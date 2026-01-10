@@ -30,7 +30,9 @@ const History = () => {
         toggleSelect,
         selectAll,
         bulkDelete,
-        clearHistory
+        clearHistory,
+        hasMore,
+        loadMore
     } = useHistory();
 
     const handleRedownload = async (item) => {
@@ -161,6 +163,18 @@ const History = () => {
                                 viewMode={viewMode}
                             />
                         ))}
+                    </div>
+                )}
+                
+                {/* Load More Trigger */}
+                {!loading && history.length > 0 && hasMore && (
+                    <div className="mt-12 flex justify-center">
+                        <button 
+                            onClick={loadMore}
+                            className="bg-white border border-zinc-200 text-zinc-600 px-6 py-2.5 rounded-xl font-medium shadow-sm hover:bg-zinc-50 hover:text-black hover:border-zinc-300 transition-all active:scale-95"
+                        >
+                            Load More
+                        </button>
                     </div>
                 )}
             </div>
