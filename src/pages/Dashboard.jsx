@@ -2,13 +2,15 @@ import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useDashboardStats } from '../hooks/useDashboardStats';
 import { useApiKeys } from '../contexts/ApiKeyContext';
-import { useHistory } from '../hooks/useHistory'; // reusing delete logic
-import StatsCards from '../components/dashboard/StatsCards';
-import ActivityFeed from '../components/dashboard/ActivityFeed';
-import LoadingScreen from '../components/LoadingScreen';
+import { useHistory } from '../hooks/useHistory'; 
+import StatsCards from '../components/dashboard/StatsCard'; 
+import RecentDownloads from '../components/dashboard/RecentDownloads';
+import PlatformChart from '../components/dashboard/PlatformChart';
+import ApiKeyStatus from '../components/dashboard/ApiKeyStatus';
+import LoadingScreen from '../components/shared/LoadingSpinner';
 import { Link } from 'react-router-dom';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { Download, AlertTriangle } from 'lucide-react';
+// import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'; // Removed, moved to PlatformChart
+import { Download, AlertTriangle } from 'lucide-react'; // Some might be unused now
 
 const Dashboard = () => {
     const { user } = useAuth();
@@ -63,60 +65,23 @@ const Dashboard = () => {
                 {/* 3. Stats Cards */}
                 <StatsCards stats={stats} apiKeysCount={activeKeysCount} />
 
-                {/* 4. Main Content Grid */}
+                {/* Content Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     
-                    {/* Left Col: Activity Feed (2/3 width) */}
-                    <div className="lg:col-span-2 flex flex-col">
-                        <ActivityFeed activities={stats.recentActivity} onDelete={deleteItem} />
+                    {/* Activity Feed (2 cols) */}
+                    <div className="lg:col-span-2">
+                        <RecentDownloads activities={history.slice(0, 5)} onDelete={deleteItem} />
                     </div>
 
-                    {/* Right Col: Charts & Status (1/3 width) */}
-                    <div className="flex flex-col gap-8">
-                        
+                    {/* Sidebar (1 col) */}
+                    <div className="space-y-8">
                         {/* Platform Chart */}
-                        <div className="bg-white rounded-3xl p-6 border border-zinc-100 shadow-sm h-[400px]">
-                            <h2 className="text-xl font-bold mb-6">Platform Usage</h2>
-                            {stats.platformDist.length > 0 ? (
-                                <ResponsiveContainer width="100%" height="85%">
-                                    <PieChart>
-                                        <Pie
-                                            data={stats.platformDist}
-                                            innerRadius={60}
-                                            outerRadius={80}
-                                            paddingAngle={5}
-                                            dataKey="value"
-                                        >
-                                            {stats.platformDist.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={entry.fill} />
-                                            ))}
-                                        </Pie>
-                                        <Tooltip 
-                                            contentStyle={{ borderRadius: '12px', borderColor: '#f4f4f5' }}
-                                            itemStyle={{ fontWeight: 600, color: '#3f3f46' }}
-                                        />
-                                        <Legend verticalAlign="bottom" height={36}/>
-                                    </PieChart>
-                                </ResponsiveContainer>
-                            ) : (
-                                <div className="h-full flex items-center justify-center text-zinc-400 text-center">
-                                    No data yet.<br/>Start downloading to see analytics.
-                                </div>
-                            )}
-                        </div>
+                        <PlatformChart data={stats.platforms} />
 
-                        {/* Quick Help Card */}
-                        <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 rounded-3xl p-8 text-white shadow-xl">
-                            <h3 className="text-xl font-bold mb-2">Need Help?</h3>
-                            <p className="text-zinc-400 text-sm mb-6">Check our guide on how to configure API keys for best performance.</p>
-                            <button className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl font-bold transition-colors">
-                                View Documentation
-                            </button>
-                        </div>
-
+                        {/* API Key Status */}
+                        <ApiKeyStatus apiKeys={apiKeys} />
                     </div>
                 </div>
-
             </div>
         </div>
     );
