@@ -8,9 +8,15 @@ create table api_keys (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references auth.users(id) not null,
   platform text not null,
-  api_key text not null, -- In a real prod app, use pgcrypto functions to encrypt this column
+  api_key text not null, 
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  
+  -- New Status Columns
+  status text default 'active', -- 'active', 'invalid', 'expired'
+  last_tested_at timestamp with time zone,
+  quota_usage int default 0,
+  
   unique(user_id, platform)
 );
 
@@ -20,19 +26,18 @@ create table download_history (
   user_id uuid references auth.users(id) not null,
   platform text not null,
   media_url text not null,
-  media_type text, -- 'video', 'image', 'reel', 'story'
-  format text, -- 'mp4', 'mp3', 'jpg'
-  quality text, -- '1080p', 'HD'
-  file_size bigint, -- bytes
-  download_status text not null, -- 'completed', 'failed'
+  media_type text, 
+  format text, 
+  quality text, 
+  file_size bigint, 
+  download_status text not null, 
   
-  -- New Metadata Columns
   title text,
   thumbnail_url text,
   author text,
   duration text,
   error_message text,
-  metadata jsonb default '{}'::jsonb, -- Store extra platform specific info
+  metadata jsonb default '{}'::jsonb, 
 
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
@@ -42,9 +47,14 @@ create table user_settings (
     user_id uuid references auth.users(id) primary key,
     default_format text default 'mp4',
     default_quality text default '1080p',
+    
     auto_download boolean default false,
     notifications_enabled boolean default true,
-    history_retention_days int default 30,
+    
+    auto_delete_days int default 30, -- Renamed from history_retention_days or kept for logic
+    history_limit int default 1000,
+    show_file_warnings boolean default true,
+    
     theme text default 'light',
     updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
