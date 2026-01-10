@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
+import { RefreshCw } from 'lucide-react';
 import Modal from './Modal';
-import { CheckCircle2, RefreshCw, XCircle } from 'lucide-react';
+import ReelBot from './ReelBot';
 import styles from './Modal.module.css';
 
 type StatusType = 'loading' | 'success' | 'error';
@@ -26,6 +27,20 @@ const StatusModal: React.FC<StatusModalProps> = ({
   onRetry,
   actionLabel
 }) => {
+  const [countdown, setCountdown] = React.useState(5);
+
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isOpen && type === 'error' && onRetry && countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown(prev => prev - 1);
+      }, 1000);
+    } else if (countdown === 0 && onRetry) {
+      onRetry();
+    }
+    return () => clearInterval(timer);
+  }, [isOpen, type, countdown, onRetry]);
+
   const renderCelebration = () => {
     if (type !== 'success') return null;
     return (
@@ -45,11 +60,11 @@ const StatusModal: React.FC<StatusModalProps> = ({
     );
   };
 
-  const getIcon = () => {
+  const getMood = () => {
     switch (type) {
-      case 'success': return <CheckCircle2 size={28} />;
-      case 'error': return <XCircle size={28} />;
-      case 'loading': return <RefreshCw className="animate-spin" size={28} />;
+      case 'success': return 'happy';
+      case 'error': return 'error';
+      default: return 'idle';
     }
   };
 
@@ -69,10 +84,8 @@ const StatusModal: React.FC<StatusModalProps> = ({
     >
       {renderCelebration()}
       
-      <div className={`${styles.header} ${statusClass} justify-center`}>
-        <div className={styles.headerIcon}>
-          {getIcon()}
-        </div>
+      <div className={`${styles.header} ${statusClass} justify-center py-6`}>
+        <ReelBot mood={getMood()} size={100} interactive={false} />
       </div>
 
       <div className={styles.body}>
@@ -83,10 +96,15 @@ const StatusModal: React.FC<StatusModalProps> = ({
       {(type === 'error' || type === 'success') && (
         <div className={styles.footer}>
           <button 
-            className="w-full py-4 rounded-2xl font-bold bg-black text-white hover:opacity-90 transition-all"
+            className="w-full py-4 rounded-2xl font-bold bg-black text-white hover:opacity-90 transition-all flex items-center justify-center gap-2"
             onClick={type === 'error' && onRetry ? onRetry : onClose}
           >
-            {type === 'error' && onRetry ? 'Retry Action' : actionLabel || 'Understood'}
+            {type === 'error' && onRetry ? (
+              <>
+                Retrying in {countdown}s...
+                <RefreshCw className="animate-spin" size={18} />
+              </>
+            ) : actionLabel || 'Understood'}
           </button>
         </div>
       )}
