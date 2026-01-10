@@ -7,6 +7,8 @@ import { useApiKeys } from '../contexts/ApiKeyContext';
 import ApiKeyModal from './ApiKeyModal';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
+import { downloadMedia } from '../services/mediaDownloader';
+import DownloadProgress from './DownloadProgress';
 
 const PlatformIcon = ({ platform }) => {
     switch (platform) {
@@ -19,12 +21,16 @@ const PlatformIcon = ({ platform }) => {
 };
 
 const Hero = () => {
-    const { hasApiKey } = useApiKeys();
+    const { hasApiKey, getApiKey } = useApiKeys();
     const { user } = useAuth();
     
     // Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalPlatform, setModalPlatform] = useState(null);
+
+    // Download State
+    const [isDownloading, setIsDownloading] = useState(false);
+    const [downloadProgress, setDownloadProgress] = useState({ percentage: 0, loaded: 0, speed: '' });
 
     const [url, setUrl] = useState('');
     const [isHovered, setIsHovered] = useState(false);
@@ -60,7 +66,7 @@ const Hero = () => {
         return () => clearTimeout(timer);
     }, [url]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         
         if (!user) {
@@ -76,9 +82,33 @@ const Hero = () => {
                 return;
             }
 
-            console.log("Download:", url, validationState);
-            toast.success(`Starting download for ${validationState.platform}...`);
-            // Trigger actual download logic here
+            // Start Download
+            setIsDownloading(true);
+            setDownloadProgress({ percentage: 0, loaded: 0, speed: '' });
+            
+            try {
+                const apiKey = getApiKey(validationState.platform);
+                const result = await downloadMedia({
+                    url,
+                    platform: validationState.platform,
+                    mediaId: validationState.mediaId, // Ensure this is returned from detectPlatform
+                    apiKey,
+                    format: 'mp4', // Default for now, can be state
+                    onProgress: (progress) => setDownloadProgress(progress),
+                    userId: user.id
+                });
+
+                if (result.success) {
+                    toast.success("Download completed successfully!");
+                } else {
+                    toast.error(`Download failed: ${result.error}`);
+                }
+            } catch (error) {
+                toast.error("An unexpected error occurred.");
+                console.error(error);
+            } finally {
+                setIsDownloading(false);
+            }
         }
     };
 
@@ -100,6 +130,14 @@ const Hero = () => {
                 isOpen={isModalOpen} 
                 onClose={() => setIsModalOpen(false)} 
                 platform={modalPlatform} 
+            />
+
+            {/* Download Progress Modal */}
+            <DownloadProgress
+                isOpen={isDownloading}
+                progress={downloadProgress}
+                onClose={() => setIsDownloading(false)}
+                platform={validationState.platform}
             />
 
             <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
