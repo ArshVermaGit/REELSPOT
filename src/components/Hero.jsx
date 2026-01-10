@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Download, Link as LinkIcon, Instagram, Youtube, Facebook, Music2, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
+import { Download, Link as LinkIcon, Instagram, Youtube, Facebook, Music2, CheckCircle2, XCircle, AlertCircle, Key } from 'lucide-react';
 import { clsx } from 'clsx';
 import FloatingIcons from './FloatingIcons';
 import { detectPlatform, validateUrl } from '../services/platformDetector';
+import { useApiKeys } from '../contexts/ApiKeyContext';
+import ApiKeyModal from './ApiKeyModal';
+import { useAuth } from '../contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 const PlatformIcon = ({ platform }) => {
     switch (platform) {
@@ -15,6 +19,13 @@ const PlatformIcon = ({ platform }) => {
 };
 
 const Hero = () => {
+    const { hasApiKey } = useApiKeys();
+    const { user } = useAuth();
+    
+    // Modal State
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalPlatform, setModalPlatform] = useState(null);
+
     const [url, setUrl] = useState('');
     const [isHovered, setIsHovered] = useState(false);
     const [validationState, setValidationState] = useState({
@@ -34,11 +45,7 @@ const Hero = () => {
             }
 
             setValidationState(prev => ({ ...prev, loading: true }));
-            
-            // Artificial delay for "processing" feel (optional, but good for UX pacing)
-            // In a real app the regex is instant so we don't strictly need this, but the request mentioned "Debounced".
-            // We already have 300ms debounce from setTimeout.
-            
+             
             const result = detectPlatform(url);
             setValidationState({
                 isValid: result.isValid,
@@ -55,9 +62,23 @@ const Hero = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
+        if (!user) {
+            toast.error("Please sign in to download content.");
+            return;
+        }
+
         if (validationState.isValid) {
+            // Check if we have an API key for this platform
+            if (!hasApiKey(validationState.platform)) {
+                setModalPlatform(validationState.platform);
+                setIsModalOpen(true);
+                return;
+            }
+
             console.log("Download:", url, validationState);
-            // Trigger download logic
+            toast.success(`Starting download for ${validationState.platform}...`);
+            // Trigger actual download logic here
         }
     };
 
@@ -73,6 +94,13 @@ const Hero = () => {
         <div className="relative min-h-[90vh] flex flex-col justify-center items-center overflow-hidden bg-white text-black">
             {/* Background Elements */}
             <FloatingIcons />
+
+            {/* API Key Modal */}
+            <ApiKeyModal 
+                isOpen={isModalOpen} 
+                onClose={() => setIsModalOpen(false)} 
+                platform={modalPlatform} 
+            />
 
             <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
 
@@ -131,15 +159,22 @@ const Hero = () => {
                         </div>
                     </div>
                     
-                    {/* Helper Text for Error */}
+                    {/* Helper Text for Error or Missing Key */}
                     {validationState.error && (
                         <div className="text-red-500 text-sm font-medium flex items-center gap-1 animate-in slide-in-from-top-1">
                              <AlertCircle size={14} />
                              {validationState.error}
                         </div>
                     )}
+
+                    {!validationState.error && validationState.isValid && user && !hasApiKey(validationState.platform) && (
+                         <div className="text-amber-500 text-sm font-medium flex items-center gap-1 animate-in slide-in-from-top-1">
+                            <Key size={14} />
+                            API Key setup required for {validationState.platform}
+                       </div>
+                    )}
                     
-                    {/* Media Type Badge (Optional Polish) */}
+                    {/* Media Type Badge */}
                     {validationState.isValid && (
                         <div className="text-zinc-500 text-sm font-medium animate-in slide-in-from-top-1 bg-zinc-100 px-3 py-1 rounded-full">
                            Detected: <span className="capitalize text-black">{validationState.platform} {validationState.mediaType}</span>
