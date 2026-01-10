@@ -1,5 +1,7 @@
 -- Enable UUID extension
 create extension if not exists "uuid-ossp";
+-- Enable Encryption extension
+create extension if not exists "pgcrypto";
 
 -- API Keys Table
 create table api_keys (
