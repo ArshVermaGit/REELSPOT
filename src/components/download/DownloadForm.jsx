@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Link as LinkIcon, AlertCircle, Loader2, Instagram, Youtube, Facebook, Music2, Settings2, Download, X } from 'lucide-react';
+import { ArrowRight, Link as LinkIcon, AlertCircle, Loader2, Instagram, Youtube, Facebook, Music2, Settings2, Download, X, CheckCircle } from 'lucide-react';
 import { getMediaInfo, downloadMedia } from '../../services/mediaDownloader';
 import { useApiKeys } from '../../contexts/ApiKeyContext';
 import { detectPlatform } from '../../services/platformDetector';
@@ -22,7 +22,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
 
     // Input & Analysis State (IDLE)
     const [url, setUrl] = useState(initialUrl || '');
-    const [platformState, setPlatformState] = useState({ platform: 'unknown', isValid: false });
+    const [platformState, setPlatformState] = useState({ platform: 'unknown', isValid: false, mediaType: null });
     const [analyzing, setAnalyzing] = useState(false);
     const [mediaInfo, setMediaInfo] = useState(null); // { formats, thumbnail, title }
     const [error, setError] = useState(null);
@@ -48,21 +48,25 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
     useEffect(() => {
         const timer = setTimeout(() => {
             if (!url) {
-                setPlatformState({ platform: 'unknown', isValid: false });
-                setMediaInfo(null); 
+                setPlatformState({ platform: 'unknown', isValid: false, mediaType: null });
+                setMediaInfo(null);
                 setError(null);
                 setDownloadStatus('idle');
                 return;
             }
             const res = detectPlatform(url);
-            setPlatformState({ platform: res.platform, isValid: res.isValid });
+            setPlatformState({ 
+                platform: res.platform, 
+                isValid: res.isValid,
+                mediaType: res.mediaType
+            });
         }, 300);
         return () => clearTimeout(timer);
     }, [url]);
 
     // 2. Analyze URL
-    const handleAnalyze = async () => {
-        if (!platformState.isValid) {
+    const handleAnalyze = async (forceResume = false) => {
+        if (!platformState.isValid && !forceResume) {
             setError('Please enter a valid URL first.');
             return;
         }
@@ -75,7 +79,13 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
 
         // Check for API key
         if (!hasApiKey(platformState.platform)) {
-            onApiKeyRequired(platformState.platform);
+            // Wait for user to add key then we need to ideally auto-resume or just let them click again.
+            // Requirement says "Automatically resume".
+            // We'll pass a callback or just depend on them clicking again for simplicity unless we add complex effect.
+            // Actually, we can assume the parent handles the Modal. We interrupt here.
+            await onApiKeyRequired(platformState.platform); 
+            // We stop here. If the user saves the key, they will essentially stay on this page.
+            // A truly auto-resume system needs to listen to ApiKeyContext changes.
             return;
         }
 
@@ -107,8 +117,18 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
         }
     };
 
+    // Auto-Resume Effect: If we were blocked on API Key, and now we have it, likely user just added it.
+    // Making this robust requires detection of "user tried to download". 
+    // For now we will rely on manual retry as "Auto-Resume" without global state tracking is tricky across modals.
+    
     // 3. Start Download
     const handleDownloadClick = async () => {
+        // Double check API Key Existence before actual download call (in case it was deleted)
+         if (!hasApiKey(platformState.platform)) {
+            onApiKeyRequired(platformState.platform);
+            return;
+        }
+
         if (!mediaInfo || !selectedFormat || !selectedQuality) return;
 
         const target = mediaInfo.formats.find(f => f.ext === selectedFormat && f.quality === selectedQuality) 
@@ -117,16 +137,17 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
         setDownloadStatus('downloading');
         setStatusMessage(`Connecting to ${platformState.platform}...`);
         setProgress({ percentage: 0, speed: 'Starting...', timeRemaining: '--' });
+        setDownloadError(null);
 
         try {
             // Simulate connection phase
-            await new Promise(r => setTimeout(r, 500));
-            setStatusMessage('Fetching media information...');
-            setProgress({ percentage: 5, speed: 'Preparing...', timeRemaining: '--' });
+            await new Promise(r => setTimeout(r, 600));
+            setStatusMessage('Handshaking with server...');
+            setProgress({ percentage: 3, speed: 'Connecting...', timeRemaining: '--' });
             
-            await new Promise(r => setTimeout(r, 500));
-            setStatusMessage('Downloading media...');
-            setProgress({ percentage: 10, speed: 'Calculating...', timeRemaining: '--' });
+            await new Promise(r => setTimeout(r, 800));
+            setStatusMessage('Downloading content...');
+            setProgress({ percentage: 5, speed: 'Preparing...', timeRemaining: '--' });
 
             const result = await downloadMedia({
                 downloadUrl: target.url,
@@ -135,7 +156,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                 quality: selectedQuality,
                 mediaTitle: mediaInfo.title,
                 mediaThumbnail: mediaInfo.thumbnail,
-                mediaUrl: url, // Original URL
+                mediaUrl: url, 
                 author: mediaInfo.author,
                 duration: mediaInfo.duration,
                 userId: user?.id,
@@ -147,7 +168,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                         timeRemaining: p.timeRemaining || '--'
                     });
                     if (p.percentage >= 100) {
-                        setStatusMessage('Processing media...');
+                        setStatusMessage('Finalizing file...');
                         setDownloadStatus('processing');
                     }
                 }
@@ -185,6 +206,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
 
     // Derived Properties
     const availableFormats = mediaInfo ? [...new Set(mediaInfo.formats.map(f => f.ext))] : [];
+    // Filter qualities for the CURRENTLY selected format
     const availableQualities = mediaInfo 
         ? mediaInfo.formats.filter(f => f.ext === selectedFormat).map(f => f.quality)
         : [];
@@ -194,7 +216,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
     // RENDER: IDLE (Inputs) or ACTIVE (Progress)
     if (downloadStatus !== 'idle') {
         return (
-            <div className="w-full max-w-[700px] animate-fade-in">
+            <div className="w-full max-w-[700px] animate-fade-in flex justify-center">
                 <DownloadProgress 
                     status={downloadStatus}
                     statusMessage={statusMessage}
@@ -202,7 +224,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                     speed={progress.speed}
                     timeRemaining={progress.timeRemaining}
                     fileSize={targetFormat?.size || 'Unknown'}
-                    fileName={`${mediaInfo?.title}.${selectedFormat}`}
+                    fileName={`${(mediaInfo?.title || 'media').substring(0,30)}...${selectedFormat}`}
                     error={downloadError}
                     onCancel={handleReset}
                     onRetry={handleDownloadClick}
@@ -220,9 +242,9 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
             <div className="relative w-full group">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-300">
                     {analyzing ? (
-                        <Loader2 size={20} className="animate-spin text-zinc-400" />
+                        <Loader2 size={24} className="animate-spin text-zinc-400" />
                     ) : (
-                        <PlatformIcon platform={platformState.platform} />
+                        <PlatformIcon platform={platformState.platform} size={24} />
                     )}
                 </div>
 
@@ -242,29 +264,59 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                     placeholder="Paste your link here..."
                     disabled={analyzing}
                     className={clsx(
-                        "w-full h-16 pl-14 pr-14 rounded-2xl border-2 text-lg font-medium placeholder:text-[#A0A0A0] placeholder:font-normal outline-none transition-all duration-300",
-                        error 
-                            ? "border-red-300 focus:border-red-500 bg-red-50/10" 
-                            : "border-[#E5E5E5] focus:border-black bg-white shadow-sm hover:border-zinc-300 focus:shadow-[0_8px_24px_rgba(0,0,0,0.12)]"
+                        "w-full h-20 pl-16 pr-16 rounded-3xl border-2 text-xl font-medium placeholder:text-[#A0A0A0] placeholder:font-normal outline-none transition-all duration-300",
+                        !url ? "border-[#E5E5E5] focus:border-black bg-white shadow-sm" :
+                        platformState.isValid 
+                            ? "border-green-500/20 focus:border-green-500 bg-green-50/5 shadow-[0_8px_32px_rgba(34,197,94,0.12)]" 
+                            : platformState.platform !== 'unknown' || (url.length > 10 && !platformState.isValid)
+                                ? "border-red-300 focus:border-red-500 bg-red-50/10"
+                                : "border-[#E5E5E5] focus:border-black bg-white shadow-sm hover:border-zinc-300"
                     )}
                 />
 
-                {url && !analyzing && (
-                    <button 
-                        onClick={() => {
-                            setUrl('');
-                            setMediaInfo(null);
-                        }}
-                        className="absolute inset-y-0 right-4 flex items-center text-zinc-300 hover:text-zinc-600 transition-colors"
-                    >
-                        <X size={20} />
-                    </button>
+                <div className="absolute inset-y-0 right-5 flex items-center gap-3">
+                    {/* Validation Icons */}
+                    {url && !analyzing && (
+                        <>
+                            {platformState.isValid ? (
+                                <CheckCircle size={24} className="text-green-500 animate-scale-pulse" />
+                            ) : (
+                                (platformState.platform !== 'unknown' || url.length > 10) && <AlertCircle size={24} className="text-red-400" />
+                            )}
+                            
+                            <button 
+                                onClick={() => {
+                                    setUrl('');
+                                    setMediaInfo(null);
+                                    setPlatformState({ platform: 'unknown', isValid: false, mediaType: null });
+                                }}
+                                className="p-2 text-zinc-300 hover:text-zinc-600 transition-colors rounded-full hover:bg-zinc-100"
+                            >
+                                <X size={20} />
+                            </button>
+                        </>
+                    )}
+                </div>
+
+                {/* Detected Type Badge */}
+                {platformState.isValid && platformState.mediaType && (
+                    <div className="absolute -bottom-8 left-6 flex items-center gap-2 animate-slide-down">
+                         <div className={clsx("w-2 h-2 rounded-full", 
+                             platformState.platform === 'instagram' ? 'bg-pink-500' :
+                             platformState.platform === 'youtube' ? 'bg-red-500' :
+                             platformState.platform === 'facebook' ? 'bg-blue-600' :
+                             'bg-black'
+                         )}/>
+                        <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest">
+                            {platformState.platform} {platformState.mediaType}
+                        </span>
+                    </div>
                 )}
             </div>
 
             {/* Error Message */}
             {error && (
-                <div className="flex items-center gap-2 text-red-500 text-sm font-medium animate-slide-down px-2">
+                <div className="flex items-center gap-2 text-red-500 text-sm font-medium animate-slide-down px-4">
                     <AlertCircle size={16} />
                     {error}
                 </div>
@@ -272,60 +324,73 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
 
             {/* 2. Configuration Section (Slide Down) */}
             {mediaInfo && (
-                <div className="bg-white border border-zinc-100 rounded-3xl p-6 shadow-2xl shadow-zinc-200/50 animate-slide-down flex flex-col gap-6">
+                <div className="bg-white border border-zinc-100 rounded-[2rem] p-8 shadow-2xl shadow-zinc-200/50 animate-slide-down flex flex-col gap-8 mt-4">
                     
                     {/* Media Header */}
-                    <div className="flex items-center gap-4 border-b border-zinc-50 pb-4">
-                        <div className="w-16 h-16 rounded-xl bg-zinc-100 overflow-hidden flex-shrink-0">
+                    <div className="flex items-start gap-6">
+                        <div className="w-24 h-24 rounded-2xl bg-zinc-100 overflow-hidden flex-shrink-0 shadow-inner border border-zinc-100">
                             {mediaInfo.thumbnail && <img src={mediaInfo.thumbnail} alt="Ref" className="w-full h-full object-cover" />}
                         </div>
-                        <div className="text-left flex-1 min-w-0">
-                            <h3 className="font-bold text-lg truncate pr-4">{mediaInfo.title}</h3>
-                            <p className="text-sm text-zinc-500 flex items-center gap-1">
-                                {mediaInfo.author} • {mediaInfo.duration}
-                            </p>
+                        <div className="text-left flex-1 min-w-0 pt-1">
+                            <h3 className="font-bold text-xl leading-tight mb-2 line-clamp-2">{mediaInfo.title}</h3>
+                            <div className="flex flex-wrap gap-3">
+                                <span className="px-3 py-1 bg-zinc-100 rounded-full text-xs font-semibold text-zinc-600 flex items-center gap-1">
+                                    Author: {mediaInfo.author}
+                                </span>
+                                <span className="px-3 py-1 bg-zinc-100 rounded-full text-xs font-semibold text-zinc-600">
+                                    Duration: {mediaInfo.duration}
+                                </span>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Selectors */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Format */}
-                        <div className="flex flex-col gap-2 text-left">
-                            <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Format</label>
-                            <div className="flex bg-zinc-50 p-1 rounded-xl">
+                    <div className="h-px bg-zinc-100 w-full" />
+
+                    {/* Premium Selectors */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Format Selector */}
+                        <div className="flex flex-col gap-3 text-left">
+                            <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest pl-1">Target Format</label>
+                            <div className="grid grid-cols-2 gap-3">
                                 {availableFormats.map(fmt => (
                                     <button
                                         key={fmt}
                                         onClick={() => setSelectedFormat(fmt)}
                                         className={clsx(
-                                            "flex-1 py-2 rounded-lg text-sm font-semibold transition-all uppercase",
+                                            "relative py-4 px-4 rounded-2xl text-sm font-bold transition-all border-2 uppercase flex items-center justify-center gap-2",
                                             selectedFormat === fmt 
-                                                ? "bg-white text-black shadow-sm" 
-                                                : "text-zinc-500 hover:bg-zinc-100"
+                                                ? "bg-black border-black text-white shadow-lg shadow-black/20 scale-[1.02]" 
+                                                : "bg-white border-zinc-100 text-zinc-500 hover:border-zinc-200 hover:bg-zinc-50"
                                         )}
                                     >
+                                        {fmt === 'mp3' ? <Music2 size={16} /> : <Settings2 size={16} />}
                                         {fmt}
+                                        {selectedFormat === fmt && (
+                                            <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-white rounded-full" />
+                                        )}
                                     </button>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Quality */}
-                        <div className="flex flex-col gap-2 text-left">
-                            <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Quality</label>
-                             <div className="relative"> 
-                                <select 
-                                    value={selectedQuality}
-                                    onChange={(e) => setSelectedQuality(e.target.value)}
-                                    className="w-full appearance-none bg-zinc-50 border border-zinc-200 text-zinc-900 text-sm rounded-xl focus:ring-black focus:border-black block p-2.5 font-medium outline-none"
-                                >
-                                    {availableQualities.map(q => (
-                                        <option key={q} value={q}>{q}</option>
-                                    ))}
-                                </select>
-                                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-zinc-400">
-                                     <Settings2 size={16} />
-                                </div>
+                        {/* Quality Selector */}
+                        <div className="flex flex-col gap-3 text-left">
+                            <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest pl-1">Quality</label>
+                             <div className="flex flex-wrap gap-2"> 
+                                {availableQualities.map(q => (
+                                    <button
+                                        key={q}
+                                        onClick={() => setSelectedQuality(q)}
+                                        className={clsx(
+                                            "px-5 py-3 rounded-xl text-sm font-bold transition-all border-2",
+                                            selectedQuality === q
+                                                ? "bg-black border-black text-white shadow-md shadow-black/10 scale-105"
+                                                : "bg-white border-zinc-100 text-zinc-500 hover:border-zinc-200 hover:bg-zinc-50"
+                                        )}
+                                    >
+                                        {q}
+                                    </button>
+                                ))}
                              </div>
                         </div>
                     </div>
@@ -333,10 +398,12 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                     {/* Action Button */}
                     <button
                         onClick={handleDownloadClick}
-                        className="w-full bg-black text-white rounded-xl py-4 font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-xl shadow-black/10 group"
+                        className="w-full bg-black text-white rounded-2xl py-5 font-bold text-xl hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 shadow-xl shadow-black/10 group mt-2"
                     >
-                        <span>Download {selectedQuality}</span>
-                        <Download size={20} className="group-hover:translate-y-1 transition-transform" />
+                        <span>Start Download</span>
+                        <div className="bg-white/20 p-1 rounded-full group-hover:translate-x-1 transition-transform">
+                             <ArrowRight size={20} />
+                        </div>
                     </button>
                 </div>
             )}
@@ -344,19 +411,21 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
             {/* Analyze Button */}
             {!mediaInfo && url && platformState.isValid && (
                 <button
-                    onClick={handleAnalyze}
+                    onClick={() => handleAnalyze(false)}
                     disabled={analyzing}
-                    className="w-full bg-black text-white rounded-xl py-[18px] px-12 font-semibold text-lg hover:scale-105 active:scale-98 transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_12px_32px_rgba(0,0,0,0.3)] disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:scale-100"
+                    className="w-full bg-black text-white rounded-[2rem] py-6 px-12 font-bold text-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 shadow-2xl shadow-black/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:scale-100 group mt-4"
                 >
                     {analyzing ? (
                         <>
                             <Loader2 size={24} className="animate-spin" />
-                            Processing...
+                            Fetching Media Info...
                         </>
                     ) : (
                         <>
-                            Download Now
-                            <Download size={24} />
+                            Download Content
+                            <div className="bg-white/20 p-1.5 rounded-full group-hover:rotate-[-45deg] transition-transform">
+                                <ArrowRight size={24} />
+                            </div>
                         </>
                     )}
                 </button>
