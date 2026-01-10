@@ -242,7 +242,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                     placeholder="Paste your link here..."
                     disabled={analyzing}
                     className={clsx(
-                        "w-full h-16 pl-14 pr-14 rounded-2xl border-2 text-lg font-medium placeholder:text-zinc-400 placeholder:font-normal outline-none transition-all duration-300",
+                        "w-full h-16 pl-14 pr-14 rounded-2xl border-2 text-lg font-medium placeholder:text-[#A0A0A0] placeholder:font-normal outline-none transition-all duration-300",
                         error 
                             ? "border-red-300 focus:border-red-500 bg-red-50/10" 
                             : "border-[#E5E5E5] focus:border-black bg-white shadow-sm hover:border-zinc-300 focus:shadow-[0_8px_24px_rgba(0,0,0,0.12)]"
@@ -346,17 +346,17 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                 <button
                     onClick={handleAnalyze}
                     disabled={analyzing}
-                    className="w-full bg-black text-white rounded-xl py-4 font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-xl shadow-black/10 disabled:opacity-70 disabled:scale-100"
+                    className="w-full bg-black text-white rounded-xl py-[18px] px-12 font-semibold text-lg hover:scale-105 active:scale-98 transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_12px_32px_rgba(0,0,0,0.3)] disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:scale-100"
                 >
                     {analyzing ? (
                         <>
-                            <Loader2 size={20} className="animate-spin" />
-                            Analyzing Link...
+                            <Loader2 size={24} className="animate-spin" />
+                            Processing...
                         </>
                     ) : (
                         <>
-                            Check Options
-                            <Settings2 size={20} />
+                            Download Now
+                            <Download size={24} />
                         </>
                     )}
                 </button>
