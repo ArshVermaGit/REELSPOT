@@ -11,23 +11,15 @@ import UserDropdown from './auth/UserDropdown';
 
 const Navbar = () => {
   const { data: session } = useSession();
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
     const handleOpenLogin = () => setIsLoginOpen(true);
     window.addEventListener('open-login', handleOpenLogin as EventListener);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('open-login', handleOpenLogin as EventListener);
     };
   }, []);
@@ -47,7 +39,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
+      <header className={styles.header}>
         <div className="container">
           <div className={styles.navContainer}>
             
