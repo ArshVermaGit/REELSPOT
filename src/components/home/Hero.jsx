@@ -1,73 +1,43 @@
 import React, { useState } from 'react';
-import { Sparkles, Instagram, Youtube, Facebook, Music2, Link as LinkIcon, Loader2 } from 'lucide-react'; 
 import { useAuth } from '../../contexts/AuthContext';
 import { useApiKeys } from '../../contexts/ApiKeyContext';
 import FloatingIcons from './FloatingIcons';
 import ApiKeyModal from '../modals/ApiKeyModal';
+import SignInPrompt from '../modals/SignInPrompt';
 import DownloadForm from '../download/DownloadForm';
-import DownloadProgress from '../download/DownloadProgress';
 import { toast } from 'react-hot-toast';
-import { downloadMedia } from '../../services/mediaDownloader';
-import { clsx } from 'clsx';
-
-const PlatformIcon = ({ platform }) => {
-    switch (platform) {
-        case 'instagram': return <Instagram size={20} className="text-pink-500" />;
-        case 'youtube': return <Youtube size={20} className="text-red-600" />;
-        case 'facebook': return <Facebook size={20} className="text-blue-600" />;
-        case 'tiktok': return <Music2 size={20} className="text-black" />;
-        default: return <LinkIcon size={20} className="text-zinc-400 group-focus-within:text-black transition-colors" />;
-    }
-};
 
 const Hero = () => {
     const { hasApiKey, getApiKey } = useApiKeys();
-    const { user } = useAuth();
+    const { user, signInWithGoogle } = useAuth();
     
     // Modal State
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
     const [modalPlatform, setModalPlatform] = useState(null);
+    
+    // Sign In Prompt State
+    const [showSignInPrompt, setShowSignInPrompt] = useState(false);
+    const [pendingUrl, setPendingUrl] = useState(null);
 
-    // Download State
-    const [downloadStatus, setDownloadStatus] = useState('idle'); // 'initializing' | 'downloading' | 'processing' | 'success' | 'error'
-    const [downloadProgress, setDownloadProgress] = useState({ percentage: 0, loaded: 0, speed: '' });
-    const [activeDownloadTitle, setActiveDownloadTitle] = useState('');
+    // Handler for sign-in requirement
+    const handleSignInRequired = (url) => {
+        setPendingUrl(url); // Remember the URL user tried to download
+        setShowSignInPrompt(true);
+    };
 
-    const handleDownloadStart = async (options) => {
-        // options: { downloadUrl, platform, format, quality, mediaTitle }
+    // Handler for API key requirement
+    const handleApiKeyRequired = (platform) => {
+        setModalPlatform(platform);
+        setIsApiKeyModalOpen(true);
+    };
+
+    // Handle sign in from prompt
+    const handleSignIn = async () => {
+        setShowSignInPrompt(false);
         try {
-            setDownloadStatus('initializing');
-            setDownloadProgress({ percentage: 0, loaded: 0, speed: '' });
-            setActiveDownloadTitle(options.mediaTitle);
-
-            // Fetch apiKey for final check? Not strictly needed if logic is separated, but passed just in case
-            // The downloadMedia function now takes downloadUrl directly
-            
-            // Small delay for UI smoothness "Initializing..."
-            await new Promise(r => setTimeout(r, 800));
-            setDownloadStatus('downloading');
-
-            const result = await downloadMedia({
-                ...options,
-                userId: user.id,
-                onProgress: (prog) => {
-                    setDownloadProgress(prog);
-                    if(prog.percentage === 100) setDownloadStatus('processing');
-                }
-            });
-
-            if (result.success) {
-                setDownloadStatus('success');
-                toast.success("Download completed successfully!");
-            } else {
-                setDownloadStatus('error');
-                toast.error(`Download failed: ${result.error}`);
-            }
-
+            await signInWithGoogle();
         } catch (error) {
-            console.error(error);
-            setDownloadStatus('error');
-            toast.error("Unexpected error occurred.");
+            toast.error('Sign in failed. Please try again.');
         }
     };
     
@@ -76,24 +46,18 @@ const Hero = () => {
             {/* Background Elements */}
             <FloatingIcons />
 
-            {/* API Key Modal */}
-            <ApiKeyModal 
-                isOpen={isModalOpen} 
-                onClose={() => setIsModalOpen(false)} 
-                platform={modalPlatform} 
+            {/* Sign In Prompt Modal */}
+            <SignInPrompt 
+                isOpen={showSignInPrompt}
+                onClose={() => setShowSignInPrompt(false)}
+                onSignIn={handleSignIn}
             />
 
-            {/* Download Progress Modal */}
-            <DownloadProgress
-                isOpen={downloadStatus !== 'idle'}
-                status={downloadStatus}
-                progress={downloadProgress}
-                onClose={() => setDownloadStatus('idle')}
-                onRetry={() => {
-                    setDownloadStatus('idle');
-                    toast("Please click download again to retry.");
-                }}
-                fileName={activeDownloadTitle}
+            {/* API Key Modal */}
+            <ApiKeyModal 
+                isOpen={isApiKeyModalOpen} 
+                onClose={() => setIsApiKeyModalOpen(false)} 
+                platform={modalPlatform} 
             />
 
             <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
@@ -114,18 +78,16 @@ const Hero = () => {
                     Download Media, <span className="text-black font-semibold">Effortlessly</span>
                 </p>
 
-                {/* Input Form Replacement */}
+                {/* Input Form */}
                 <div 
                     className="w-full flex justify-center animate-fade-in opacity-0"
                     style={{ animationDelay: '0.4s' }}
                 >
                     <DownloadForm 
-                        onDownloadStart={handleDownloadStart}
-                        onApiKeyRequired={(plat) => {
-                            setModalPlatform(plat);
-                            setIsModalOpen(true);
-                        }}
+                        onApiKeyRequired={handleApiKeyRequired}
+                        onSignInRequired={handleSignInRequired}
                         user={user}
+                        initialUrl={pendingUrl}
                     />
                 </div>
 
