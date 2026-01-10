@@ -18,6 +18,9 @@ const Navbar = () => {
                   <Link to="/history" className="text-sm font-medium transition-colors hover:text-primary">
                     History
                   </Link>
+                  <Link to="/settings" className="text-sm font-medium transition-colors hover:text-primary">
+                    Settings
+                  </Link>
                   <Link to="/dashboard" className="text-sm font-medium transition-colors hover:text-primary">
                     Dashboard
                   </Link>
