@@ -1,128 +1,177 @@
-import React, { useEffect, useState } from 'react';
-import { X, Check, AlertTriangle, RefreshCw, FileDown } from 'lucide-react';
+import React from 'react';
+import { CheckCircle2, XCircle, RefreshCw, X, FileText, ArrowRight, Download, Loader2 } from 'lucide-react';
 import { clsx } from 'clsx';
 
-const DownloadProgress = ({ isOpen, status, progress, onClose, onRetry, fileName }) => {
-    // status: 'initializing' | 'downloading' | 'processing' | 'success' | 'error'
-    const [visible, setVisible] = useState(false);
-
-    useEffect(() => {
-        if (isOpen) {
-            setVisible(true);
-        } else {
-            const timer = setTimeout(() => setVisible(false), 300);
-            return () => clearTimeout(timer);
-        }
-    }, [isOpen]);
-
-    if (!visible && !isOpen) return null;
-
+const DownloadProgress = ({ 
+    status = 'downloading', // downloading, processing, success, error
+    statusMessage = '',
+    progress = 0, 
+    speed = '0 MB/s', 
+    timeRemaining = 'Calculating...', 
+    fileSize = '0 MB', 
+    fileName = 'media_file.mp4',
+    error = null,
+    onCancel,
+    onRetry,
+    onDownloadAnother,
+    onViewHistory
+}) => {
+    
+    // Status Config
     const isSuccess = status === 'success';
     const isError = status === 'error';
     const isProcessing = status === 'processing';
+    const isDownloading = status === 'downloading';
+
+    // Default status messages
+    const getStatusTitle = () => {
+        if (isSuccess) return 'Download Complete!';
+        if (isError) return 'Download Failed';
+        if (isProcessing) return 'Processing Media...';
+        return 'Downloading Media...';
+    };
+
+    const getStatusDescription = () => {
+        if (isSuccess) return 'Your file is ready.';
+        if (isError) return error || 'Something went wrong';
+        if (statusMessage) return statusMessage;
+        return fileName;
+    };
 
     return (
-        <div className={clsx(
-            "fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300",
-            isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        )}>
-             {/* Backdrop */}
-             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={!isProcessing ? onClose : undefined} />
+        <div className="w-full max-w-[700px] bg-white rounded-3xl p-8 border border-zinc-100 shadow-2xl shadow-zinc-200/50 animate-slide-down">
+            
+            {/* 1. Header & Icon */}
+            <div className="flex items-center gap-4 mb-6">
+                <div className={clsx(
+                    "w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500",
+                    isSuccess ? "bg-green-100 text-green-600" :
+                    isError ? "bg-red-100 text-red-600" :
+                    "bg-black text-white"
+                )}>
+                    {isSuccess ? <CheckCircle2 size={24} /> :
+                     isError ? <XCircle size={24} /> :
+                     isProcessing ? <Loader2 size={24} className="animate-spin" /> :
+                     <Download size={24} className={clsx(isDownloading && "animate-pulse")} />}
+                </div>
+                
+                <div className="flex-1">
+                    <h3 className="text-xl font-bold text-zinc-900">
+                        {getStatusTitle()}
+                    </h3>
+                    <p className="text-sm text-zinc-500 font-medium">
+                        {getStatusDescription()}
+                    </p>
+                </div>
+            </div>
 
-             {/* Card */}
-             <div className={clsx(
-                 "relative bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl transform transition-all duration-300 overflow-hidden",
-                 isOpen ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
-             )}>
-                 
-                 {/* Success Bloom Effect */}
-                 {isSuccess && (
-                     <div className="absolute inset-0 bg-green-50/50 animate-fade-in pointer-events-none" />
-                 )}
+            {/* 2. Progress Bar */}
+            <div className="relative w-full h-3 bg-zinc-100 rounded-full overflow-hidden mb-4">
+                <div 
+                    className={clsx(
+                        "absolute inset-y-0 left-0 transition-all duration-300 rounded-full",
+                        isSuccess ? "bg-green-500" :
+                        isError ? "bg-red-500" :
+                        "bg-black"
+                    )}
+                    style={{ width: `${Math.max(5, progress)}%` }}
+                >
+                    {(isDownloading || isProcessing) && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                    )}
+                </div>
+            </div>
 
-                 {/* Header */}
-                 <div className="relative flex flex-col items-center text-center mb-8">
-                     {/* Icon Container */}
-                     <div className={clsx(
-                         "w-16 h-16 rounded-full flex items-center justify-center mb-4 transition-colors duration-500",
-                         isSuccess ? "bg-green-100 text-green-600" :
-                         isError ? "bg-red-100 text-red-600" :
-                         "bg-zinc-100 text-zinc-900"
-                     )}>
-                         {isSuccess ? <Check size={32} className="animate-in zoom-in spin-in-180 duration-500" /> :
-                          isError ? <AlertTriangle size={32} className="animate-in shake" /> :
-                          <FileDown size={32} className={clsx("transition-transform", status === 'downloading' && "animate-bounce")} />}
-                     </div>
+            {/* Progress Percentage */}
+            <div className="flex justify-between items-center mb-6">
+                <span className="text-sm font-semibold text-zinc-700">{progress}%</span>
+                {!isError && !isSuccess && (
+                    <span className="text-xs text-zinc-500">{speed}</span>
+                )}
+            </div>
 
-                     <h3 className="font-bold text-2xl text-zinc-900">
-                         {isSuccess ? "Download Complete!" :
-                          isError ? "Download Failed" :
-                          isProcessing ? "Finalizing..." :
-                          "Downloading Media..."}
-                     </h3>
-                     <p className="text-zinc-500 text-sm mt-1 max-w-[250px] truncate">
-                         {fileName || "Preparing file..."}
-                     </p>
-                 </div>
+            {/* 3. Metrics (Hidden on Error) */}
+            {!isError && (
+                <div className="grid grid-cols-3 gap-4 mb-8">
+                    {/* Size */}
+                    <div className="bg-zinc-50 rounded-xl p-3 text-center">
+                        <p className="text-xs text-zinc-400 font-semibold uppercase tracking-wider mb-1">Size</p>
+                        <p className="text-sm font-bold text-zinc-900">{fileSize}</p>
+                    </div>
+                    {/* Speed / Success Status */}
+                    <div className="bg-zinc-50 rounded-xl p-3 text-center">
+                        <p className="text-xs text-zinc-400 font-semibold uppercase tracking-wider mb-1">
+                            {isSuccess ? 'Status' : 'Speed'}
+                        </p>
+                        <p className="text-sm font-bold text-zinc-900">
+                            {isSuccess ? 'Saved' : speed}
+                        </p>
+                    </div>
+                    {/* Time / Percentage */}
+                    <div className="bg-zinc-50 rounded-xl p-3 text-center">
+                        <p className="text-xs text-zinc-400 font-semibold uppercase tracking-wider mb-1">
+                            {isSuccess ? 'Quality' : 'ETA'}
+                        </p>
+                        <p className="text-sm font-bold text-zinc-900">
+                            {isSuccess ? '100% Verified' : timeRemaining}
+                        </p>
+                    </div>
+                </div>
+            )}
 
-                 {/* Progress Bar (Hidden on Success/Error mainly, or keep showing 100%?) */}
-                 {!isSuccess && !isError && (
-                     <div className="mb-8">
-                         <div className="flex justify-between text-xs font-bold text-zinc-400 mb-2 uppercase tracking-wide">
-                             <span>Progress</span>
-                             <span>{progress.percentage}%</span>
-                         </div>
-                         <div className="h-4 bg-zinc-100 rounded-full overflow-hidden relative">
-                             {/* Shimmer */}
-                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent z-10 animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
-                             
-                             {/* Fill */}
-                             <div 
-                                className="h-full bg-black rounded-full transition-all duration-300 ease-out relative"
-                                style={{ width: `${progress.percentage}%` }}
-                             />
-                         </div>
-                         <div className="flex justify-between text-xs font-medium text-zinc-500 mt-2">
-                             <span>{(progress.loaded / (1024*1024)).toFixed(1)} MB downloaded</span>
-                             <span>{progress.speed}</span>
-                         </div>
-                     </div>
-                 )}
+            {/* Error Details */}
+            {isError && error && (
+                <div className="mb-6 p-4 bg-red-50 rounded-xl border border-red-100 text-red-700 text-sm">
+                    {error}
+                </div>
+            )}
 
-                 {/* Actions */}
-                 <div className="flex gap-3 relative z-10">
-                     {isSuccess ? (
+            {/* 4. Actions */}
+            <div className="flex gap-3">
+                {isDownloading || isProcessing ? (
+                     <button 
+                        onClick={onCancel}
+                        className="w-full py-3.5 rounded-xl border-2 border-zinc-100 font-bold text-zinc-700 hover:bg-zinc-50 hover:border-zinc-200 transition-all flex items-center justify-center gap-2"
+                     >
+                        <X size={18} />
+                        Cancel Download
+                     </button>
+                ) : isError ? (
+                    <>
+                        <button 
+                            onClick={onCancel}
+                            className="flex-1 py-3.5 rounded-xl border-2 border-zinc-100 font-bold text-zinc-700 hover:bg-zinc-50 transition-all"
+                        >
+                            Dismiss
+                        </button>
+                        <button 
+                            onClick={onRetry}
+                            className="flex-1 py-3.5 rounded-xl bg-black text-white font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-2"
+                        >
+                            <RefreshCw size={18} />
+                            Try Again
+                        </button>
+                    </>
+                ) : (
+                    <>
                          <button 
-                            onClick={onClose}
-                            className="w-full py-4 bg-black text-white rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
-                         >
-                             Download Another
-                         </button>
-                     ) : isError ? (
-                         <>
-                            <button 
-                                onClick={onClose}
-                                className="flex-1 py-3 border border-zinc-200 text-zinc-700 rounded-xl font-semibold hover:bg-zinc-50"
-                            >
-                                Cancel
-                            </button>
-                            <button 
-                                onClick={onRetry}
-                                className="flex-1 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 flex items-center justify-center gap-2"
-                            >
-                                <RefreshCw size={18} /> Retry
-                            </button>
-                         </>
-                     ) : (
-                         <button 
-                            onClick={onClose}
-                            className="w-full py-3 text-zinc-400 hover:text-zinc-600 font-medium transition-colors"
-                         >
-                             Cancel Download
-                         </button>
-                     )}
-                 </div>
-             </div>
+                            onClick={onViewHistory}
+                            className="flex-1 py-3.5 rounded-xl border-2 border-zinc-100 font-bold text-zinc-700 hover:bg-zinc-50 transition-all flex items-center justify-center gap-2"
+                        >
+                            <FileText size={18} />
+                            View History
+                        </button>
+                        <button 
+                            onClick={onDownloadAnother}
+                            className="flex-1 py-3.5 rounded-xl bg-black text-white font-bold hover:bg-zinc-800 transition-all flex items-center justify-center gap-2 shadow-lg shadow-black/10 hover:shadow-xl hover:-translate-y-0.5"
+                        >
+                            Download Another
+                            <ArrowRight size={18} />
+                        </button>
+                    </>
+                )}
+            </div>
+
         </div>
     );
 };
