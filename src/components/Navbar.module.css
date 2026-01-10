@@ -1,20 +1,12 @@
 .header {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 50;
-  padding: var(--spacing-lg) 0;
-  transition: all var(--transition-normal);
-  background-color: transparent;
-}
-
-.scrolled {
-  background-color: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-sm);
   padding: var(--spacing-md) 0;
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .navContainer {
@@ -25,18 +17,14 @@
 
 /* Logo Animation */
 .logo {
-  font-weight: 800;
-  font-size: 1.5rem;
+  font-weight: 900;
+  font-size: 1.25rem;
   color: var(--text-primary);
   text-decoration: none;
-  transition: transform var(--transition-normal);
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-}
-
-.scrolled .logo {
-  transform: scale(0.9);
+  letter-spacing: -0.02em;
 }
 
 /* Desktop Navigation */
@@ -64,12 +52,11 @@
 .navLink::after {
   content: '';
   position: absolute;
-  bottom: 0;
+  bottom: -4px;
   left: 0;
   width: 0;
   height: 2px;
   background-color: var(--color-black);
-  transition: width var(--transition-normal);
 }
 
 .navLink:hover::after,
