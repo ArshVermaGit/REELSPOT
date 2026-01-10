@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Link as LinkIcon, AlertCircle, Loader2, Instagram, Youtube, Facebook, Music2, Settings2, Download, X } from 'lucide-react';
-import { getMediaInfo } from '../../services/mediaDownloader';
+import { getMediaInfo, downloadMedia } from '../../services/mediaDownloader';
 import { useApiKeys } from '../../contexts/ApiKeyContext';
 import { detectPlatform } from '../../services/platformDetector';
 import { toast } from 'react-hot-toast';
 import { clsx } from 'clsx';
+import DownloadProgress from './DownloadProgress';
 
 const PlatformIcon = ({ platform, size = 20, className }) => {
     switch (platform) {
@@ -16,14 +17,12 @@ const PlatformIcon = ({ platform, size = 20, className }) => {
     }
 };
 
-const DownloadForm = ({ onDownloadStart, onApiKeyRequired, user }) => {
+const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) => {
     const { hasApiKey, getApiKey } = useApiKeys();
 
-    // Input State
-    const [url, setUrl] = useState('');
+    // Input & Analysis State (IDLE)
+    const [url, setUrl] = useState(initialUrl || '');
     const [platformState, setPlatformState] = useState({ platform: 'unknown', isValid: false });
-
-    // Analysis State
     const [analyzing, setAnalyzing] = useState(false);
     const [mediaInfo, setMediaInfo] = useState(null); // { formats, thumbnail, title }
     const [error, setError] = useState(null);
@@ -32,40 +31,52 @@ const DownloadForm = ({ onDownloadStart, onApiKeyRequired, user }) => {
     const [selectedFormat, setSelectedFormat] = useState(null);
     const [selectedQuality, setSelectedQuality] = useState(null);
 
-    // Detect Platform on Input
+    // Download State (ACTIVE)
+    const [downloadStatus, setDownloadStatus] = useState('idle'); // idle, downloading, processing, success, error
+    const [statusMessage, setStatusMessage] = useState('');
+    const [progress, setProgress] = useState({ percentage: 0, speed: '0 MB/s', timeRemaining: '--' });
+    const [downloadError, setDownloadError] = useState(null);
+
+    // Handle initial URL from props
+    useEffect(() => {
+        if (initialUrl && initialUrl !== url) {
+            setUrl(initialUrl);
+        }
+    }, [initialUrl]);
+
+    // 1. Platform Detection
     useEffect(() => {
         const timer = setTimeout(() => {
             if (!url) {
                 setPlatformState({ platform: 'unknown', isValid: false });
-                setMediaInfo(null); // Reset analysis if URL clears
+                setMediaInfo(null); 
                 setError(null);
+                setDownloadStatus('idle');
                 return;
             }
             const res = detectPlatform(url);
             setPlatformState({ platform: res.platform, isValid: res.isValid });
-            
-            // If valid and not analyzed yet, we could auto-analyze, but let's wait for user or separate trigger?
-            // The requirement says "Auto-detect platform".
-            // We'll reset mediaInfo if the URL drastically changes to a new platform
         }, 300);
         return () => clearTimeout(timer);
     }, [url]);
 
+    // 2. Analyze URL
     const handleAnalyze = async () => {
         if (!platformState.isValid) {
             setError('Please enter a valid URL first.');
             return;
         }
 
-        // Check API Key Before Analysis
-        if (!hasApiKey(platformState.platform)) {
-            onApiKeyRequired(platformState.platform);
+        // Check authentication first
+        if (!user) {
+            onSignInRequired?.(url);
             return;
         }
 
-        if(!user) {
-             toast.error("Please sign in to continue.");
-             return;
+        // Check for API key
+        if (!hasApiKey(platformState.platform)) {
+            onApiKeyRequired(platformState.platform);
+            return;
         }
 
         setAnalyzing(true);
@@ -85,8 +96,8 @@ const DownloadForm = ({ onDownloadStart, onApiKeyRequired, user }) => {
             if (info.formats && info.formats.length > 0) {
                 const videoFormats = info.formats.filter(f => f.type === 'video');
                 const defaultFmt = videoFormats.length > 0 ? videoFormats[0] : info.formats[0];
-                setSelectedFormat(defaultFmt.ext); // mp4
-                setSelectedQuality(defaultFmt.quality); // 1080p
+                setSelectedFormat(defaultFmt.ext);
+                setSelectedQuality(defaultFmt.quality);
             }
         } catch (err) {
             console.error(err);
@@ -96,34 +107,117 @@ const DownloadForm = ({ onDownloadStart, onApiKeyRequired, user }) => {
         }
     };
 
-    const handleDownloadClick = () => {
+    // 3. Start Download
+    const handleDownloadClick = async () => {
         if (!mediaInfo || !selectedFormat || !selectedQuality) return;
 
-        // Find the specific format object
         const target = mediaInfo.formats.find(f => f.ext === selectedFormat && f.quality === selectedQuality) 
                        || mediaInfo.formats[0];
 
-        onDownloadStart({
-            downloadUrl: target.url,
-            platform: platformState.platform,
-            format: selectedFormat,
-            quality: selectedQuality,
-            mediaTitle: mediaInfo.title,
-            mediaThumbnail: mediaInfo.thumbnail
-        });
+        setDownloadStatus('downloading');
+        setStatusMessage(`Connecting to ${platformState.platform}...`);
+        setProgress({ percentage: 0, speed: 'Starting...', timeRemaining: '--' });
+
+        try {
+            // Simulate connection phase
+            await new Promise(r => setTimeout(r, 500));
+            setStatusMessage('Fetching media information...');
+            setProgress({ percentage: 5, speed: 'Preparing...', timeRemaining: '--' });
+            
+            await new Promise(r => setTimeout(r, 500));
+            setStatusMessage('Downloading media...');
+            setProgress({ percentage: 10, speed: 'Calculating...', timeRemaining: '--' });
+
+            const result = await downloadMedia({
+                downloadUrl: target.url,
+                platform: platformState.platform,
+                format: selectedFormat,
+                quality: selectedQuality,
+                mediaTitle: mediaInfo.title,
+                mediaThumbnail: mediaInfo.thumbnail,
+                mediaUrl: url, // Original URL
+                author: mediaInfo.author,
+                duration: mediaInfo.duration,
+                userId: user?.id,
+                onProgress: (p) => {
+                    const adjustedProgress = 10 + Math.round(p.percentage * 0.85); // Scale 10-95%
+                    setProgress({
+                        percentage: adjustedProgress,
+                        speed: p.speed || '0 MB/s',
+                        timeRemaining: p.timeRemaining || '--'
+                    });
+                    if (p.percentage >= 100) {
+                        setStatusMessage('Processing media...');
+                        setDownloadStatus('processing');
+                    }
+                }
+            });
+
+            if (result.success) {
+                setProgress({ percentage: 100, speed: 'Complete', timeRemaining: '0s' });
+                setStatusMessage('Processing complete!');
+                setDownloadStatus('success');
+                toast.success('Download Complete!');
+            } else {
+                throw new Error(result.error);
+            }
+        } catch (err) {
+            console.error(err);
+            setDownloadStatus('error');
+            setDownloadError(err.message || 'Download failed.');
+            setStatusMessage('Download failed');
+        }
     };
 
+    // 4. Reset / Retry
+    const handleReset = () => {
+        setDownloadStatus('idle');
+        setStatusMessage('');
+        setProgress({ percentage: 0, speed: '0 MB/s', timeRemaining: '--' });
+        setDownloadError(null);
+    };
+
+    const handleDownloadAnother = () => {
+        handleReset();
+        setUrl('');
+        setMediaInfo(null);
+    };
+
+    // Derived Properties
     const availableFormats = mediaInfo ? [...new Set(mediaInfo.formats.map(f => f.ext))] : [];
     const availableQualities = mediaInfo 
         ? mediaInfo.formats.filter(f => f.ext === selectedFormat).map(f => f.quality)
         : [];
+    const targetFormat = mediaInfo?.formats.find(f => f.ext === selectedFormat && f.quality === selectedQuality);
+
+
+    // RENDER: IDLE (Inputs) or ACTIVE (Progress)
+    if (downloadStatus !== 'idle') {
+        return (
+            <div className="w-full max-w-[700px] animate-fade-in">
+                <DownloadProgress 
+                    status={downloadStatus}
+                    statusMessage={statusMessage}
+                    progress={progress.percentage}
+                    speed={progress.speed}
+                    timeRemaining={progress.timeRemaining}
+                    fileSize={targetFormat?.size || 'Unknown'}
+                    fileName={`${mediaInfo?.title}.${selectedFormat}`}
+                    error={downloadError}
+                    onCancel={handleReset}
+                    onRetry={handleDownloadClick}
+                    onDownloadAnother={handleDownloadAnother}
+                    onViewHistory={() => window.location.href = '/history'}
+                />
+            </div>
+        );
+    }
 
     return (
         <div className="w-full max-w-[700px] flex flex-col gap-6 animate-fade-in">
             
             {/* 1. URL Input Section */}
             <div className="relative w-full group">
-                {/* Left Icon */}
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-300">
                     {analyzing ? (
                         <Loader2 size={20} className="animate-spin text-zinc-400" />
@@ -155,7 +249,6 @@ const DownloadForm = ({ onDownloadStart, onApiKeyRequired, user }) => {
                     )}
                 />
 
-                {/* Clear Button */}
                 {url && !analyzing && (
                     <button 
                         onClick={() => {
@@ -248,7 +341,7 @@ const DownloadForm = ({ onDownloadStart, onApiKeyRequired, user }) => {
                 </div>
             )}
 
-            {/* Analyze Button (Only shown if valid URL and not yet analyzed) */}
+            {/* Analyze Button */}
             {!mediaInfo && url && platformState.isValid && (
                 <button
                     onClick={handleAnalyze}
