@@ -6,9 +6,11 @@ import toast from 'react-hot-toast';
 const DEFAULT_SETTINGS = {
     default_format: 'mp4',
     default_quality: '1080p',
-    auto_download: false,
+    auto_start_downloads: false,
     notifications_enabled: true,
-    history_retention_days: 30,
+    auto_delete_days: 0,
+    history_limit: 1000,
+    show_file_warnings: true,
     theme: 'light'
 };
 
@@ -26,9 +28,8 @@ export const useSettings = () => {
         const fetchSettings = async () => {
             setLoading(true);
             try {
-                // Try fetching
                 const { data, error } = await supabase
-                    .from('user_settings')
+                    .from('user_preferences') // Updated table name
                     .select('*')
                     .eq('user_id', user.id)
                     .single();
@@ -41,13 +42,12 @@ export const useSettings = () => {
                     setSettings({ ...DEFAULT_SETTINGS, ...data });
                 } else {
                     // Initialize if not exists
-                    await supabase.from('user_settings').insert({
+                    await supabase.from('user_preferences').insert({
                         user_id: user.id
                     });
                 }
             } catch (err) {
                 console.error('Error fetching settings:', err);
-                // Do not toast here to avoid spamming on load, just log
             } finally {
                 setLoading(false);
             }
@@ -63,7 +63,7 @@ export const useSettings = () => {
         
         try {
             const { error } = await supabase
-                .from('user_settings')
+                .from('user_preferences')
                 .upsert({ 
                     user_id: user.id,
                     ...newSettings,
