@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Github, Twitter, Globe, Linkedin, Mail } from 'lucide-react';
-import styles from '@/components/profile/Dashboard.module.css';
+import styles from './About.module.css';
 
 const AboutPage = () => {
   const socialLinks = [
@@ -14,7 +14,7 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className={`${styles.pageContainer} ${styles.fadeIn}`}>
+    <div className={styles.pageContainer}>
       <div className="container">
         
         <div className={styles.aboutCard}>
@@ -57,12 +57,12 @@ const AboutPage = () => {
             
             <div className={styles.bioWrap}>
               <p className={styles.bioText}>
-                I'm <strong>Arsh Verma</strong>, a Tech Gaming Technology student at <strong>VIT Bhopal</strong> and a full-stack digital creator. 
+                I&apos;m <strong>Arsh Verma</strong>, a Tech Gaming Technology student at <strong>VIT Bhopal</strong> and a full-stack digital creator. 
                 My expertise lies in game development with <strong>Unity</strong>, but I also build dynamic websites and apps.
               </p>
               
               <p className={styles.bioText}>
-                I've earned numerous certifications and treat every project, like my portfolio <a href="https://arshcreates.vercel.app" target="_blank">arshcreates</a>, 
+                I&apos;ve earned numerous certifications and treat every project, like my portfolio <a href="https://arshcreates.vercel.app" target="_blank">arshcreates</a>, 
                 as an opportunity to blend creative vision with technical precision.
               </p>
               
@@ -72,7 +72,7 @@ const AboutPage = () => {
               </p>
               
               <p className={styles.philosophy}>
-                Take a look around—I'm ready to tackle the next big project!
+                Take a look around—I&apos;m ready to tackle the next big project!
               </p>
             </div>
 
