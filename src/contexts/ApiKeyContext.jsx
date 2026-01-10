@@ -115,8 +115,38 @@ export const ApiKeyProvider = ({ children }) => {
          }
     };
 
+    const updateKeyStatus = async (platform, status, latency) => {
+        try {
+            const updates = { 
+                status, 
+                last_tested_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
+            // Logic to update Supabase would go here
+            // For now, we update local state optimistically or re-fetch
+             const { data, error } = await supabase
+                .from('api_keys')
+                .update(updates)
+                .eq('user_id', user.id)
+                .eq('platform', platform)
+                .select()
+                .single();
+
+            if (error) throw error;
+
+            setApiKeys(prev => ({
+                ...prev,
+                [platform]: data
+            }));
+            return true;
+        } catch (error) {
+            console.error('Error updating key status:', error);
+            return false;
+        }
+    };
+
     return (
-        <ApiKeyContext.Provider value={{ apiKeys, saveApiKey, getApiKey, hasApiKey, deleteApiKey, loading }}>
+        <ApiKeyContext.Provider value={{ apiKeys, saveApiKey, getApiKey, hasApiKey, deleteApiKey, updateKeyStatus, loading }}>
             {children}
         </ApiKeyContext.Provider>
     );
