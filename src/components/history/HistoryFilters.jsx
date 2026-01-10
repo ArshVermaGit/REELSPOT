@@ -112,6 +112,8 @@ const HistoryFilters = ({
                         <option value="All">All Types</option>
                         <option value="video">Videos</option>
                         <option value="reel">Reels</option>
+                        <option value="shorts">Shorts</option>
+                        <option value="story">Stories</option>
                         <option value="image">Images</option>
                     </select>
                     <FileType className="absolute right-2.5 top-2.5 text-zinc-400 pointer-events-none" size={14} />
