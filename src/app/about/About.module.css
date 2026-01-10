@@ -1,0 +1,151 @@
+.pageContainer {
+  min-height: 80vh;
+  padding: 80px var(--spacing-xl) 120px;
+  background-color: var(--color-white);
+}
+
+.aboutCard {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: var(--spacing-4xl);
+  align-items: start;
+  margin-bottom: var(--spacing-6xl);
+}
+
+.profileSide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+}
+
+.imageOuter {
+  padding: 10px;
+  background: var(--color-gray-50);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+}
+
+.imageInner {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  line-height: 0;
+}
+
+.profileImage {
+  object-fit: cover;
+  filter: grayscale(1);
+}
+
+.socialGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-sm);
+  width: 100%;
+}
+
+.socialBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--color-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.socialBtn:hover {
+  background: var(--color-gray-50);
+  border-color: var(--color-black);
+}
+
+.contentSide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  border-left: 1px solid var(--border-color);
+  padding-left: var(--spacing-4xl);
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--color-black);
+}
+
+.bioWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.bioText {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.bioText strong {
+  color: var(--color-black);
+}
+
+.philosophy {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-black);
+  padding: var(--spacing-lg);
+  background: var(--color-gray-50);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-black);
+}
+
+.primaryBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  background: var(--color-black);
+  color: white;
+  padding: 16px 32px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 1rem;
+  align-self: flex-start;
+  text-decoration: none;
+}
+
+.footer {
+  text-align: left;
+  padding-top: var(--spacing-4xl);
+  border-top: 1px solid var(--border-color);
+  color: var(--color-gray-400);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+@media (max-width: 968px) {
+  .aboutCard {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-3xl);
+  }
+  .contentSide { 
+    border-left: none; 
+    padding-left: 0; 
+    border-top: 1px solid var(--border-color);
+    padding-top: var(--spacing-3xl);
+  }
+  .title { font-size: 2.5rem; }
+}
