@@ -42,7 +42,7 @@ const Hero = () => {
     };
     
     return (
-        <div className="relative min-h-[90vh] flex flex-col justify-center items-center overflow-hidden bg-white text-black">
+        <section className="relative min-h-[92vh] flex flex-col justify-center items-center overflow-hidden bg-white text-black selection:bg-black selection:text-white">
             {/* Background Elements */}
             <FloatingIcons />
 
@@ -64,7 +64,7 @@ const Hero = () => {
 
                 {/* Animated Logo */}
                 <h1
-                    className="text-5xl md:text-7xl font-[800] tracking-tighter mb-4 animate-slide-down"
+                    className="text-[48px] md:text-[72px] font-[800] tracking-[-2px] mb-6 leading-tight animate-slide-down drop-shadow-sm"
                     style={{ animationDelay: '0s' }}
                 >
                     Reelspot
@@ -72,13 +72,13 @@ const Hero = () => {
 
                 {/* Tagline */}
                 <p
-                    className="text-lg md:text-2xl font-medium mb-12 text-zinc-600 bg-clip-text text-transparent bg-gradient-to-br from-black to-zinc-600 animate-fade-in opacity-0"
-                    style={{ animationDelay: '0.2s' }}
+                    className="text-[18px] md:text-[24px] font-medium mb-12 animate-fade-in opacity-0 text-transparent bg-clip-text bg-gradient-to-br from-black to-[#4A4A4A] hover:[&>span]:inline-block hover:[&>span]:scale-110 hover:[&>span]:transition-transform"
+                    style={{ animationDelay: '0.3s' }}
                 >
-                    Download Media, <span className="text-black font-semibold">Effortlessly</span>
+                    <span>D</span><span>o</span><span>w</span><span>n</span><span>l</span><span>o</span><span>a</span><span>d</span> <span>M</span><span>e</span><span>d</span><span>i</span><span>a</span><span>,</span> <span>E</span><span>f</span><span>f</span><span>o</span><span>r</span><span>t</span><span>l</span><span>e</span><span>s</span><span>s</span><span>l</span><span>y</span>
                 </p>
 
-                {/* Input Form */}
+                {/* Input Form Wrapper */}
                 <div 
                     className="w-full flex justify-center animate-fade-in opacity-0"
                     style={{ animationDelay: '0.4s' }}
@@ -92,7 +92,7 @@ const Hero = () => {
                 </div>
 
             </div>
-        </div>
+        </section>
     );
 };
 
