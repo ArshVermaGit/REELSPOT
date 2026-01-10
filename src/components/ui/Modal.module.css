@@ -175,3 +175,40 @@
   object-fit: contain;
   box-shadow: 0 0 100px rgba(255, 255, 255, 0.1);
 }
+
+/* Bottom Sheet (Mobile) */
+@media (max-width: 768px) {
+  .bottomSheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 32px 32px 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    animation: sheetSlideUp 0.4s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+    box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    overflow: hidden;
+  }
+
+  .pullIndicator {
+    width: 40px;
+    height: 4px;
+    background: var(--color-gray-200);
+    border-radius: 2px;
+    margin: 12px auto;
+    cursor: pointer;
+  }
+
+  .bottomSheetContent {
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: var(--spacing-4);
+  }
+
+  @keyframes sheetSlideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+}
