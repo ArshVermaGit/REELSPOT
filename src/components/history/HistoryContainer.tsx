@@ -3,12 +3,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { 
-  Search, Download, Trash2, 
-  FileDown, 
-  Instagram, Youtube, Facebook, Music2
+  Search, Trash2, 
+  Instagram, Youtube, Facebook, Music2,
+  RefreshCw, FileDown
 } from 'lucide-react';
 import styles from './History.module.css';
 import ConfirmationModal from '@/components/ui/ConfirmationModal';
+import Skeleton from '@/components/ui/Skeleton';
 
 // --- Types ---
 interface HistoryItem {
@@ -28,12 +29,14 @@ const HistoryContainer = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [items, setItems] = useState<HistoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState<{ type: 'single' | 'bulk' | 'clear', id?: string } | null>(null);
 
-  const fetchHistory = async () => {
+  const fetchHistory = async (silent = false) => {
     try {
-      setIsLoading(true);
+      if (!silent) setIsLoading(true);
+      if (silent) setIsRefreshing(true);
       const res = await fetch('/api/history');
       if (res.ok) {
         const data = await res.json();
@@ -43,6 +46,7 @@ const HistoryContainer = () => {
       console.error("Failed to fetch history:", error);
     } finally {
       setIsLoading(false);
+      setIsRefreshing(false);
     }
   };
 
@@ -129,7 +133,7 @@ const HistoryContainer = () => {
         <p className="text-gray-500 mb-8 font-medium">Please sign in to view and manage your download history.</p>
         <button 
           onClick={() => window.dispatchEvent(new CustomEvent('open-login'))}
-          className="px-8 py-4 bg-black text-white rounded-2xl font-bold hover:scale-105 transition-all inline-block"
+          className="px-8 py-4 bg-black text-white rounded-xl font-bold inline-block"
         >
           Sign In Now
         </button>
@@ -140,24 +144,32 @@ const HistoryContainer = () => {
   return (
     <div className={styles.historyWrapper}>
       
+      <div className={styles.layout}>
+      
       {/* Header Panel */}
       <header className={styles.header}>
         <div className={styles.titleSection}>
-          <h1 className={styles.title}>History</h1>
+          <div className="flex items-center gap-4">
+            <h1 className={styles.title}>History</h1>
+            {isRefreshing && <RefreshCw className="animate-spin text-gray-400" size={20} />}
+          </div>
           <div className={styles.bulkActions}>
-            <button className={`${styles.bulkBtn}`} onClick={handleExportCSV}>
-              <FileDown size={18} /> Export CSV
+            <button className={styles.bulkBtn} onClick={() => fetchHistory(true)}>
+              <RefreshCw size={18} /> Sync
+            </button>
+            <button className={styles.bulkBtn} onClick={handleExportCSV}>
+              <FileDown size={18} /> Export
             </button>
             {items.length > 0 && (
               <button className={`${styles.bulkBtn} ${styles.deleteBtn}`} onClick={() => setShowDeleteModal({ type: 'clear' })}>
-                <Trash2 size={18} /> Clear All
+                <Trash2 size={18} /> Clear
               </button>
             )}
           </div>
         </div>
 
         <div className={styles.searchContainer}>
-          <Search className={styles.searchIcon} size={22} />
+          <Search className={styles.searchIcon} size={20} />
           <input 
             type="text" 
             placeholder="Search your downloads..." 
@@ -169,7 +181,7 @@ const HistoryContainer = () => {
 
         <div className={styles.filtersRow}>
           <div className={styles.chipGroup}>
-            {['All', 'Today', 'This Week', 'This Month'].map(f => (
+            {['All', 'Today', 'This Week'].map(f => (
               <button 
                 key={f} 
                 className={`${styles.filterChip} ${timeFilter === f ? styles.filterChipActive : ''}`}
@@ -180,7 +192,7 @@ const HistoryContainer = () => {
             ))}
           </div>
           <div className={styles.chipGroup}>
-            {['All', 'YouTube', 'Instagram', 'TikTok', 'Facebook'].map(p => (
+            {['All', 'YouTube', 'Instagram'].map(p => (
               <button 
                 key={p} 
                 className={`${styles.filterChip} ${platformFilter === p ? styles.filterChipActive : ''}`}
@@ -193,13 +205,13 @@ const HistoryContainer = () => {
         </div>
 
         {selectedIds.length > 0 && (
-          <div className="flex items-center justify-between p-4 bg-gray-900 text-white rounded-2xl animate-fade-in">
-            <span className="font-bold">{selectedIds.length} items selected</span>
+          <div className="flex items-center justify-between p-4 bg-black text-white rounded-xl">
+            <span className="font-bold">{selectedIds.length} selected</span>
             <button 
-              className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 rounded-xl transition-colors font-bold"
+              className="flex items-center gap-2 px-4 py-2 bg-red-600 rounded-lg font-bold"
               onClick={() => setShowDeleteModal({ type: 'bulk' })}
             >
-              <Trash2 size={16} /> Delete Selected
+              <Trash2 size={16} /> Delete
             </button>
           </div>
         )}
@@ -208,41 +220,44 @@ const HistoryContainer = () => {
       {/* Grid Content */}
       {isLoading ? (
         <div className={styles.itemsGrid}>
-          {[1,2,3,4,5,6].map(i => <div key={i} className={styles.skeletonCard} />)}
+          {[1,2,3,4].map(i => (
+            <div key={i} className={styles.historyCard}>
+              <div className={styles.thumbWrapper}>
+                <Skeleton width="100%" height="100%" />
+              </div>
+              <div className={styles.cardContent}>
+                <Skeleton width="100%" height="20px" className="mb-2" />
+                <Skeleton width="60%" height="14px" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : filteredItems.length > 0 ? (
         <div className={styles.itemsGrid}>
-          {filteredItems.map((item, idx) => (
-            <div 
-              key={item.id} 
-              className={styles.historyCard}
-              style={{ animationDelay: `${idx * 0.05}s` }}
-            >
+          {filteredItems.map((item) => (
+            <div key={item.id} className={styles.historyCard}>
               <div 
                 className={`${styles.checkbox} ${selectedIds.includes(item.id) ? styles.checkboxSelected : ''}`}
                 onClick={() => handleToggleSelect(item.id)}
               />
               <div className={styles.thumbWrapper}>
                 <div className={styles.platformBadge}>
-                  {item.platform === 'YouTube' && <Youtube size={14} color="#FF0000" />}
-                  {item.platform === 'Instagram' && <Instagram size={14} color="#E4405F" />}
-                  {item.platform === 'TikTok' && <Music2 size={14} color="#000000" />}
-                  {item.platform === 'Facebook' && <Facebook size={14} color="#1877F2" />}
-                  {item.platform}
+                  {item.platform === 'YouTube' && <Youtube size={14} />}
+                  {item.platform === 'Instagram' && <Instagram size={14} />}
+                  {item.platform === 'TikTok' && <Music2 size={14} />}
+                  {item.platform === 'Facebook' && <Facebook size={14} />}
+                  <span>{item.platform}</span>
                 </div>
               </div>
               <div className={styles.cardContent}>
                 <h3 className={styles.cardTitle}>{item.title}</h3>
                 <div className={styles.cardFooter}>
                   <span className={styles.date}>
-                    {new Date(item.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    {new Date(item.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                   </span>
                   <div className="flex gap-2">
-                    <button className={styles.reDownloadBtn} title="Download Again">
-                      <Download size={16} />
-                    </button>
-                    <button className={styles.reDownloadBtn} onClick={() => setShowDeleteModal({ type: 'single', id: item.id })}>
-                      <Trash2 size={16} />
+                    <button className={styles.actionBtn} onClick={() => setShowDeleteModal({ type: 'single', id: item.id })}>
+                      <Trash2 size={14} />
                     </button>
                   </div>
                 </div>
@@ -253,9 +268,9 @@ const HistoryContainer = () => {
       ) : (
         <div className={styles.emptyState}>
           <div className={styles.emptyIcon}>🎬</div>
-          <h3 className="text-2xl font-black mb-2">No history found</h3>
-          <p className="text-gray-500 mb-8 font-medium">Try adjusting your filters or start downloading new media.</p>
-          <a href="/" className="px-8 py-4 bg-black text-white rounded-2xl font-bold hover:scale-105 transition-all inline-block">
+          <h3 className="text-xl font-black mb-2">No history found</h3>
+          <p className="text-gray-500 mb-6 font-medium">Try adjusting your filters.</p>
+          <a href="/" className="px-6 py-3 bg-black text-white rounded-xl font-bold inline-block">
             Start Downloading
           </a>
         </div>
@@ -266,12 +281,13 @@ const HistoryContainer = () => {
         onClose={() => setShowDeleteModal(null)}
         onConfirm={confirmDelete}
         title={showDeleteModal?.type === 'clear' ? 'Clear History?' : 'Delete Items?'}
-        description="This action will permanently remove these items from your private history stash. It cannot be undone."
-        confirmLabel={showDeleteModal?.type === 'clear' ? 'Clear All' : 'Delete Now'}
+        description="This action cannot be undone."
+        confirmLabel={showDeleteModal?.type === 'clear' ? 'Clear All' : 'Delete'}
         type="danger"
         isLoading={isDeleting}
       />
 
+      </div>
     </div>
   );
 };
