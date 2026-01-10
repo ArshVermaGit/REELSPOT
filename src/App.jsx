@@ -6,6 +6,7 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import History from './pages/History'
+import Settings from './pages/Settings'
 import ErrorBoundary from './components/ErrorBoundary'
 import { Toaster } from 'react-hot-toast'
 
@@ -26,6 +27,7 @@ function App() {
                     <Route element={<ProtectedRoute />}>
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/history" element={<History />} />
+                        <Route path="/settings" element={<Settings />} />
                     </Route>
                     
                     {/* Fallback route - could be a 404 page */}
