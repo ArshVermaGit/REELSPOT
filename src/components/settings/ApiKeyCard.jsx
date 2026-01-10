@@ -46,7 +46,7 @@ const ApiKeyCard = ({ platform, keyData, onUpdate, onDelete, onTestStatus }) => 
                 {keyData ? (
                     <div className="flex items-center justify-center md:justify-start gap-2 mt-2">
                         <code className="bg-zinc-50 px-3 py-1 rounded-lg text-sm text-zinc-600 font-mono">
-                            {showKey ? keyData.key : '••••••••••••••••••••••••'}
+                            {showKey ? keyData.api_key : '••••••••••••••••••••••••'}
                         </code>
                         <button onClick={() => setShowKey(!showKey)} className="p-1 hover:bg-zinc-100 rounded-md text-zinc-400 hover:text-black transition-colors">
                             {showKey ? <EyeOff size={16} /> : <Eye size={16} />}
