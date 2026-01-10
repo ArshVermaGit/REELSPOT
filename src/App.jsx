@@ -8,7 +8,12 @@ import { useToast } from './hooks/useToast';
 import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/layout/Layout'
 import ErrorBoundary from './components/ErrorBoundary'
-// ... imports
+import Home from './pages/Home'
+import AuthCallback from './pages/AuthCallback'
+import Dashboard from './pages/Dashboard'
+import History from './pages/History'
+import Settings from './pages/Settings'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   const isOnline = useNetworkStatus(); 
