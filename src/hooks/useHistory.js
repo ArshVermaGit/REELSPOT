@@ -23,134 +23,110 @@ export const useHistory = () => {
     const [selectedIds, setSelectedIds] = useState(new Set());
 
     // Fetch Initial Data
-    useEffect(() => {
-        if (!user) {
-            setHistory([]);
-            setLoading(false);
-            return;
-        }
+    // Data State
+    const [page, setPage] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    const ITEMS_PER_PAGE = 20;
 
-        const fetchHistory = async () => {
-            setLoading(true);
-            try {
-                // Fetch all history for now (can paginate later)
-                const { data, error } = await supabase
-                    .from('download_history')
-                    .select('*')
-                    .order('created_at', { ascending: false });
+    const buildQuery = (baseQuery) => {
+        let q = baseQuery;
 
-                if (error) throw error;
-                setHistory(data || []);
-            } catch (err) {
-                console.error('Error fetching history:', err);
-                toast.error('Failed to load history');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchHistory();
-
-        // Real-time Subscription
-        const subscription = supabase
-            .channel('public:download_history')
-            .on('postgres_changes', { 
-                event: '*', 
-                schema: 'public', 
-                table: 'download_history', 
-                filter: `user_id=eq.${user.id}` 
-            }, (payload) => {
-                if (payload.eventType === 'INSERT') {
-                    setHistory(prev => [payload.new, ...prev]);
-                } else if (payload.eventType === 'DELETE') {
-                    setHistory(prev => prev.filter(item => item.id !== payload.old.id));
-                    // Also remove from selection if deleted
-                    setSelectedIds(prev => {
-                        const next = new Set(prev);
-                        next.delete(payload.old.id);
-                        return next;
-                    });
-                } else if (payload.eventType === 'UPDATE') {
-                    setHistory(prev => prev.map(item => item.id === payload.new.id ? payload.new : item));
-                }
-            })
-            .subscribe();
-
-        return () => {
-            supabase.removeChannel(subscription);
-        };
-    }, [user]);
-
-    // Derived Logic: Filtering & Sorting
-    const filteredHistory = useMemo(() => {
-        let result = [...history];
-
-        // 1. Search (Debounce not strictly needed here unless heavy, handled in UI)
+        // 1. Search
         if (search) {
-            const q = search.toLowerCase();
-            result = result.filter(item => 
-                (item.title && item.title.toLowerCase().includes(q)) ||
-                (item.media_url && item.media_url.toLowerCase().includes(q))
-            );
+            // Simple OR search on title and url
+            q = q.or(`title.ilike.%${search}%,media_url.ilike.%${search}%`);
         }
 
         // 2. Filters
         if (filter.platform !== 'All') {
-            result = result.filter(item => item.platform.toLowerCase() === filter.platform.toLowerCase());
+            q = q.eq('platform', filter.platform.toLowerCase());
         }
         if (filter.status !== 'All') {
-            result = result.filter(item => 
-                filter.status === 'Completed' ? item.download_status === 'completed' : 
-                filter.status === 'Failed' ? item.download_status === 'failed' : true
-            );
+            const status = filter.status === 'Completed' ? 'completed' : 'failed';
+            q = q.eq('download_status', status);
         }
-        // Media Type logic (approximate)
-        if (filter.type !== 'All') { 
-            // Assume we populate this column better later, checks for substring now
-             result = result.filter(item => item.media_type && item.media_type.toLowerCase().includes(filter.type.toLowerCase()));
+        if (filter.type !== 'All') {
+            q = q.ilike('media_type', `%${filter.type.toLowerCase()}%`);
         }
-
         if (filter.format !== 'All') {
-            result = result.filter(item => item.format && item.format.toLowerCase() === filter.format.toLowerCase());
+            q = q.eq('format', filter.format.toLowerCase());
         }
-
-        // Date Range
         if (filter.dateRange !== 'All') {
             const now = new Date();
-            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            result = result.filter(item => {
-                const date = new Date(item.created_at);
-                if (filter.dateRange === 'Today') {
-                    return date >= todayStart;
-                }
-                if (filter.dateRange === 'Last 7 Days') {
-                    const sevenDaysAgo = new Date(now);
-                    sevenDaysAgo.setDate(now.getDate() - 7);
-                    return date >= sevenDaysAgo;
-                }
-                if (filter.dateRange === 'Last 30 Days') {
-                    const thirtyDaysAgo = new Date(now);
-                    thirtyDaysAgo.setDate(now.getDate() - 30);
-                    return date >= thirtyDaysAgo;
-                }
-                return true;
-            });
+            let date = new Date();
+            if (filter.dateRange === 'Today') date.setHours(0,0,0,0);
+            if (filter.dateRange === 'Last 7 Days') date.setDate(now.getDate() - 7);
+            if (filter.dateRange === 'Last 30 Days') date.setDate(now.getDate() - 30);
+            q = q.gte('created_at', date.toISOString());
         }
 
         // 3. Sorting
-        result.sort((a, b) => {
-            switch (sort) {
-                case 'newest': return new Date(b.created_at) - new Date(a.created_at);
-                case 'oldest': return new Date(a.created_at) - new Date(b.created_at);
-                case 'size_desc': return (b.file_size || 0) - (a.file_size || 0);
-                case 'size_asc': return (a.file_size || 0) - (b.file_size || 0);
-                default: return 0;
-            }
-        });
+        switch (sort) {
+            case 'newest': q = q.order('created_at', { ascending: false }); break;
+            case 'oldest': q = q.order('created_at', { ascending: true }); break;
+            case 'size_desc': q = q.order('file_size', { ascending: false }); break;
+            case 'size_asc': q = q.order('file_size', { ascending: true }); break;
+            default: q = q.order('created_at', { ascending: false });
+        }
 
-        return result;
-    }, [history, search, filter, sort]);
+        return q;
+    };
+
+    const fetchHistory = async (pageIndex, reset = false) => {
+        if (!user) return;
+        if (reset) {
+            setLoading(true);
+            setHistory([]); // Clear immediately on filter change
+        }
+
+        try {
+            const from = pageIndex * ITEMS_PER_PAGE;
+            const to = from + ITEMS_PER_PAGE - 1;
+
+            let query = supabase
+                .from('download_history')
+                .select('*', { count: 'exact' })
+                .eq('user_id', user.id);
+
+            query = buildQuery(query);
+            
+            // Pagination
+            query = query.range(from, to);
+
+            const { data, error, count } = await query;
+
+            if (error) throw error;
+
+            setHistory(prev => reset ? (data || []) : [...prev, ...(data || [])]);
+            setHasMore(data && data.length === ITEMS_PER_PAGE);
+            
+        } catch (err) {
+            console.error('Error fetching history:', err);
+            toast.error('Failed to load history');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Effect for Filter/Sort/Search changes
+    useEffect(() => {
+        // Debounce search
+        const timeoutId = setTimeout(() => {
+            setPage(0);
+            fetchHistory(0, true); 
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, [user, filter, sort, search]);
+
+    const loadMore = () => {
+        if (!loading && hasMore) {
+            const nextPage = page + 1;
+            setPage(nextPage);
+            fetchHistory(nextPage, false);
+        }
+    };
+
+    // Note: Removed useMemo filteredHistory, directly using `history` state which is now server-filtered.
 
     // Stats
     const stats = useMemo(() => {
@@ -243,9 +219,11 @@ export const useHistory = () => {
     };
 
     return {
-        history: filteredHistory,
+        history, // Directly returning history state
         rawHistory: history,
         loading,
+        hasMore,
+        loadMore,
         filter,
         setFilter,
         search,
