@@ -6,7 +6,7 @@ import { useHistory } from '../hooks/useHistory';
 import { exportHistoryToCSV, exportHistoryToJSON } from '../utils/exportUtils';
 import ApiKeyCard from '../components/settings/ApiKeyCard';
 import PreferencesForm from '../components/settings/PreferencesForm';
-import ApiKeyModal from '../components/ApiKeyModal';
+import ApiKeyModal from '../components/modals/ApiKeyModal';
 import { User, Key, Sliders, Database, DownloadCloud, Trash2, LogOut, Code, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
