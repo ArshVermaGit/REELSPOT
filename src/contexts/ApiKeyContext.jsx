@@ -43,16 +43,51 @@ export const ApiKeyProvider = ({ children }) => {
         }
     };
 
-    const saveApiKey = async (platform, key) => {
-        // Basic format validation
-        if (!key || key.length < 5) {
-            toast.error('Invalid API key format');
-            return false;
+    const validateApiKey = async (platform, key) => {
+        // Simple validation simulation / basic checks
+        // In a real app, we would make a fetch('https://graph.instagram.com/me?access_token='+key)
+        
+        if (!key) return { valid: false, message: 'Key is empty' };
+        
+        // Platform specific approximate validation
+        switch (platform) {
+            case 'instagram':
+            case 'facebook':
+                // FB/Insta tokens are usually long (>20 chars)
+                if (key.length < 20) return { valid: false, message: 'Token seems too short' };
+                break;
+            case 'youtube':
+                // YT keys are ~39 chars usually
+                if (key.length < 30) return { valid: false, message: 'Key seems too short' };
+                break;
+            case 'tiktok':
+                 if (key.length < 10) return { valid: false, message: 'Key seems too short' };
+                 break;
+            default:
+                break;
         }
 
-        const toastId = toast.loading('Saving API key...');
+        // Simulate network test (since we don't have real proxy endpoints yet)
+        // Ideally we call our own /api/validate endpoint
+        await new Promise(r => setTimeout(r, 800)); 
+        
+        return { valid: true };
+    };
+
+    const saveApiKey = async (platform, key) => {
+        const toastId = toast.loading(`Validating ${platform} key...`);
+        
         try {
-            // Upsert to Supabase
+            // 1. Validate
+            const validation = await validateApiKey(platform, key);
+            if (!validation.valid) {
+                toast.error(validation.message, { id: toastId });
+                return false;
+            }
+
+            // 2. Upsert to Supabase
+            // Note: In a production environment with pgcrypto, we would use an RPC 
+            // function to encrypt: rpc('save_encrypted_key', { ... })
             const { data, error } = await supabase
                 .from('api_keys')
                 .upsert({ 
@@ -60,13 +95,13 @@ export const ApiKeyProvider = ({ children }) => {
                     platform, 
                     api_key: key, 
                     updated_at: new Date().toISOString()
-                }, { onConflict: 'user_id, platform' }) // Use constraint name if needed, or inferred from unique index
+                }, { onConflict: 'user_id, platform' })
                 .select()
                 .single();
             
             if (error) throw error;
             
-            // Update local state
+            // 3. Update local state
             setApiKeys(prev => ({
                 ...prev,
                 [platform]: data
