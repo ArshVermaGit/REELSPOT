@@ -1,12 +1,13 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import LoadingScreen from './LoadingScreen'
 
 const ProtectedRoute = () => {
   const { user, loading } = useAuth()
   const location = useLocation()
 
   if (loading) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>
+    return <LoadingScreen message="Checking authorization..." />
   }
 
   if (!user) {
