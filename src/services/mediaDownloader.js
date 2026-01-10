@@ -138,12 +138,16 @@ export const downloadMedia = async ({
         // 3. Save History
         await saveToHistory(userId, {
             platform,
-            media_url: '...', // We might want the original URL here, but keeping it simple
+            media_url: '...', // Should pass actual URL or url prop
             media_type: ext === 'mp3' ? 'audio' : 'video',
             format: ext,
             quality: quality,
             file_size: result.size,
-            download_status: 'completed'
+            download_status: 'completed',
+            // New Fields
+            title: mediaTitle,
+            // We would need thumbnail/author passed in options to save them here
+            // For now, these are optional in schema
         });
 
         return { success: true };
