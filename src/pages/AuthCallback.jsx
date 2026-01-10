@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../services/supabase';
-import LoadingScreen from '../components/LoadingScreen';
+import LoadingScreen from '../components/shared/LoadingSpinner';
 import toast from 'react-hot-toast';
 
 const AuthCallback = () => {
