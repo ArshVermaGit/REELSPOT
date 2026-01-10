@@ -13,12 +13,13 @@ export const AuthProvider = ({ children }) => {
     // Check active sessions and sets the user
     const checkSession = async () => {
         try {
-            const { data: { session } } = await supabase.auth.getSession()
-            setUser(session?.user ?? null)
+            const { data: { session }, error } = await supabase.auth.getSession();
+            if (error) throw error;
+            setUser(session?.user ?? null);
         } catch (error) {
-            console.error(error);
+            console.error('Error checking session:', error);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     }
 
