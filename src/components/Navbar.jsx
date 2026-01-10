@@ -14,8 +14,11 @@ const Navbar = () => {
         </Link>
         <div className="flex items-center gap-4">
             {user ? (
-                <>
-                 <Link to="/dashboard" className="text-sm font-medium transition-colors hover:text-primary">
+                 <>
+                  <Link to="/history" className="text-sm font-medium transition-colors hover:text-primary">
+                    History
+                  </Link>
+                  <Link to="/dashboard" className="text-sm font-medium transition-colors hover:text-primary">
                     Dashboard
                   </Link>
                   <button onClick={signOut} className="flex items-center gap-2 text-sm font-medium text-destructive hover:text-destructive/80">
