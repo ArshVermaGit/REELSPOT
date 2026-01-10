@@ -44,32 +44,59 @@ export const ApiKeyProvider = ({ children }) => {
     };
 
     const validateApiKey = async (platform, key) => {
-        // Simple validation simulation / basic checks
-        // In a real app, we would make a fetch('https://graph.instagram.com/me?access_token='+key)
-        
         if (!key) return { valid: false, message: 'Key is empty' };
         
-        // Platform specific approximate validation
+        let valid = false;
+        let message = '';
+
+        // Regex patterns for rough validation
+        const patterns = {
+            // Instagram / Facebook User Tokens are often ~150-200+ chars, start with EAA...
+            facebook: /^EAA[A-Za-z0-9]+/,
+            instagram: /^EAA[A-Za-z0-9]+/, // Often same format if using FB Graph API for Insta
+            // YouTube API keys: 39 characters, alphanumeric + symbols
+            youtube: /^[A-Za-z0-9_-]{39}$/,
+            // TikTok Client Keys: alphanumeric, varying length (often 20ish)
+            tiktok: /^[A-Za-z0-9]{15,30}$/
+        };
+
+        // Basic format check
         switch (platform) {
             case 'instagram':
             case 'facebook':
-                // FB/Insta tokens are usually long (>20 chars)
-                if (key.length < 20) return { valid: false, message: 'Token seems too short' };
+                // Relaxed check: Just ensure it's long enough and starts right or has structure
+                // FB tokens are notoriously variable, so length > 50 is a safe sanity check.
+                if (key.length < 50) {
+                     message = 'Token seems too short for a Facebook/Instagram User Token';
+                } else {
+                     valid = true;
+                }
                 break;
             case 'youtube':
-                // YT keys are ~39 chars usually
-                if (key.length < 30) return { valid: false, message: 'Key seems too short' };
+                if (patterns.youtube.test(key)) {
+                    valid = true;
+                } else {
+                    message = 'Invalid YouTube API Key format (usually 39 chars)';
+                }
                 break;
             case 'tiktok':
-                 if (key.length < 10) return { valid: false, message: 'Key seems too short' };
+                 if (key.length < 10) {
+                     message = 'Key seems too short';
+                 } else {
+                     valid = true;
+                 }
                  break;
             default:
+                valid = true;
                 break;
         }
 
-        // Simulate network test (since we don't have real proxy endpoints yet)
-        // Ideally we call our own /api/validate endpoint
-        await new Promise(r => setTimeout(r, 800)); 
+        if (!valid && !message) message = 'Invalid format';
+
+        if (!valid) return { valid: false, message };
+
+        // Simulate network test validation
+        await new Promise(r => setTimeout(r, 600)); 
         
         return { valid: true };
     };
