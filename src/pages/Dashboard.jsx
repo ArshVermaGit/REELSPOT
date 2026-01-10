@@ -1,22 +1,57 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useDashboardStats } from '../hooks/useDashboardStats';
 import { useApiKeys } from '../contexts/ApiKeyContext';
-import { useHistory } from '../hooks/useHistory'; 
 import StatsCards from '../components/dashboard/StatsCard'; 
 import RecentDownloads from '../components/dashboard/RecentDownloads';
 import PlatformChart from '../components/dashboard/PlatformChart';
 import ApiKeyStatus from '../components/dashboard/ApiKeyStatus';
+import ApiKeyModal from '../components/modals/ApiKeyModal';
 import LoadingScreen from '../components/shared/LoadingSpinner';
 import { Link } from 'react-router-dom';
-// import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'; // Removed, moved to PlatformChart
-import { Download, AlertTriangle } from 'lucide-react'; // Some might be unused now
+import { Download, AlertTriangle } from 'lucide-react';
+import { supabase } from '../services/supabase';
+import toast from 'react-hot-toast';
 
 const Dashboard = () => {
     const { user } = useAuth();
-    const { deleteItem } = useHistory(); // reusing delete action
     const stats = useDashboardStats();
-    const { apiKeys } = useApiKeys();
+    const { apiKeys, loading: apiKeysLoading } = useApiKeys();
+
+    // API Key Modal State
+    const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+    const [promptedPlatform, setPromptedPlatform] = useState(null);
+    const [hasCheckedApiKeys, setHasCheckedApiKeys] = useState(false);
+
+    // Auto-open API key modal if no keys exist
+    useEffect(() => {
+        if (!stats.loading && !apiKeysLoading && !hasCheckedApiKeys) {
+            setHasCheckedApiKeys(true);
+            const keysCount = Object.keys(apiKeys).length;
+            if (keysCount === 0) {
+                // Auto-prompt for first platform setup
+                setPromptedPlatform('instagram');
+                setShowApiKeyModal(true);
+            }
+        }
+    }, [stats.loading, apiKeysLoading, apiKeys, hasCheckedApiKeys]);
+
+    // Delete handler for recent downloads
+    const handleDeleteItem = async (id) => {
+        try {
+            const { error } = await supabase
+                .from('download_history')
+                .delete()
+                .eq('id', id);
+            
+            if (error) throw error;
+            toast.success('Item deleted');
+            stats.refreshStats(); // Refresh dashboard stats
+        } catch (err) {
+            console.error(err);
+            toast.error('Failed to delete item');
+        }
+    };
 
     if (stats.loading) return <LoadingScreen message="Loading dashboard..." />;
 
@@ -31,6 +66,13 @@ const Dashboard = () => {
 
     return (
         <div className="min-h-screen bg-zinc-50/50 pt-24 pb-20">
+            {/* API Key Modal */}
+            <ApiKeyModal 
+                isOpen={showApiKeyModal} 
+                onClose={() => setShowApiKeyModal(false)} 
+                platform={promptedPlatform} 
+            />
+
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 {/* 1. Welcome Section */}
@@ -62,6 +104,25 @@ const Dashboard = () => {
                     </div>
                 )}
 
+                {/* No API Keys Warning */}
+                {activeKeysCount === 0 && (
+                    <div className="mb-8 p-4 bg-amber-50 border border-amber-100 rounded-2xl flex items-center gap-3 text-amber-700 animate-fade-in">
+                        <AlertTriangle size={24} />
+                        <div className="flex-1">
+                            <span className="font-bold">Setup Required:</span> Add an API key to start downloading media.
+                        </div>
+                        <button 
+                            onClick={() => {
+                                setPromptedPlatform('instagram');
+                                setShowApiKeyModal(true);
+                            }}
+                            className="px-4 py-2 bg-white rounded-lg text-sm font-bold shadow-sm hover:bg-zinc-50"
+                        >
+                            Add API Key
+                        </button>
+                    </div>
+                )}
+
                 {/* 3. Stats Cards */}
                 <StatsCards stats={stats} apiKeysCount={activeKeysCount} />
 
@@ -70,13 +131,13 @@ const Dashboard = () => {
                     
                     {/* Activity Feed (2 cols) */}
                     <div className="lg:col-span-2">
-                        <RecentDownloads activities={history.slice(0, 5)} onDelete={deleteItem} />
+                        <RecentDownloads activities={stats.recentActivity || []} onDelete={handleDeleteItem} />
                     </div>
 
                     {/* Sidebar (1 col) */}
                     <div className="space-y-8">
                         {/* Platform Chart */}
-                        <PlatformChart data={stats.platforms} />
+                        <PlatformChart data={stats.platformDist} />
 
                         {/* API Key Status */}
                         <ApiKeyStatus apiKeys={apiKeys} />
