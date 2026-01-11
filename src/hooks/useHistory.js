@@ -191,10 +191,10 @@ export const useHistory = () => {
     };
 
     const selectAll = () => {
-        if (selectedIds.size === filteredHistory.length) {
+        if (selectedIds.size === history.length) {
             setSelectedIds(new Set());
         } else {
-            setSelectedIds(new Set(filteredHistory.map(item => item.id)));
+            setSelectedIds(new Set(history.map(item => item.id)));
         }
     };
 
