@@ -6,9 +6,13 @@ import { useHistory } from '../hooks/useHistory';
 import { exportHistoryToCSV, exportHistoryToJSON } from '../utils/exportUtils';
 import ApiKeyCard from '../components/settings/ApiKeyCard';
 import PreferencesForm from '../components/settings/PreferencesForm';
+import ProfileSection from '../components/settings/ProfileSection';
+import DangerZone from '../components/settings/DangerZone';
 import ApiKeyModal from '../components/modals/ApiKeyModal';
 import { User, Key, Sliders, Database, DownloadCloud, Trash2, LogOut, Code, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
+import ConfirmationModal from '../components/modals/ConfirmationModal';
+import EditProfileModal from '../components/modals/EditProfileModal';
 
 const SettingsSection = ({ title, icon: Icon, children }) => (
     <div className="mb-12 animate-fade-in">
@@ -31,10 +35,20 @@ const Settings = () => {
     // Modal State
     const [modalOpen, setModalOpen] = useState(false);
     const [activePlatform, setActivePlatform] = useState(null);
+    const [profileModalOpen, setProfileModalOpen] = useState(false);
 
     // Delete Flow State
-    const [deleteModal, setDeleteModal] = useState({ open: false, type: null }); // type: 'history' | 'account'
-    const [confirmText, setConfirmText] = useState('');
+    const [confirmModal, setConfirmModal] = useState({
+        isOpen: false,
+        title: '',
+        message: '',
+        onConfirm: () => {},
+        type: 'danger',
+        confirmText: 'Delete'
+    });
+
+    const openConfirm = (config) => setConfirmModal({ ...config, isOpen: true });
+    const closeConfirm = () => setConfirmModal(prev => ({ ...prev, isOpen: false }));
 
     const handleExport = (type) => {
         if (history.length === 0) return toast('No history to export');
@@ -46,27 +60,8 @@ const Settings = () => {
             toast.success('Exporting JSON...');
         }
     };
-
-    const handleDeleteKey = async (platform) => {
-        if(window.confirm(`Are you sure you want to delete the ${platform} API Key? This will stop downloads.`)) {
-             await deleteApiKey(platform);
-        }
-    };
-
-    const confirmDelete = async () => {
-        if (confirmText !== 'DELETE') return;
-        
-        if (deleteModal.type === 'history') {
-             await clearHistory();
-             setDeleteModal({ open: false, type: null });
-             setConfirmText('');
-        } else if (deleteModal.type === 'account') {
-             // Mock account deletion flow
-             toast.error("Account deletion is disabled for safety in this demo.");
-             setDeleteModal({ open: false, type: null });
-             setConfirmText('');
-        }
-    };
+    
+    // Generic handlers managed by modal callback now
 
     return (
         <div className="min-h-screen bg-zinc-50/50 pt-24 pb-20">
@@ -76,32 +71,11 @@ const Settings = () => {
 
                 {/* 1. Profile Section */}
                 <SettingsSection title="Profile" icon={User}>
-                    <div className="bg-white rounded-3xl p-8 border border-zinc-100 shadow-sm flex flex-col sm:flex-row items-center gap-6">
-                        <div className="w-20 h-20 rounded-full bg-zinc-100 overflow-hidden shadow-inner">
-                            {user?.user_metadata?.avatar_url ? (
-                                <img src={user.user_metadata.avatar_url} alt="Profile" className="w-full h-full object-cover" />
-                            ) : (
-                                <div className="w-full h-full flex items-center justify-center text-zinc-400 font-bold text-2xl">
-                                    {(user?.email?.[0] || 'U').toUpperCase()}
-                                </div>
-                            )}
-                        </div>
-                        <div className="flex-1 text-center sm:text-left">
-                            <h3 className="text-xl font-bold">{user?.user_metadata?.full_name || 'User'}</h3>
-                            <p className="text-zinc-500">{user?.email}</p>
-                            <div className="flex items-center justify-center sm:justify-start gap-2 mt-2">
-                                <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-xs font-bold uppercase tracking-wider">
-                                    {user?.app_metadata?.provider || 'Email'} Account
-                                </span>
-                            </div>
-                        </div>
-                        <button 
-                            onClick={signOut}
-                            className="px-6 py-3 border border-zinc-200 rounded-xl font-bold text-zinc-700 hover:bg-zinc-50 hover:text-red-500 transition-colors flex items-center gap-2"
-                        >
-                            <LogOut size={18} /> Sign Out
-                        </button>
-                    </div>
+                    <ProfileSection 
+                        user={user}
+                        signOut={signOut}
+                        onEditProfile={() => setProfileModalOpen(true)}
+                    />
                 </SettingsSection>
 
                 {/* 2. API Keys */}
@@ -116,7 +90,13 @@ const Settings = () => {
                                     setActivePlatform(p);
                                     setModalOpen(true);
                                 }}
-                                onDelete={() => handleDeleteKey(platform)}
+                                onDelete={() => openConfirm({
+                                    title: `Delete ${platform} Key?`,
+                                    message: 'This will stop downloads for this platform until a new key is added.',
+                                    onConfirm: () => deleteApiKey(platform),
+                                    confirmText: 'Delete Key',
+                                    type: 'danger'
+                                })}
                                 onTestStatus={updateKeyStatus}
                             />
                         ))}
@@ -162,20 +142,28 @@ const Settings = () => {
                         
                         <div className="mt-4 pt-4 border-t border-zinc-100">
                              <button 
-                                onClick={() => {
-                                   setDeleteModal({ open: true, type: 'history' });
-                                }}
+                                onClick={() => openConfirm({
+                                    title: 'Clear All History?',
+                                    message: 'This will permanently remove all download records. This action cannot be undone.',
+                                    onConfirm: clearHistory,
+                                    confirmText: 'Clear Everything',
+                                    type: 'danger'
+                                })}
                                 className="w-full py-4 bg-red-50 text-red-500 rounded-xl font-bold hover:bg-red-100 transition-colors flex items-center justify-center gap-2"
                             >
                                 <Trash2 size={20} /> Clear All History
                             </button>
                         </div>
                         
-                        <div className="mt-6 text-center">
-                            <p className="text-sm text-zinc-400">
-                                Reelspot v1.0.0 • <a href="#" className="hover:underline">Privacy Policy</a> • <a href="#" className="hover:underline">Terms</a>
-                            </p>
-                        </div>
+                        <DangerZone 
+                            onDeleteAccount={() => openConfirm({
+                                title: 'Delete Account?',
+                                message: 'This will permanently delete your API keys, history, and preferences. This action cannot be undone.',
+                                onConfirm: () => toast.error("Account deletion is disabled for safety in this demo."),
+                                confirmText: 'Delete Account',
+                                type: 'danger'
+                            })}
+                        />
                     </div>
                 </SettingsSection>
 
@@ -186,56 +174,26 @@ const Settings = () => {
                     platform={activePlatform} 
                 />
 
-                {/* Delete Confirmation Modal */}
-                {deleteModal.open && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setDeleteModal({ open: false, type: null})} />
-                        <div className="relative bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl animate-fade-in">
-                            <div className="flex flex-col items-center text-center">
-                                <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4">
-                                    <AlertTriangle size={32} />
-                                </div>
-                                <h3 className="text-2xl font-bold text-zinc-900 mb-2">
-                                    {deleteModal.type === 'history' ? 'Clear All History?' : 'Delete Account?'}
-                                </h3>
-                                <p className="text-zinc-500 mb-6">
-                                    {deleteModal.type === 'history' 
-                                        ? "This will permanently remove all download records. This action cannot be undone." 
-                                        : "This will permanently delete your API keys, history, and preferences."}
-                                </p>
-                                
-                                <div className="w-full mb-6">
-                                    <label className="text-xs font-bold text-zinc-400 uppercase mb-2 block text-left">
-                                        Type "DELETE" to confirm
-                                    </label>
-                                    <input 
-                                        type="text" 
-                                        value={confirmText}
-                                        onChange={(e) => setConfirmText(e.target.value)}
-                                        placeholder="DELETE"
-                                        className="w-full p-4 border-2 border-red-100 rounded-xl focus:border-red-500 focus:outline-none text-center font-bold tracking-widest uppercase"
-                                    />
-                                </div>
+                <EditProfileModal 
+                    isOpen={profileModalOpen}
+                    onClose={() => setProfileModalOpen(false)}
+                    user={user}
+                    onUpdate={(updatedUser) => {
+                        // In a real app the AuthProvider or Supabase sub would update this automatically
+                        // For now we just close and toast, simulating the update
+                    }}
+                />
 
-                                <div className="flex gap-3 w-full">
-                                    <button 
-                                        onClick={() => setDeleteModal({ open: false, type: null})}
-                                        className="flex-1 py-3 text-zinc-500 font-bold hover:bg-zinc-50 rounded-xl transition-colors"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button 
-                                        onClick={confirmDelete}
-                                        disabled={confirmText !== 'DELETE'}
-                                        className="flex-1 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                                    >
-                                        Confirm
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
+                {/* Delete Confirmation Modal */}
+                <ConfirmationModal 
+                    isOpen={confirmModal.isOpen}
+                    onClose={closeConfirm}
+                    onConfirm={confirmModal.onConfirm}
+                    title={confirmModal.title}
+                    message={confirmModal.message}
+                    type={confirmModal.type}
+                    confirmText={confirmModal.confirmText}
+                />
 
             </div>
         </div>
