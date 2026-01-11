@@ -52,6 +52,14 @@ function App() {
                                     <Route path="/dashboard" element={<Dashboard />} />
                                     <Route path="/history" element={<History />} />
                                     <Route path="/settings" element={<Settings />} />
+                                    
+                                    {/* Supplemental Content Pages */}
+                                    <Route path="/privacy" element={<InfoPage pageId="privacy" />} />
+                                    <Route path="/terms" element={<InfoPage pageId="terms" />} />
+                                    <Route path="/features" element={<InfoPage pageId="features" />} />
+                                    <Route path="/supported-platforms" element={<InfoPage pageId="supported-platforms" />} />
+                                    <Route path="/api-access" element={<InfoPage pageId="api-access" />} />
+                                    
                                     <Route path="/info/:pageId" element={<InfoPage />} />
                                     <Route path="*" element={<Home />} />
                                 </Routes>
