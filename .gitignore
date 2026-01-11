@@ -125,8 +125,10 @@ dist
 
 # IDEs
 .idea
+.idea
 .vscode
-*.swp
+!.vscode/settings.json
+*.swp*.swp
 *.swo
 
 # Vite
