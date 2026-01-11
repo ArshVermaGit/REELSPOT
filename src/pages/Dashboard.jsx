@@ -67,41 +67,52 @@ const Dashboard = () => {
                 
                 {/* 1. Welcome Section - Enhanced */}
                 <div className="relative mb-10">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-6 md:p-8 bg-white rounded-3xl border border-zinc-100 shadow-sm">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-8 bg-gradient-to-br from-white to-zinc-50 rounded-[2.5rem] border border-zinc-100 shadow-xl shadow-zinc-200/50 relative overflow-hidden group">
+                         {/* Decorative Background Elements */}
+                         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-100/30 to-blue-100/30 blur-3xl rounded-full -mr-16 -mt-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
                         {/* Left: Greeting */}
-                        <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-zinc-900 to-zinc-700 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                        <div className="relative flex items-center gap-5 z-10">
+                            <div className="w-16 h-16 rounded-2xl bg-zinc-900 flex items-center justify-center text-white text-3xl font-bold shadow-2xl shadow-zinc-900/20 ring-4 ring-white">
                                 {firstName[0]?.toUpperCase() || '👋'}
                             </div>
                             <div>
-                                <h1 className="text-2xl md:text-3xl font-[800] text-zinc-900 tracking-tight">
-                                    {greeting}, {firstName}!
+                                <h1 className="text-3xl md:text-4xl font-[800] text-zinc-900 tracking-tight leading-tight">
+                                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-zinc-900 to-zinc-600">
+                                        {greeting}, {firstName}!
+                                    </span>
                                 </h1>
-                                <p className="text-zinc-500 font-medium">Here's what's happening with your downloads.</p>
+                                <p className="text-zinc-500 font-medium mt-1">
+                                    You have <span className="text-black font-bold">{stats.totalDownloads}</span> downloads this week.
+                                </p>
                             </div>
                         </div>
                         
                         {/* Right: CTA */}
                         <Link 
                             to="/"
-                            className="px-6 py-3.5 bg-black text-white rounded-2xl font-bold hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-black/20 flex items-center gap-2"
+                            className="relative z-10 px-7 py-4 bg-zinc-900 text-white rounded-2xl font-bold hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-zinc-900/20 flex items-center gap-2.5 group/btn"
                         >
-                            <Download size={20} /> Start New Download
+                            <Download size={20} className="group-hover/btn:-translate-y-0.5 transition-transform" /> 
+                            <span>Start New Download</span>
                         </Link>
                     </div>
                 </div>
 
                 {/* 2. Key Warnings */}
                 {invalidKeys.length > 0 && (
-                    <div className="mb-8 p-5 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-4 text-red-700 animate-fade-in">
-                        <div className="p-2 bg-red-100 rounded-xl">
-                            <AlertTriangle size={24} />
+                    <div className="mb-8 p-6 bg-red-50/50 border border-red-100 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4 text-red-700 animate-fade-in backdrop-blur-sm">
+                        <div className="p-3 bg-red-100/50 rounded-xl shrink-0">
+                            <AlertTriangle size={24} className="text-red-600" />
                         </div>
                         <div className="flex-1">
-                            <span className="font-bold">Attention Needed:</span> Your API keys for {invalidKeys.map(k=>k[0]).join(', ')} are invalid or expired.
+                            <h3 className="font-bold text-red-900 text-lg">Attention Needed</h3>
+                            <p className="text-red-700/80 font-medium">
+                                Your API keys for <span className="font-bold text-red-800">{invalidKeys.map(k=>k[0]).join(', ')}</span> are invalid or expired.
+                            </p>
                         </div>
-                        <Link to="/settings" className="px-4 py-2 bg-white rounded-xl text-sm font-bold shadow-sm hover:bg-zinc-50 border border-red-200">
-                            Fix Now
+                        <Link to="/settings" className="px-5 py-2.5 bg-white rounded-xl text-sm font-bold shadow-sm hover:shadow-md hover:scale-105 transition-all text-red-600 border border-red-100">
+                            Fix Issue
                         </Link>
                     </div>
                 )}
