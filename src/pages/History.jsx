@@ -4,7 +4,7 @@ import HistoryCard from '../components/history/HistoryCard';
 import HistoryFilters from '../components/history/HistoryFilters';
 import HistoryStats from '../components/history/HistoryStats';
 import HistoryList from '../components/history/HistoryList';
-import { Trash2, CheckSquare, Square, History as HistoryIcon, X } from 'lucide-react';
+import { Trash2, CheckSquare, Square, History as HistoryIcon, X, Filter, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../contexts/AuthContext';
 import { clsx } from 'clsx';
@@ -16,6 +16,7 @@ const History = () => {
     const navigate = useNavigate();
     
     const [viewMode, setViewMode] = useState('grid');
+    const [showFilters, setShowFilters] = useState(false);
     
     // Modal State
     const [confirmModal, setConfirmModal] = useState({
@@ -107,10 +108,29 @@ const History = () => {
                     
                     {/* Sticky Sidebar / Filters */}
                     <div className="w-full lg:w-80 flex-shrink-0 lg:sticky lg:top-24 z-30">
-                        <div className="bg-white/80 backdrop-blur-xl border border-zinc-200/50 rounded-[2rem] p-6 shadow-sm">
-                            <h3 className="font-bold text-zinc-900 mb-6 flex items-center gap-2">
-                                <Filter size={18} /> Filters
-                            </h3>
+                         {/* Mobile Toggle */}
+                        <button 
+                            onClick={() => setShowFilters(!showFilters)}
+                            className="lg:hidden w-full bg-white border border-zinc-200 rounded-2xl p-4 mb-4 flex items-center justify-between font-bold text-zinc-900 shadow-sm"
+                        >
+                            <span className="flex items-center gap-2"><Filter size={18} /> Filters & Actions</span>
+                            <ChevronDown size={20} className={clsx("transition-transform", showFilters ? "rotate-180" : "")} />
+                        </button>
+
+                        <div className={clsx(
+                            "bg-white/80 backdrop-blur-xl border border-zinc-200/50 rounded-[2rem] p-6 shadow-sm transition-all duration-300",
+                             showFilters ? "block" : "hidden lg:block"
+                        )}>
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="font-bold text-zinc-900 flex items-center gap-2">
+                                    <Filter size={18} /> Filters
+                                </h3>
+                                {/* Close on mobile */}
+                                <button onClick={() => setShowFilters(false)} className="lg:hidden p-1 bg-zinc-100 rounded-full">
+                                    <X size={16} />
+                                </button>
+                            </div>
+                            
                             <HistoryFilters 
                                 filter={filter} 
                                 setFilter={setFilter} 
