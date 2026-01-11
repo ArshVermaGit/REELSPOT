@@ -23,18 +23,8 @@ const Dashboard = () => {
     const [promptedPlatform, setPromptedPlatform] = useState(null);
     const [hasCheckedApiKeys, setHasCheckedApiKeys] = useState(false);
 
-    // Auto-open API key modal if no keys exist
-    useEffect(() => {
-        if (!stats.loading && !apiKeysLoading && !hasCheckedApiKeys) {
-            setHasCheckedApiKeys(true);
-            const keysCount = Object.keys(apiKeys).length;
-            if (keysCount === 0) {
-                // Auto-prompt for first platform setup
-                setPromptedPlatform('instagram');
-                setShowApiKeyModal(true);
-            }
-        }
-    }, [stats.loading, apiKeysLoading, apiKeys, hasCheckedApiKeys]);
+    // API Key Modal is now only triggered by user action (button click), not automatically
+
 
     // Delete handler for recent downloads
     const handleDeleteItem = async (id) => {
