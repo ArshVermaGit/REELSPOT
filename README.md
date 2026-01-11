@@ -1,74 +1,48 @@
-# ReelSpot - Social Media Downloader
+# REELSPOT 🎥
 
-ReelSpot is a modern, high-performance web application for downloading media from Instagram, YouTube, Facebook, and TikTok. It features a premium UI, robust error handling, and a secure architecture.
+**Reelspot** is a premium, modern web application for downloading videos from Instagram, YouTube, Facebook, and TikTok. Built with a focus on aesthetics, performance, and user privacy.
 
-## Features
+![Reelspot Banner](./public/banner_placeholder.png)
+_(Note: Add a real screenshot/banner here)_
 
-- **Multi-Platform Support**: Download videos from Instagram, YouTube, Facebook, and TikTok.
-- **Auto-Detection**: Paste a link and the app automatically detects the platform.
-- **Format Selection**: Choose between Video (MP4) and Audio (MP3) formats with quality options.
-- **Dashboard**: Track your download history and usage statistics (requires login).
-- **Secure**: API keys are stored securely using Supabase with full encryption support.
-- **Responsive Design**: Fully optimized for mobile and desktop devices.
+## 🚀 Features
 
-## Project Structure
+- **Multi-Platform Support**: Download from Instagram, YouTube, Facebook, TikTok.
+- **Premium UI**: "Hyper-Polished" glassmorphism design with fluid animations.
+- **History Management**: Track and manage your downloads locally or in the cloud.
+- **System Health**: Real-time status monitoring of API connections.
+- **Privacy Focused**: No ad-tracking, secure API key storage.
 
-The project is organized into a modular structure for scalability:
+## 📚 Documentation
 
-```
-src/
-├── components/         # React Components
-│   ├── dashboard/      # Dashboard-specific widgets (Charts, Stats)
-│   ├── download/       # Download logic (Form, Progress, Detector)
-│   ├── history/        # History list and cards
-│   ├── home/           # Homepage components (Hero, Features)
-│   ├── layout/         # Global layout (Navbar, Footer)
-│   ├── modals/         # Contextual modals (API Keys)
-│   ├── settings/       # Settings forms
-│   └── shared/         # Reusable UI atoms (Button, Card, Input)
-├── contexts/           # Global State (Auth, API Keys)
-├── hooks/              # Custom React Hooks
-├── pages/              # Route Pages (Home, Dashboard, History)
-├── services/           # Business Logic (API integration)
-└── utils/              # Helper functions
-```
+Detailed documentation is available in the `docs/` directory:
 
-## Setup & installation
+### User Guides
 
-1.  **Clone the repository:**
+- [Getting Started](./docs/user/getting-started.md)
+- [API Configuration](./docs/user/api-keys.md)
+- [Troubleshooting & FAQ](./docs/user/troubleshooting.md)
+- [Privacy & Terms](./docs/user/legal.md)
+- [Support](./docs/user/support.md)
 
-    ```bash
-    git clone https://github.com/yourusername/reelspot.git
-    cd reelspot
-    ```
+### Developer Guides
 
-2.  **Install dependencies:**
+- [Setup & Installation](./docs/dev/setup.md)
+- [Architecture Overview](./docs/dev/architecture.md)
+- [Database Schema](./docs/dev/database.md)
+- [API Integration](./docs/dev/api.md)
+- [Deployment](./docs/dev/deployment.md)
 
-    ```bash
-    npm install
-    ```
+## 🛠 Tech Stack
 
-3.  **Environment Configuration:**
-    Create a `.env` file in the root directory (copy from `.env.example`) and add your Supabase credentials:
+- **Frontend**: React, Vite, Tailwind CSS
+- **Backend/DB**: Supabase
+- **Icons**: Lucide React
 
-    ```env
-    VITE_SUPABASE_URL=your_supabase_url
-    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-    ```
+## 🤝 Contributing
 
-4.  **Run Development Server:**
-    ```bash
-    npm run dev
-    ```
+We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
-## Technologies
+## 📄 License
 
-- **Frontend**: React 18, Vite
-- **Styling**: Tailwind CSS, clsx, Lucide React (Icons)
-- **Backend/DB**: Supabase (Auth, Database, Edge Functions)
-- **Charts**: Recharts
-- **Notifications**: React Hot Toast
-
-## License
-
-MIT License
+MIT License. See [LICENSE](./LICENSE) for details.
