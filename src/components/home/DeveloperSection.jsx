@@ -12,9 +12,10 @@ const DeveloperSection = () => {
     return (
         <section className="py-24 bg-gradient-to-b from-white to-zinc-50 relative overflow-hidden">
             {/* Background Decoration */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-100/50 to-purple-100/50 rounded-full blur-3xl" />
-                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-pink-100/50 to-orange-100/50 rounded-full blur-3xl" />
+            {/* Background Decoration */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
+                <div className="absolute -top-40 -right-40 w-96 h-96 bg-zinc-100 rounded-full blur-3xl" />
+                <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-zinc-100 rounded-full blur-3xl" />
             </div>
 
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
