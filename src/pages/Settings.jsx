@@ -64,10 +64,21 @@ const Settings = () => {
     // Generic handlers managed by modal callback now
 
     return (
-        <div className="min-h-screen bg-zinc-50/50 pt-24 pb-20">
+        <div className="min-h-screen bg-gradient-to-b from-zinc-100/50 via-white to-white pt-24 pb-20">
             <div className="max-w-4xl mx-auto px-6">
                 
-                <h1 className="text-4xl font-extrabold mb-10">Settings</h1>
+                {/* Header */}
+                <div className="mb-10 p-6 md:p-8 bg-white rounded-3xl border border-zinc-100 shadow-sm">
+                    <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-600 flex items-center justify-center text-white shadow-lg">
+                            <Sliders size={28} />
+                        </div>
+                        <div>
+                            <h1 className="text-3xl md:text-4xl font-[800] tracking-tight">Settings</h1>
+                            <p className="text-zinc-500 font-medium">Manage your account, API keys, and preferences.</p>
+                        </div>
+                    </div>
+                </div>
 
                 {/* 1. Profile Section */}
                 <SettingsSection title="Profile" icon={User}>
