@@ -93,10 +93,12 @@ const Navbar = () => {
             <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
                 
                 {/* Left: Logo */}
-                <Link to="/" className="flex items-center gap-2 group">
-                    <div className="bg-black text-white p-1.5 rounded-lg group-hover:scale-105 transition-transform shadow-lg shadow-black/20">
-                        <Film size={20} strokeWidth={3} />
-                    </div>
+                <Link to="/" className="flex items-center gap-2.5 group">
+                    <img 
+                        src="/logo.png" 
+                        alt="Reelspot" 
+                        className="w-9 h-9 rounded-lg group-hover:scale-105 transition-transform"
+                    />
                     <div className="flex flex-col">
                         <span className="font-extrabold text-xl tracking-tight text-black leading-none group-hover:opacity-80 transition-opacity">Reelspot</span>
                         <span className={clsx(
