@@ -31,7 +31,11 @@ const InfoPage = () => {
                         <li>Monitor and analyze trends and usage.</li>
                     </ul>
 
-                    <h3 className="text-xl font-bold text-zinc-900 mt-8">3. Data Security</h3>
+                    <h3 className="text-xl font-bold text-zinc-900 mt-8">3. Advertising</h3>
+                    <p>We use Google AdSense to display advertisements. Google and its partners use cookies to serve ads based on your prior visits to our website or other websites on the Internet.</p>
+                    <p>Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="nofollow noreferrer" className="text-blue-600 hover:underline">Google Ads Settings</a>.</p>
+
+                    <h3 className="text-xl font-bold text-zinc-900 mt-8">4. Data Security</h3>
                     <p>We implement appropriate security measures to protect your personal information. Your API keys are stored securely, and we do not share your personal data with third parties for marketing purposes.</p>
                 </div>
             )
