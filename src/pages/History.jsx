@@ -4,7 +4,7 @@ import HistoryCard from '../components/history/HistoryCard';
 import HistoryFilters from '../components/history/HistoryFilters';
 import HistoryStats from '../components/history/HistoryStats';
 import HistoryList from '../components/history/HistoryList';
-import { Trash2, CheckSquare, Square } from 'lucide-react';
+import { Trash2, CheckSquare, Square, History as HistoryIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../contexts/AuthContext';
 import { clsx } from 'clsx';
@@ -58,14 +58,19 @@ const History = () => {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-50/50 pt-24 pb-12">
+        <div className="min-h-screen bg-gradient-to-b from-zinc-100/50 via-white to-white pt-24 pb-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 {/* Header */}
-                <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                    <div>
-                        <h1 className="text-3xl font-[800] tracking-tight mb-2">Download History</h1>
-                        <p className="text-zinc-500">Track and manage your media downloads.</p>
+                <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 p-6 md:p-8 bg-white rounded-3xl border border-zinc-100 shadow-sm">
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white shadow-lg">
+                            <HistoryIcon size={24} />
+                        </div>
+                        <div>
+                            <h1 className="text-2xl md:text-3xl font-[800] tracking-tight">Download History</h1>
+                            <p className="text-zinc-500">Track and manage your media downloads.</p>
+                        </div>
                     </div>
                     {/* Bulk Actions Header Control */}
                     {selectedIds.size > 0 && (
