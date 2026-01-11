@@ -59,6 +59,8 @@ function App() {
                                     <Route path="/features" element={<InfoPage pageId="features" />} />
                                     <Route path="/supported-platforms" element={<InfoPage pageId="supported-platforms" />} />
                                     <Route path="/api-access" element={<InfoPage pageId="api-access" />} />
+                                    <Route path="/changelog" element={<InfoPage pageId="changelog" />} />
+                                    <Route path="/cookies" element={<InfoPage pageId="cookies" />} />
                                     
                                     <Route path="/info/:pageId" element={<InfoPage />} />
                                     <Route path="*" element={<Home />} />
