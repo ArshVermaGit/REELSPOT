@@ -1,9 +1,9 @@
 import React from 'react';
-import { DownloadCloud, Key, Database, CheckCircle, TrendingUp } from 'lucide-react';
+import { DownloadCloud, Key, Database, CheckCircle, TrendingUp, TrendingDown, Activity } from 'lucide-react';
 import { clsx } from 'clsx';
 import { Link } from 'react-router-dom';
 
-const Card = ({ title, value, subtext, icon: Icon, colorClass, delay, to }) => {
+const BentoCard = ({ title, value, subtext, icon: Icon, colorClass, delay, to, trend }) => {
     const Wrapper = to ? Link : 'div';
     const wrapperProps = to ? { to } : {};
 
@@ -11,28 +11,35 @@ const Card = ({ title, value, subtext, icon: Icon, colorClass, delay, to }) => {
         <Wrapper 
             {...wrapperProps}
             className={clsx(
-                "block bg-white/60 backdrop-blur-xl p-6 rounded-[2rem] border border-white/40 shadow-xl shadow-zinc-200/40 relative overflow-hidden group hover:scale-[1.02] transition-all duration-300",
-                to ? "cursor-pointer" : ""
+                "relative flex flex-col justify-between p-6 rounded-[2rem] border border-zinc-100 shadow-sm transition-all duration-300 overflow-hidden group hover:shadow-md",
+                to ? "cursor-pointer hover:border-zinc-300" : "bg-white",
+                "h-full min-h-[180px]"
             )}
             style={{ animationDelay: `${delay}ms` }}
         >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-zinc-100/50 to-white/0 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
+            {/* Background Decoration */}
+            <div className="absolute -right-6 -top-6 w-32 h-32 bg-zinc-50 rounded-full blur-2xl group-hover:bg-zinc-100 transition-colors" />
             
-            <div className="relative z-10">
-                <div className="flex items-start justify-between mb-6">
-                    <div className={clsx("p-3.5 rounded-2xl shadow-sm ring-1 ring-inset ring-black/5 transition-transform group-hover:scale-110 duration-300", colorClass)}>
-                        <Icon size={24} strokeWidth={2.5} />
+            <div className="relative z-10 flex justify-between items-start">
+                <div className={clsx("p-3 rounded-2xl transition-all duration-300 group-hover:scale-110 shadow-sm", colorClass)}>
+                    <Icon size={22} strokeWidth={2.5} />
+                </div>
+                {subtext && (
+                    <div className={clsx(
+                        "flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold border",
+                        trend === 'down' 
+                            ? "bg-red-50 text-red-600 border-red-100" 
+                            : "bg-emerald-50 text-emerald-600 border-emerald-100"
+                    )}>
+                        {trend === 'down' ? <TrendingDown size={12} /> : <TrendingUp size={12} />}
+                        {subtext}
                     </div>
-                    {subtext && (
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-green-50/80 backdrop-blur-sm text-green-700 text-xs font-bold rounded-full border border-green-100/50">
-                             <TrendingUp size={12} strokeWidth={3} /> {subtext}
-                        </div>
-                    )}
-                </div>
-                <div>
-                    <h3 className="text-4xl font-[800] text-zinc-900 tracking-tight mb-1">{value}</h3>
-                    <p className="text-zinc-500 font-medium text-sm tracking-wide uppercase">{title}</p>
-                </div>
+                )}
+            </div>
+
+            <div className="relative z-10 mt-6">
+                <h3 className="text-4xl font-[800] text-zinc-900 tracking-tight leading-none mb-2">{value}</h3>
+                <p className="text-zinc-500 font-semibold text-sm tracking-wide">{title}</p>
             </div>
         </Wrapper>
     );
@@ -41,35 +48,42 @@ const Card = ({ title, value, subtext, icon: Icon, colorClass, delay, to }) => {
 const StatsCards = ({ stats, apiKeysCount }) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            <Card 
+            <BentoCard 
                 title="Total Downloads" 
                 value={stats.totalDownloads} 
-                subtext={`+${stats.weekTrend}%`}
+                subtext={`${stats.weekTrend}% this week`}
+                trend={stats.weekTrend >= 0 ? 'up' : 'down'}
                 icon={DownloadCloud} 
                 colorClass="bg-zinc-900 text-white"
                 delay={0}
             />
-            <Card 
-                title="Active Connections" 
+            <BentoCard 
+                title="Active Keys" 
                 value={`${apiKeysCount}/4`} 
                 icon={Key} 
                 colorClass="bg-blue-500 text-white"
                 to="/settings"
                 delay={100}
+                subtext="Manage"
+                trend="up"
             />
-            <Card 
-                title="Data Downloaded" 
-                value={(stats.totalSize / (1024*1024)).toFixed(0) + ' MB'} 
+            <BentoCard 
+                title="Data Usage" 
+                value={(stats.totalSize / (1024*1024)).toFixed(0) + 'MB'} 
                 icon={Database} 
                 colorClass="bg-purple-500 text-white"
                 delay={200}
+                subtext="Lifetime"
+                trend="up"
             />
-            <Card 
+            <BentoCard 
                 title="Success Rate" 
                 value={stats.successRate + '%'} 
-                icon={CheckCircle} 
+                icon={Activity} 
                 colorClass={stats.successRate >= 90 ? "bg-emerald-500 text-white" : "bg-orange-500 text-white"}
                 delay={300}
+                subtext="Stable"
+                trend="up"
             />
         </div>
     );
