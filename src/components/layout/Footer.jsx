@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github, Twitter, Heart } from 'lucide-react';
+import { Github, Heart } from 'lucide-react';
 
 const Footer = () => {
     return (
@@ -41,8 +41,7 @@ const Footer = () => {
                         &copy; {new Date().getFullYear()} Reelspot. All rights reserved.
                     </p>
                     <div className="flex items-center gap-4">
-                        <a href="#" className="text-zinc-400 hover:text-black transition-colors"><Twitter size={20} /></a>
-                        <a href="#" className="text-zinc-400 hover:text-black transition-colors"><Github size={20} /></a>
+                        <a href="https://github.com/ArshVermaGit/REELSPOT" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-black transition-colors"><Github size={20} /></a>
                     </div>
                 </div>
             </div>
