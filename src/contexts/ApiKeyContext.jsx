@@ -95,8 +95,8 @@ export const ApiKeyProvider = ({ children }) => {
 
         if (!valid) return { valid: false, message };
 
-        // Simulate network test validation
-        await new Promise(r => setTimeout(r, 600)); 
+        // Real platform-specific validation would occur here
+        // (e.g., calling IG Graph /node/ with the token to verify)
         
         return { valid: true };
     };
