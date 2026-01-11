@@ -243,9 +243,11 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
             <div className="relative w-full group">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-300">
                     {analyzing ? (
-                        <Loader2 size={24} className="animate-spin text-zinc-400" />
+                        <Loader2 size={20} className="animate-spin text-zinc-400" />
                     ) : (
-                        <PlatformIcon platform={platformState.platform} size={24} />
+                        <div className="text-zinc-400">
+                             {platformState.platform !== 'unknown' ? <PlatformIcon platform={platformState.platform} size={20} /> : <LinkIcon size={20} />}
+                        </div>
                     )}
                 </div>
 
@@ -265,13 +267,11 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                     placeholder="Paste your link here..."
                     disabled={analyzing}
                     className={clsx(
-                        "w-full h-20 pl-16 pr-16 rounded-3xl border-2 text-xl font-medium placeholder:text-[#A0A0A0] placeholder:font-normal outline-none transition-all duration-300",
-                        !url ? "border-[#E5E5E5] focus:border-black bg-white shadow-sm" :
+                        "w-full h-16 pl-14 pr-16 rounded-full border text-lg font-medium placeholder:text-zinc-400 placeholder:font-normal outline-none transition-all duration-300 shadow-sm",
+                        !url ? "border-zinc-200 focus:border-zinc-400 bg-white" :
                         platformState.isValid 
-                            ? "border-green-500/20 focus:border-green-500 bg-green-50/5 shadow-[0_8px_32px_rgba(34,197,94,0.12)]" 
-                            : platformState.platform !== 'unknown' || (url.length > 10 && !platformState.isValid)
-                                ? "border-red-300 focus:border-red-500 bg-red-50/10"
-                                : "border-[#E5E5E5] focus:border-black bg-white shadow-sm hover:border-zinc-300"
+                            ? "border-green-500/50 focus:border-green-500 bg-green-50/10" 
+                            : "border-red-300 focus:border-red-500 bg-red-50/10"
                     )}
                 />
 
