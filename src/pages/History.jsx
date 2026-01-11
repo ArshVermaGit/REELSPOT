@@ -3,17 +3,32 @@ import { useHistory } from '../hooks/useHistory';
 import HistoryCard from '../components/history/HistoryCard';
 import HistoryFilters from '../components/history/HistoryFilters';
 import HistoryStats from '../components/history/HistoryStats';
+import HistoryList from '../components/history/HistoryList';
 import { Trash2, CheckSquare, Square } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../contexts/AuthContext';
 import { clsx } from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import ConfirmationModal from '../components/modals/ConfirmationModal';
 
 const History = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
     
-    const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
+    const [viewMode, setViewMode] = useState('grid');
+    
+    // Modal State
+    const [confirmModal, setConfirmModal] = useState({
+        isOpen: false,
+        title: '',
+        message: '',
+        onConfirm: () => {},
+        type: 'danger',
+        confirmText: 'Delete'
+    });
+
+    const openConfirm = (config) => setConfirmModal({ ...config, isOpen: true });
+    const closeConfirm = () => setConfirmModal(prev => ({ ...prev, isOpen: false }));
 
     const { 
         history, 
@@ -58,7 +73,13 @@ const History = () => {
                             <span className="font-medium text-sm">{selectedIds.size} Selected</span>
                             <div className="h-4 w-px bg-white/20" />
                             <button 
-                                onClick={bulkDelete}
+                                onClick={() => openConfirm({
+                                    title: 'Delete Selected Items?',
+                                    message: `Are you sure you want to delete ${selectedIds.size} items? This action cannot be undone.`,
+                                    onConfirm: bulkDelete,
+                                    confirmText: 'Delete All',
+                                    type: 'danger'
+                                })}
                                 className="flex items-center gap-2 hover:text-red-300 transition-colors text-sm font-medium"
                             >
                                 <Trash2 size={16} /> Delete
@@ -100,9 +121,13 @@ const History = () => {
                     {/* Clear All History Button */}
                     {history.length > 0 && (
                         <button 
-                            onClick={() => {
-                                if(window.confirm('Are you sure you want to delete ALL history? This cannot be undone.')) clearHistory();
-                            }}
+                            onClick={() => openConfirm({
+                                title: 'Clear All History?',
+                                message: 'Are you sure you want to delete your entire download history? This action is permanent and cannot be undone.',
+                                onConfirm: clearHistory,
+                                confirmText: 'Clear Everything',
+                                type: 'danger'
+                            })}
                             className="text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-2"
                         >
                             <Trash2 size={14} /> Clear All
@@ -111,60 +136,22 @@ const History = () => {
                 </div>
 
                 {/* Grid/List Content */}
-                {loading ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
-                        {[1,2,3,4,5,6].map(i => (
-                            <div key={i} className="h-64 bg-zinc-200 rounded-2xl"></div>
-                        ))}
-                    </div>
-                ) : history.length === 0 ? (
-                    <div className="text-center py-24 bg-white rounded-3xl border border-zinc-100 shadow-sm border-dashed">
-                        <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mx-auto mb-4 text-zinc-300">
-                             <CheckSquare size={32} />
-                        </div>
-                        <h3 className="text-xl font-bold text-zinc-900 mb-2">No history found</h3>
-                        <p className="text-zinc-500 max-w-sm mx-auto mb-6">
-                            {search || filter.platform !== 'All' 
-                                ? "No downloads match your current filters. Try adjusting them." 
-                                : "You haven't downloaded any media yet. Start your collection now!"}
-                        </p>
-                        {(search || filter.platform !== 'All') ? (
-                            <button 
-                                onClick={() => {
-                                    setSearch('');
-                                    setFilter({ platform: 'All', type: 'All', status: 'All', format: 'All', dateRange: 'All' });
-                                }}
-                                className="text-black font-semibold hover:underline"
-                            >
-                                Clear all filters
-                            </button>
-                        ) : (
-                            <button 
-                                onClick={() => navigate('/')}
-                                className="bg-black text-white px-6 py-3 rounded-xl font-medium hover:scale-105 transition-transform"
-                            >
-                                Start Downloading
-                            </button>
-                        )}
-                    </div>
-                ) : (
-                    <div className={clsx(
-                        "grid gap-4 transition-all",
-                        viewMode === 'grid' ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"
-                    )}>
-                        {history.map(item => (
-                            <HistoryCard 
-                                key={item.id} 
-                                item={item}
-                                isSelected={selectedIds.has(item.id)}
-                                onSelect={toggleSelect}
-                                onDelete={deleteItem}
-                                onRedownload={handleRedownload}
-                                viewMode={viewMode}
-                            />
-                        ))}
-                    </div>
-                )}
+                {/* Grid/List Content */}
+                <HistoryList 
+                    history={history}
+                    loading={loading}
+                    viewMode={viewMode}
+                    selectedIds={selectedIds}
+                    toggleSelect={toggleSelect}
+                    deleteItem={deleteItem}
+                    openConfirm={openConfirm}
+                    handleRedownload={handleRedownload}
+                    navigate={navigate}
+                    search={search}
+                    filter={filter}
+                    setSearch={setSearch}
+                    setFilter={setFilter}
+                />
                 
                 {/* Load More Trigger */}
                 {!loading && history.length > 0 && hasMore && (
@@ -178,6 +165,16 @@ const History = () => {
                     </div>
                 )}
             </div>
+            
+            <ConfirmationModal 
+                isOpen={confirmModal.isOpen}
+                onClose={closeConfirm}
+                onConfirm={confirmModal.onConfirm}
+                title={confirmModal.title}
+                message={confirmModal.message}
+                type={confirmModal.type}
+                confirmText={confirmModal.confirmText}
+            />
         </div>
     );
 };
