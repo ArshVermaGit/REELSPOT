@@ -9,28 +9,20 @@ import PreferencesForm from '../components/settings/PreferencesForm';
 import ProfileSection from '../components/settings/ProfileSection';
 import DangerZone from '../components/settings/DangerZone';
 import ApiKeyModal from '../components/modals/ApiKeyModal';
-import { User, Key, Sliders, Database, DownloadCloud, Trash2, Code, HardDrive, FileJson, FileSpreadsheet, AlertTriangle } from 'lucide-react';
+import { User, Key, Sliders, Database, DownloadCloud, Trash2, Code, ChevronRight, LogOut, Shield } from 'lucide-react';
 import toast from 'react-hot-toast';
 import ConfirmationModal from '../components/modals/ConfirmationModal';
 import EditProfileModal from '../components/modals/EditProfileModal';
-
-const SettingsSection = ({ title, icon: Icon, children }) => (
-    <div className="mb-12 animate-fade-in">
-        <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-black/5 rounded-lg">
-                <Icon size={24} className="text-black" />
-            </div>
-            <h2 className="text-2xl font-bold">{title}</h2>
-        </div>
-        {children}
-    </div>
-);
+import { clsx } from 'clsx';
 
 const Settings = () => {
     const { user, signOut } = useAuth();
     const { apiKeys, deleteApiKey, updateKeyStatus } = useApiKeys();
     const { settings, updateSettings } = useSettings();
     const { history, clearHistory } = useHistory();
+    
+    // UI State
+    const [activeTab, setActiveTab] = useState('profile');
     
     // Modal State
     const [modalOpen, setModalOpen] = useState(false);
@@ -60,125 +52,208 @@ const Settings = () => {
             toast.success('Exporting JSON...');
         }
     };
-    
-    // Generic handlers managed by modal callback now
+
+    const tabs = [
+        { id: 'profile', label: 'Profile & Account', icon: User },
+        { id: 'keys', label: 'API Credentials', icon: Key },
+        { id: 'preferences', label: 'Preferences', icon: Sliders },
+        { id: 'data', label: 'Data & Privacy', icon: Database },
+    ];
+
+    const renderContent = () => {
+        switch (activeTab) {
+            case 'profile':
+                return (
+                    <div className="space-y-6 animate-fade-in">
+                        <div className="mb-8">
+                            <h2 className="text-2xl font-[800] tracking-tight mb-2">My Profile</h2>
+                            <p className="text-zinc-500">Manage your personal information and account security.</p>
+                        </div>
+                        <ProfileSection 
+                            user={user}
+                            signOut={signOut}
+                            onEditProfile={() => setProfileModalOpen(true)}
+                        />
+                    </div>
+                );
+            case 'keys':
+                return (
+                    <div className="space-y-6 animate-fade-in">
+                        <div className="mb-8">
+                            <h2 className="text-2xl font-[800] tracking-tight mb-2">API Credentials</h2>
+                            <p className="text-zinc-500">Manage API keys for different platforms to enable downloads.</p>
+                        </div>
+                        <div className="grid grid-cols-1 gap-4">
+                            {['instagram', 'youtube', 'facebook', 'tiktok'].map(platform => (
+                                <ApiKeyCard 
+                                    key={platform}
+                                    platform={platform} 
+                                    keyData={apiKeys[platform]} 
+                                    onUpdate={(p) => {
+                                        setActivePlatform(p);
+                                        setModalOpen(true);
+                                    }}
+                                    onDelete={() => openConfirm({
+                                        title: `Delete ${platform} Key?`,
+                                        message: 'This will stop downloads for this platform until a new key is added.',
+                                        onConfirm: () => deleteApiKey(platform),
+                                        confirmText: 'Delete Key',
+                                        type: 'danger'
+                                    })}
+                                    onTestStatus={updateKeyStatus}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                );
+            case 'preferences':
+                return (
+                    <div className="space-y-6 animate-fade-in">
+                         <div className="mb-8">
+                            <h2 className="text-2xl font-[800] tracking-tight mb-2">App Preferences</h2>
+                            <p className="text-zinc-500">Customize your download defaults and interface.</p>
+                        </div>
+                        <PreferencesForm settings={settings} onUpdate={updateSettings} />
+                    </div>
+                );
+            case 'data':
+                return (
+                    <div className="space-y-6 animate-fade-in">
+                         <div className="mb-8">
+                            <h2 className="text-2xl font-[800] tracking-tight mb-2">Data & Privacy</h2>
+                            <p className="text-zinc-500">Control your data, export history, or delete your account.</p>
+                        </div>
+                        
+                        {/* Stats Summary */}
+                        <div className="bg-zinc-50 rounded-3xl p-6 border border-zinc-100 flex items-center justify-around mb-6">
+                            <div className="text-center">
+                                <div className="text-3xl font-[800] text-black">{history.length}</div>
+                                <div className="text-xs font-bold text-zinc-400 uppercase mt-1">Total Downloads</div>
+                            </div>
+                            <div className="h-10 w-px bg-zinc-200" />
+                            <div className="text-center">
+                                <div className="text-3xl font-[800] text-black">
+                                    {(history.reduce((acc, c) => acc + (c.file_size || 0), 0) / (1024*1024)).toFixed(0)} <span className="text-sm font-medium text-zinc-500">MB</span>
+                                </div>
+                                <div className="text-xs font-bold text-zinc-400 uppercase mt-1">Data Tracked</div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white border border-zinc-100 rounded-3xl overflow-hidden shadow-sm">
+                            <h3 className="text-sm font-bold text-zinc-900 bg-zinc-50 px-6 py-3 border-b border-zinc-100">Export Date</h3>
+                            <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <button 
+                                    onClick={() => handleExport('csv')}
+                                    className="w-full py-4 bg-zinc-900 text-white rounded-2xl font-bold hover:scale-[1.02] transition-transform flex items-center justify-center gap-2 shadow-lg shadow-zinc-900/10"
+                                >
+                                    <DownloadCloud size={20} /> Export CSV
+                                </button>
+                                <button 
+                                    onClick={() => handleExport('json')}
+                                    className="w-full py-4 bg-white border-2 border-zinc-100 text-zinc-900 rounded-2xl font-bold hover:bg-zinc-50 hover:border-zinc-200 transition-all flex items-center justify-center gap-2"
+                                >
+                                    <Code size={20} /> Export JSON
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="bg-red-50/50 border border-red-100 rounded-3xl overflow-hidden">
+                             <h3 className="text-sm font-bold text-red-700 bg-red-100/50 px-6 py-3 border-b border-red-100 flex items-center gap-2">
+                                <Shield size={16} /> Danger Zone
+                            </h3>
+                            <div className="p-6 space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <h4 className="font-bold text-zinc-900">Clear Search History</h4>
+                                        <p className="text-sm text-zinc-500">Remove all your local search and download records.</p>
+                                    </div>
+                                    <button 
+                                        onClick={() => openConfirm({
+                                            title: 'Clear All History?',
+                                            message: 'This will permanently remove all download records. This action cannot be undone.',
+                                            onConfirm: clearHistory,
+                                            confirmText: 'Clear Everything',
+                                            type: 'danger'
+                                        })}
+                                        className="px-4 py-2 bg-white border border-red-200 text-red-600 rounded-xl font-bold hover:bg-red-50 transition-colors text-sm"
+                                    >
+                                        Clear History
+                                    </button>
+                                </div>
+                                
+                                <div className="w-full h-px bg-red-100" />
+                                
+                                <DangerZone 
+                                    onDeleteAccount={() => openConfirm({
+                                        title: 'Delete Account?',
+                                        message: 'This will permanently delete your API keys, history, and preferences. This action cannot be undone.',
+                                        onConfirm: () => toast.error("Account deletion is disabled for safety in this demo."),
+                                        confirmText: 'Delete Account',
+                                        type: 'danger'
+                                    })}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                );
+            default: return null;
+        }
+    };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-zinc-100/50 via-white to-white pt-24 pb-20">
-            <div className="max-w-4xl mx-auto px-6">
+        <div className="min-h-screen bg-[#FAFAFA] pt-24 pb-20">
+            <div className="max-w-6xl mx-auto px-6 lg:px-8">
                 
                 {/* Header */}
-                <div className="mb-10 p-6 md:p-8 bg-white rounded-3xl border border-zinc-100 shadow-sm">
-                    <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-600 flex items-center justify-center text-white shadow-lg">
-                            <Sliders size={28} />
+                <div className="mb-12">
+                    <h1 className="text-4xl font-[800] tracking-tight text-zinc-900 mb-2">Settings</h1>
+                    <p className="text-zinc-500 font-medium">Manage your account and application preferences.</p>
+                </div>
+
+                <div className="flex flex-col lg:flex-row gap-10">
+                    {/* Sidebar navigation */}
+                    <div className="w-full lg:w-72 flex-shrink-0">
+                        <div className="bg-white rounded-[2rem] border border-zinc-100 p-3 shadow-sm sticky top-24">
+                            <nav className="space-y-1">
+                                {tabs.map(tab => (
+                                    <button
+                                        key={tab.id}
+                                        onClick={() => setActiveTab(tab.id)}
+                                        className={clsx(
+                                            "w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-left transition-all duration-200 group",
+                                            activeTab === tab.id 
+                                                ? "bg-zinc-900 text-white shadow-md shadow-zinc-900/20" 
+                                                : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900"
+                                        )}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <tab.icon size={20} className={activeTab === tab.id ? "" : "opacity-70 group-hover:opacity-100"} />
+                                            <span className="font-bold text-sm">{tab.label}</span>
+                                        </div>
+                                        {activeTab === tab.id && <ChevronRight size={16} />}
+                                    </button>
+                                ))}
+                            </nav>
+                            
+                            <div className="mt-4 pt-4 border-t border-zinc-100 px-2 pb-2">
+                                <button 
+                                    onClick={signOut}
+                                    className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-left text-red-600 font-bold hover:bg-red-50 transition-colors text-sm"
+                                >
+                                    <LogOut size={20} />
+                                    <span>Sign Out</span>
+                                </button>
+                            </div>
                         </div>
-                        <div>
-                            <h1 className="text-3xl md:text-4xl font-[800] tracking-tight">Settings</h1>
-                            <p className="text-zinc-500 font-medium">Manage your account, API keys, and preferences.</p>
-                        </div>
+                    </div>
+
+                    {/* Main Content Area */}
+                    <div className="flex-1 min-w-0">
+                        {renderContent()}
                     </div>
                 </div>
 
-                {/* 1. Profile Section */}
-                <SettingsSection title="Profile" icon={User}>
-                    <ProfileSection 
-                        user={user}
-                        signOut={signOut}
-                        onEditProfile={() => setProfileModalOpen(true)}
-                    />
-                </SettingsSection>
-
-                {/* 2. API Keys */}
-                <SettingsSection title="API Credentials" icon={Key}>
-                     <div className="grid grid-cols-1 gap-4">
-                        {['instagram', 'youtube', 'facebook', 'tiktok'].map(platform => (
-                            <ApiKeyCard 
-                                key={platform}
-                                platform={platform} 
-                                keyData={apiKeys[platform]} 
-                                onUpdate={(p) => {
-                                    setActivePlatform(p);
-                                    setModalOpen(true);
-                                }}
-                                onDelete={() => openConfirm({
-                                    title: `Delete ${platform} Key?`,
-                                    message: 'This will stop downloads for this platform until a new key is added.',
-                                    onConfirm: () => deleteApiKey(platform),
-                                    confirmText: 'Delete Key',
-                                    type: 'danger'
-                                })}
-                                onTestStatus={updateKeyStatus}
-                            />
-                        ))}
-                     </div>
-                </SettingsSection>
-
-                {/* 3. Preferences */}
-                <SettingsSection title="Preferences" icon={Sliders}>
-                    <PreferencesForm settings={settings} onUpdate={updateSettings} />
-                </SettingsSection>
-
-                {/* 4. Data Management */}
-                <SettingsSection title="Data & Privacy" icon={Database}>
-                    <div className="bg-white rounded-3xl p-8 border border-zinc-100 shadow-sm">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                             <div className="text-center p-4 bg-zinc-50 rounded-2xl">
-                                 <div className="text-3xl font-bold text-black">{history.length}</div>
-                                 <div className="text-xs font-bold text-zinc-400 uppercase mt-1">Total Downloads</div>
-                             </div>
-                             {/* Mock Storage Calc */}
-                             <div className="text-center p-4 bg-zinc-50 rounded-2xl">
-                                 <div className="text-3xl font-bold text-black">
-                                     {(history.reduce((acc, c) => acc + (c.file_size || 0), 0) / (1024*1024)).toFixed(0)} MB
-                                 </div>
-                                 <div className="text-xs font-bold text-zinc-400 uppercase mt-1">Data Tracked</div>
-                             </div>
-                        </div>
-
-                        <div className="border-t border-zinc-100 pt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <button 
-                                onClick={() => handleExport('csv')}
-                                className="w-full py-4 bg-black text-white rounded-xl font-bold hover:scale-[1.02] transition-transform flex items-center justify-center gap-2"
-                            >
-                                <DownloadCloud size={20} /> Export CSV
-                            </button>
-                             <button 
-                                onClick={() => handleExport('json')}
-                                className="w-full py-4 bg-zinc-100 text-black rounded-xl font-bold hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2"
-                            >
-                                <Code size={20} /> Export JSON
-                            </button>
-                        </div>
-                        
-                        <div className="mt-4 pt-4 border-t border-zinc-100">
-                             <button 
-                                onClick={() => openConfirm({
-                                    title: 'Clear All History?',
-                                    message: 'This will permanently remove all download records. This action cannot be undone.',
-                                    onConfirm: clearHistory,
-                                    confirmText: 'Clear Everything',
-                                    type: 'danger'
-                                })}
-                                className="w-full py-4 bg-red-50 text-red-500 rounded-xl font-bold hover:bg-red-100 transition-colors flex items-center justify-center gap-2"
-                            >
-                                <Trash2 size={20} /> Clear All History
-                            </button>
-                        </div>
-                        
-                        <DangerZone 
-                            onDeleteAccount={() => openConfirm({
-                                title: 'Delete Account?',
-                                message: 'This will permanently delete your API keys, history, and preferences. This action cannot be undone.',
-                                onConfirm: () => toast.error("Account deletion is disabled for safety in this demo."),
-                                confirmText: 'Delete Account',
-                                type: 'danger'
-                            })}
-                        />
-                    </div>
-                </SettingsSection>
-
-                 {/* API Key Modal Reuse */}
+                {/* Modals */}
                  <ApiKeyModal 
                     isOpen={modalOpen} 
                     onClose={() => setModalOpen(false)} 
@@ -189,13 +264,9 @@ const Settings = () => {
                     isOpen={profileModalOpen}
                     onClose={() => setProfileModalOpen(false)}
                     user={user}
-                    onUpdate={(updatedUser) => {
-                        // In a real app the AuthProvider or Supabase sub would update this automatically
-                        // For now we just close and toast, simulating the update
-                    }}
+                    onUpdate={() => {}} 
                 />
 
-                {/* Delete Confirmation Modal */}
                 <ConfirmationModal 
                     isOpen={confirmModal.isOpen}
                     onClose={closeConfirm}
@@ -205,7 +276,6 @@ const Settings = () => {
                     type={confirmModal.type}
                     confirmText={confirmModal.confirmText}
                 />
-
             </div>
         </div>
     );
