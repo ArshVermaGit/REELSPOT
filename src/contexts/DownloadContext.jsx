@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { downloadMedia } from '../services/mediaDownloader';
-import { showToast } from '../utils/toastUtils';
+import { MediaDownloader } from '../services/download.service';
+import { useToast } from '../hooks/useToast';
 import { useAuth } from './AuthContext';
 
 const DownloadContext = createContext();
@@ -56,10 +56,18 @@ export const DownloadProvider = ({ children }) => {
         };
 
         try {
-            const result = await downloadMedia({
-                ...item,
+            const result = await MediaDownloader.downloadMedia({
+                downloadUrl: item.downloadUrl,
+                ...item, // Pass all item properties
                 userId: user?.id,
-                onProgress: (prog) => updateProgress(item.id, prog)
+                onProgress: (p) => {
+                    updateProgress(item.id, { 
+                        progress: p.percentage, 
+                        status: 'downloading',
+                        speed: p.speed,
+                        timeRemaining: p.timeRemaining
+                    });
+                }
             });
 
             if (result.success) {
