@@ -1,7 +1,7 @@
 import React from 'react';
 import HistoryCard from './HistoryCard';
 import { clsx } from 'clsx';
-import { CheckSquare } from 'lucide-react';
+import { CheckSquare, Ghost, SearchX, Download } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const HistoryList = ({ 
@@ -10,53 +10,72 @@ const HistoryList = ({
     viewMode, 
     selectedIds, 
     toggleSelect, 
+    deleteItem,
     openConfirm, 
     handleRedownload,
     search,
     filter,
     setSearch,
-    setFilter 
+    setFilter,
+    onDelete
 }) => {
     const navigate = useNavigate();
 
+    // Compat: Use onDelete from props if passed, otherwise construct it
+    const handleDelete = onDelete || ((id) => openConfirm({
+        title: 'Delete Item?',
+        message: 'Remove this item from your history?',
+        onConfirm: () => deleteItem?.(id),
+        confirmText: 'Delete',
+        type: 'danger'
+    }));
+
     if (loading) {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
-                {[1,2,3,4,5,6].map(i => (
-                    <div key={i} className="h-64 bg-zinc-200 rounded-2xl"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-pulse">
+                {[1,2,3,4,5,6,7,8].map(i => (
+                    <div key={i} className="h-72 bg-zinc-100 rounded-[2rem]"></div>
                 ))}
             </div>
         );
     }
 
     if (history.length === 0) {
+        const isFiltering = search || filter.platform !== 'All';
+        
         return (
-            <div className="text-center py-24 bg-white rounded-3xl border border-zinc-100 shadow-sm border-dashed">
-                <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mx-auto mb-4 text-zinc-300">
-                     <CheckSquare size={32} />
+            <div className="text-center py-32 flex flex-col items-center justify-center animate-fade-in px-4">
+                <div className="w-24 h-24 bg-zinc-50 rounded-[2rem] flex items-center justify-center mb-6 shadow-sm ring-8 ring-zinc-50/50">
+                    {isFiltering ? (
+                        <SearchX size={40} className="text-zinc-300" />
+                    ) : (
+                        <Ghost size={40} className="text-zinc-300" />
+                    )}
                 </div>
-                <h3 className="text-xl font-bold text-zinc-900 mb-2">No history found</h3>
-                <p className="text-zinc-500 max-w-sm mx-auto mb-6">
-                    {search || filter.platform !== 'All' 
-                        ? "No downloads match your current filters. Try adjusting them." 
-                        : "You haven't downloaded any media yet. Start your collection now!"}
+                <h3 className="text-2xl font-[800] text-zinc-900 mb-2 tracking-tight">
+                    {isFiltering ? "No results found" : "History is empty"}
+                </h3>
+                <p className="text-zinc-500 max-w-sm mx-auto mb-8 font-medium">
+                    {isFiltering 
+                        ? "We couldn't find any downloads matching your current filters." 
+                        : "Your download history will appear here once you start downloading media."}
                 </p>
-                {(search || filter.platform !== 'All') ? (
+                {isFiltering ? (
                     <button 
                         onClick={() => {
-                            setSearch('');
-                            setFilter({ platform: 'All', type: 'All', status: 'All', format: 'All', dateRange: 'All' });
+                            setSearch?.('');
+                            setFilter?.({ platform: 'All', type: 'All', status: 'All', format: 'All', dateRange: 'All' });
                         }}
-                        className="text-black font-semibold hover:underline"
+                        className="px-6 py-3 bg-zinc-100 text-black rounded-xl font-bold hover:bg-zinc-200 transition-colors"
                     >
-                        Clear all filters
+                        Clear Filters
                     </button>
                 ) : (
                     <button 
                         onClick={() => navigate('/')}
-                        className="bg-black text-white px-6 py-3 rounded-xl font-medium hover:scale-105 transition-transform"
+                        className="px-8 py-4 bg-black text-white rounded-2xl font-bold hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/20 flex items-center gap-2"
                     >
-                        Start Downloading
+                        <Download size={20} /> Start Downloading
                     </button>
                 )}
             </div>
@@ -65,124 +84,23 @@ const HistoryList = ({
 
     return (
         <div className={clsx(
-            "grid gap-4 transition-all",
+            "grid gap-4 transition-all pb-24",
             viewMode === 'grid' ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"
         )}>
-            {history.map(item => (
-                <HistoryCard 
-                    key={item.id} 
-                    item={item}
-                    isSelected={selectedIds.has(item.id)}
-                    onSelect={toggleSelect}
-                    onDelete={(id) => openConfirm({
-                        title: 'Delete Item?',
-                        message: 'Remove this item from your history?',
-                        onConfirm: () => {}, // The parent will handle the actual delete call if we pass ID, but wait, parent passed openConfirm which usually binds the function. 
-                        // Actually in History.jsx: openConfirm({... onConfirm: () => deleteItem(id) })
-                        // So here we should probably pass the delete handler? 
-                        // No, the prop is openConfirm from parent which takes a config object.
-                        // I need to know *what* to delete.
-                        // Let's change the prop structure or assume openConfirm is generic.
-                        // Better: reuse the logic from History.jsx:
-                        // onDelete={(id) => openConfirm({ ... onConfirm: () => deleteItem(id) ... })}
-                        // But deleteItem isn't passed to HistoryList in my proposed props above.
-                        // I should pass `deleteItem` to HistoryList instead of `openConfirm`? 
-                        // No, openConfirm handles the modal state.
-                        // I will pass `onDelete` to HistoryList which calls openConfirm.
-                    })} 
-                    // Wait, HistoryCard takes `onDelete`.
-                    // In History.jsx it was:
-                    // onDelete={(id) => openConfirm({ ... onConfirm: () => deleteItem(id) ... })}
-                    // So I need `deleteItem` available here.
-                />
+            {history.map((item, index) => (
+                <div key={item.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 50}ms` }}>
+                    <HistoryCard 
+                        item={item}
+                        isSelected={selectedIds?.has(item.id)}
+                        onSelect={toggleSelect}
+                        onDelete={handleDelete}
+                        onRedownload={handleRedownload}
+                        viewMode={viewMode}
+                    />
+                </div>
             ))}
         </div>
     );
 };
 
-// Re-writing the component with correct props to match logic
-export default ({ 
-    history, 
-    loading, 
-    viewMode, 
-    selectedIds, 
-    toggleSelect, 
-    onDelete, // Pass the wrapped handler or the raw one? Let's pass the raw one and Wrap here? Or pass the wrapping function?
-    // Let's pass "onDeleteItemClick" which takes title, message, action.
-    // Or just pass generic `onDelete` which triggers the confirmation in parent.
-    // Parent History.jsx has `openConfirm`.
-    // I will pass `requestDelete` prop.
-    deleteItem, // Need this to form the closure
-    openConfirm,
-    handleRedownload,
-    navigate, // history list uses navigate for empty state
-    search,
-    filter,
-    setSearch,
-    setFilter
-}) => {
-     return (
-        <div className={clsx(
-            "grid gap-4 transition-all",
-            viewMode === 'grid' ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"
-        )}>
-            {loading ? (
-                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
-                    {[1,2,3,4,5,6].map(i => (
-                        <div key={i} className="h-64 bg-zinc-200 rounded-2xl"></div>
-                    ))}
-                </div>
-            ) : history.length === 0 ? (
-                 <div className="text-center py-24 bg-white rounded-3xl border border-zinc-100 shadow-sm border-dashed">
-                    {/* Empty State UI */}
-                     <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mx-auto mb-4 text-zinc-300">
-                         <CheckSquare size={32} />
-                    </div>
-                    <h3 className="text-xl font-bold text-zinc-900 mb-2">No history found</h3>
-                    {/* ... */}
-                     <p className="text-zinc-500 max-w-sm mx-auto mb-6">
-                        {search || filter.platform !== 'All' 
-                            ? "No downloads match your current filters. Try adjusting them." 
-                            : "You haven't downloaded any media yet. Start your collection now!"}
-                    </p>
-                    {(search || filter.platform !== 'All') ? (
-                        <button 
-                            onClick={() => {
-                                setSearch('');
-                                setFilter({ platform: 'All', type: 'All', status: 'All', format: 'All', dateRange: 'All' });
-                            }}
-                            className="text-black font-semibold hover:underline"
-                        >
-                            Clear all filters
-                        </button>
-                    ) : (
-                        <button 
-                            onClick={() => navigate('/')}
-                            className="bg-black text-white px-6 py-3 rounded-xl font-medium hover:scale-105 transition-transform"
-                        >
-                            Start Downloading
-                        </button>
-                    )}
-                 </div>
-            ) : (
-                history.map(item => (
-                    <HistoryCard 
-                        key={item.id} 
-                        item={item}
-                        isSelected={selectedIds.has(item.id)}
-                        onSelect={toggleSelect}
-                        onDelete={(id) => openConfirm({
-                            title: 'Delete Item?',
-                            message: 'Remove this item from your history?',
-                            onConfirm: () => deleteItem(id),
-                            confirmText: 'Delete',
-                            type: 'danger'
-                        })}
-                        onRedownload={handleRedownload}
-                        viewMode={viewMode}
-                    />
-                ))
-            )}
-        </div>
-     );
-}
+export default HistoryList;
