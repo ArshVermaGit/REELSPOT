@@ -1,5 +1,6 @@
 import React from 'react';
 import { Github, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -26,16 +27,16 @@ const Footer = () => {
                     <div>
                         <h4 className="font-bold text-zinc-900 mb-6">Product</h4>
                         <ul className="space-y-4 text-zinc-500 font-medium">
-                            <li><a href="/features" className="hover:text-black transition-colors">Features</a></li>
-                            <li><a href="/supported-platforms" className="hover:text-black transition-colors">Supported Platforms</a></li>
-                            <li><a href="/api-access" className="hover:text-black transition-colors">API Access</a></li>
+                            <li><Link to="/features" className="hover:text-black transition-colors">Features</Link></li>
+                            <li><Link to="/supported-platforms" className="hover:text-black transition-colors">Supported Platforms</Link></li>
+                            <li><Link to="/api-access" className="hover:text-black transition-colors">API Access</Link></li>
                         </ul>
                     </div>
                     <div>
                         <h4 className="font-bold text-zinc-900 mb-6">Legal</h4>
                         <ul className="space-y-4 text-zinc-500 font-medium">
-                            <li><a href="/privacy" className="hover:text-black transition-colors">Privacy Policy</a></li>
-                            <li><a href="/terms" className="hover:text-black transition-colors">Terms of Service</a></li>
+                            <li><Link to="/privacy" className="hover:text-black transition-colors">Privacy Policy</Link></li>
+                            <li><Link to="/terms" className="hover:text-black transition-colors">Terms of Service</Link></li>
                         </ul>
                     </div>
                 </div>
