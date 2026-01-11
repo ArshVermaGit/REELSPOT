@@ -15,6 +15,7 @@ import History from './pages/History'
 import Settings from './pages/Settings'
 import Toast from './components/shared/Toast';
 import ConfigGuard from './components/layout/ConfigGuard';
+import AuthGate from './components/auth/AuthGate';
 import { supabase } from './services/supabase';
 
 function App() {
@@ -37,30 +38,27 @@ function App() {
     <ErrorBoundary>
       <ConfigGuard isConfigured={!!supabase}>
         <AuthProvider>
-          <ApiKeyProvider>
-              <DownloadProvider>
-                  <Router>
-                      <div className="font-sans antialiased text-foreground">
-                          <Toast />
-                          <Layout>
-                              <Routes>
-                                  <Route path="/" element={<Home />} />
-                                  <Route path="/auth/callback" element={<AuthCallback />} />
-                                  
-                                  {/* Protected Routes */}
-                                  <Route element={<ProtectedRoute />}>
-                                      <Route path="/dashboard" element={<Dashboard />} />
-                                      <Route path="/history" element={<History />} />
-                                      <Route path="/settings" element={<Settings />} />
-                                  </Route>
-                                  
-                                  <Route path="*" element={<Home />} />
-                              </Routes>
-                          </Layout>
-                      </div>
-                  </Router>
-              </DownloadProvider>
-          </ApiKeyProvider>
+          <AuthGate>
+            <ApiKeyProvider>
+                <DownloadProvider>
+                    <Router>
+                        <div className="font-sans antialiased text-foreground">
+                            <Toast />
+                            <Layout>
+                                <Routes>
+                                    <Route path="/" element={<Home />} />
+                                    <Route path="/auth/callback" element={<AuthCallback />} />
+                                    <Route path="/dashboard" element={<Dashboard />} />
+                                    <Route path="/history" element={<History />} />
+                                    <Route path="/settings" element={<Settings />} />
+                                    <Route path="*" element={<Home />} />
+                                </Routes>
+                            </Layout>
+                        </div>
+                    </Router>
+                </DownloadProvider>
+            </ApiKeyProvider>
+          </AuthGate>
         </AuthProvider>
       </ConfigGuard>
     </ErrorBoundary>
