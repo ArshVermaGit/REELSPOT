@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Link as LinkIcon, AlertCircle, Loader2, Instagram, Youtube, Facebook, Music2, Settings2, Download, X, CheckCircle } from 'lucide-react';
-import { getMediaInfo, downloadMedia } from '../../services/mediaDownloader';
+import { MediaDownloader } from '../../services/download.service'; // Renamed service
+import { useDownloadManager } from '../../contexts/DownloadContext';
 import { useApiKeys } from '../../contexts/ApiKeyContext';
 import { detectPlatform } from '../../services/platformDetector';
 import { toast } from 'react-hot-toast';
@@ -95,7 +96,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
 
         try {
             const apiKey = getApiKey(platformState.platform);
-            const info = await getMediaInfo({ 
+            const info = await MediaDownloader.getMediaInfo({ 
                 url, 
                 platform: platformState.platform, 
                 apiKey 
@@ -149,7 +150,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
             setStatusMessage('Downloading content...');
             setProgress({ percentage: 5, speed: 'Preparing...', timeRemaining: '--' });
 
-            const result = await downloadMedia({
+            const result = await MediaDownloader.downloadMedia({
                 downloadUrl: target.url,
                 platform: platformState.platform,
                 format: selectedFormat,
