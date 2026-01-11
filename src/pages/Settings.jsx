@@ -9,7 +9,7 @@ import PreferencesForm from '../components/settings/PreferencesForm';
 import ProfileSection from '../components/settings/ProfileSection';
 import DangerZone from '../components/settings/DangerZone';
 import ApiKeyModal from '../components/modals/ApiKeyModal';
-import { User, Key, Sliders, Database, DownloadCloud, Trash2, LogOut, Code, AlertTriangle } from 'lucide-react';
+import { User, Key, Sliders, Database, DownloadCloud, Trash2, Code, HardDrive, FileJson, FileSpreadsheet, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import ConfirmationModal from '../components/modals/ConfirmationModal';
 import EditProfileModal from '../components/modals/EditProfileModal';
