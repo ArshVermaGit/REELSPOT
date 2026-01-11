@@ -111,7 +111,7 @@ const ApiKeyModal = ({ isOpen, onClose, platform }) => {
             <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col animate-scale-up">
                 
                 {/* Header */}
-                <div className="px-8 py-6 border-b border-zinc-100 flex items-center justify-between bg-white z-10">
+                <div className="px-4 py-4 md:px-8 md:py-6 border-b border-zinc-100 flex items-center justify-between bg-white z-10">
                     <div className="flex items-center gap-4">
                         <div className={clsx("p-3 rounded-2xl shadow-sm", guide.bg)}>
                             <PlatformIcon platform={platform} className={clsx("w-8 h-8", guide.color)} />
@@ -129,7 +129,7 @@ const ApiKeyModal = ({ isOpen, onClose, platform }) => {
                     </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-8 space-y-8">
+                <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 md:space-y-8">
                     {/* Guide Section */}
                     <div className="bg-zinc-50/80 rounded-2xl border border-zinc-100 overflow-hidden">
                         <div className="p-4 bg-zinc-100/50 border-b border-zinc-100 flex items-center justify-between">
