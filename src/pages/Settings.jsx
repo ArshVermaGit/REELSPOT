@@ -213,7 +213,27 @@ const Settings = () => {
                 <div className="flex flex-col lg:flex-row gap-10">
                     {/* Sidebar navigation */}
                     <div className="w-full lg:w-72 flex-shrink-0">
-                        <div className="bg-white rounded-[2rem] border border-zinc-100 p-3 shadow-sm sticky top-24">
+                         {/* Mobile Horizontal Nav */}
+                        <div className="lg:hidden w-full overflow-x-auto pb-4 -mx-6 px-6 no-scrollbar flex items-center gap-3 mb-4">
+                             {tabs.map(tab => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveTab(tab.id)}
+                                    className={clsx(
+                                        "flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all whitespace-nowrap",
+                                        activeTab === tab.id 
+                                            ? "bg-zinc-900 text-white shadow-lg shadow-zinc-900/10" 
+                                            : "bg-white border border-zinc-200 text-zinc-500"
+                                    )}
+                                >
+                                    <tab.icon size={16} />
+                                    <span>{tab.label}</span>
+                                </button>
+                            ))}
+                        </div>
+
+                         {/* Desktop Sidebar */}
+                        <div className="hidden lg:block bg-white rounded-[2rem] border border-zinc-100 p-3 shadow-sm sticky top-24">
                             <nav className="space-y-1">
                                 {tabs.map(tab => (
                                     <button
