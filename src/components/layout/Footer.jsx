@@ -21,18 +21,18 @@ const Footer = () => {
                     <div>
                         <h4 className="font-bold text-zinc-900 mb-4">Product</h4>
                         <ul className="space-y-2 text-zinc-500 text-sm">
-                            <li><a href="#" className="hover:text-black">Features</a></li>
-                            <li><a href="#" className="hover:text-black">Supported Platforms</a></li>
-                            <li><a href="#" className="hover:text-black">API Access</a></li>
-                            <li><a href="#" className="hover:text-black">Changelog</a></li>
+                            <li><a href="/info/features" className="hover:text-black">Features</a></li>
+                            <li><a href="/info/supported-platforms" className="hover:text-black">Supported Platforms</a></li>
+                            <li><a href="/info/api-access" className="hover:text-black">API Access</a></li>
+                            <li><a href="/info/changelog" className="hover:text-black">Changelog</a></li>
                         </ul>
                     </div>
                     <div>
                         <h4 className="font-bold text-zinc-900 mb-4">Legal</h4>
                         <ul className="space-y-2 text-zinc-500 text-sm">
-                            <li><a href="#" className="hover:text-black">Privacy Policy</a></li>
-                            <li><a href="#" className="hover:text-black">Terms of Service</a></li>
-                            <li><a href="#" className="hover:text-black">Cookie Policy</a></li>
+                            <li><a href="/info/privacy" className="hover:text-black">Privacy Policy</a></li>
+                            <li><a href="/info/terms" className="hover:text-black">Terms of Service</a></li>
+                            <li><a href="/info/cookies" className="hover:text-black">Cookie Policy</a></li>
                         </ul>
                     </div>
                 </div>
