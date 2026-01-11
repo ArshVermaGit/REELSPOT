@@ -95,19 +95,7 @@ const PreferencesForm = ({ settings, onUpdate }) => {
                     />
                 </div>
 
-                <div className="h-px bg-zinc-100" />
 
-                {/* Theme (Mock) */}
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h4 className="font-bold text-zinc-900">Appearance</h4>
-                        <p className="text-sm text-zinc-500 font-medium mt-0.5">Customize application theme.</p>
-                    </div>
-                     <div className="flex gap-1 bg-zinc-100 p-1 rounded-xl">
-                        <button className="p-2 bg-white shadow-sm rounded-lg text-black transition-all"><Sun size={18} /></button>
-                        <button className="p-2 text-zinc-400 hover:text-zinc-600 transition-all"><Moon size={18} /></button>
-                     </div>
-                </div>
                 
                 <div className="h-px bg-zinc-100" />
 
