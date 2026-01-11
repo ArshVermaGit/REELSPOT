@@ -120,7 +120,7 @@ const Hero = () => {
                 </div>
 
                 {/* Main Logo Text - Massive & Premium */}
-                <h1 className="font-[900] text-7xl sm:text-8xl md:text-9xl tracking-tighter text-zinc-900 mb-6 animate-slide-down drop-shadow-sm">
+                <h1 className="font-[900] text-5xl xs:text-6xl sm:text-8xl md:text-9xl tracking-tighter text-zinc-900 mb-6 animate-slide-down drop-shadow-sm">
                     Reelspot
                 </h1>
 
