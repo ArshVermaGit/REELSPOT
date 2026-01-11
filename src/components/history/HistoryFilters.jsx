@@ -1,18 +1,27 @@
 import React from 'react';
-import { Search, Filter, Calendar, FileType, CheckCircle, LayoutGrid, List as ListIcon, X, SlidersHorizontal, ChevronDown } from 'lucide-react';
+import { Search, LayoutGrid, List as ListIcon, ChevronDown, Instagram, Youtube, Facebook, Music2, Globe, Check } from 'lucide-react';
 import { clsx } from 'clsx';
 
-const FilterPill = ({ label, active, onClick }) => (
+const PlatformRow = ({ label, icon: Icon, active, onClick, count }) => (
     <button 
         onClick={onClick}
         className={clsx(
-            "px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap border",
+            "w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all group",
             active 
-                ? "bg-black text-white border-black shadow-md shadow-zinc-900/10" 
-                : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
+                ? "bg-black text-white shadow-md shadow-zinc-900/10" 
+                : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900"
         )}
     >
-        {label}
+        <div className="flex items-center gap-3">
+            <div className={clsx(
+                "p-1.5 rounded-lg transition-colors",
+                active ? "bg-white/20 text-white" : "bg-zinc-100 text-zinc-500 group-hover:text-zinc-900"
+            )}>
+                <Icon size={14} />
+            </div>
+            <span>{label}</span>
+        </div>
+        {active && <Check size={14} className="text-white/80" />}
     </button>
 );
 
@@ -28,80 +37,102 @@ const HistoryFilters = ({
     totalItems 
 }) => {
     
-    const activeFiltersCount = Object.values(filter).filter(v => v !== 'All').length;
-    const platforms = ['All', 'instagram', 'youtube', 'facebook', 'tiktok'];
-
     return (
-        <div className="space-y-4">
-            {/* Top Bar: Search & View */}
-            <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-                
-                {/* Search Bar - Expanded */}
-                <div className="relative w-full md:w-[480px] group">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-black transition-colors" size={20} />
+        <div className="space-y-6">
+            {/* 1. Search Section */}
+            <div>
+                <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2 block px-1">Search</label>
+                <div className="relative group">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-black transition-colors" size={16} />
                     <input 
                         type="text" 
-                        placeholder="Search history by title..." 
-                        className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-zinc-200 bg-white shadow-sm focus:ring-2 focus:ring-black/5 focus:border-black transition-all outline-none font-medium placeholder:text-zinc-400"
+                        placeholder="Search..." 
+                        className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-200 bg-zinc-50/50 hover:bg-white focus:bg-white shadow-sm focus:ring-2 focus:ring-black/5 focus:border-black transition-all outline-none font-medium text-sm placeholder:text-zinc-400"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
                 </div>
+            </div>
 
-                {/* View Toggles & Sort */}
-                <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
-                     <div className="flex items-center gap-1 bg-white p-1 rounded-2xl border border-zinc-200 shadow-sm">
-                        <button 
-                            onClick={() => setViewMode('grid')}
-                            className={clsx(
-                                "p-2.5 rounded-xl transition-all",
-                                viewMode === 'grid' ? "bg-zinc-100 text-black shadow-sm" : "text-zinc-400 hover:text-black hover:bg-zinc-50"
-                            )}
-                        >
-                            <LayoutGrid size={18} />
-                        </button>
-                        <button 
-                            onClick={() => setViewMode('list')}
-                            className={clsx(
-                                "p-2.5 rounded-xl transition-all",
-                                viewMode === 'list' ? "bg-zinc-100 text-black shadow-sm" : "text-zinc-400 hover:text-black hover:bg-zinc-50"
-                            )}
-                        >
-                            <ListIcon size={18} />
-                        </button>
-                    </div>
+            {/* 2. View & Sort */}
+            <div className="grid grid-cols-2 gap-2">
+                {/* View Mode Toggle */}
+                <div className="flex bg-zinc-100 p-1 rounded-xl">
+                    <button 
+                        onClick={() => setViewMode('grid')}
+                        className={clsx(
+                            "flex-1 flex items-center justify-center py-1.5 rounded-lg transition-all",
+                            viewMode === 'grid' ? "bg-white text-black shadow-sm" : "text-zinc-400 hover:text-zinc-600"
+                        )}
+                        title="Grid View"
+                    >
+                        <LayoutGrid size={16} />
+                    </button>
+                    <button 
+                        onClick={() => setViewMode('list')}
+                        className={clsx(
+                            "flex-1 flex items-center justify-center py-1.5 rounded-lg transition-all",
+                            viewMode === 'list' ? "bg-white text-black shadow-sm" : "text-zinc-400 hover:text-zinc-600"
+                        )}
+                        title="List View"
+                    >
+                        <ListIcon size={16} />
+                    </button>
+                </div>
 
-                    <div className="relative group">
-                        <select 
-                            className="appearance-none pl-4 pr-10 py-3.5 rounded-2xl border border-zinc-200 bg-white text-sm font-bold text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50 transition-colors outline-none cursor-pointer shadow-sm focus:ring-2 focus:ring-black/5"
-                            value={sort}
-                            onChange={(e) => setSort(e.target.value)}
-                        >
-                            <option value="newest">Newest First</option>
-                            <option value="oldest">Oldest First</option>
-                            <option value="size_desc">Largest Size</option>
-                            <option value="size_asc">Smallest Size</option>
-                        </select>
-                        <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none group-hover:text-black transition-colors" size={16} />
-                    </div>
+                {/* Sort Dropdown */}
+                <div className="relative group">
+                    <select 
+                        className="w-full appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-zinc-200 bg-white text-xs font-bold text-zinc-700 hover:border-zinc-300 transition-colors outline-none cursor-pointer shadow-sm focus:ring-2 focus:ring-black/5"
+                        value={sort}
+                        onChange={(e) => setSort(e.target.value)}
+                    >
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="size_desc">Big Files</option>
+                        <option value="size_asc">Small Files</option>
+                    </select>
+                    <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none group-hover:text-black transition-colors" size={14} />
                 </div>
             </div>
 
-            {/* Filter Scroll Area */}
-            <div className="flex items-center gap-3 overflow-x-auto pb-2 -mx-6 px-6 md:mx-0 md:px-0 scrollbar-hide py-2">
-                <div className="flex items-center gap-2 pr-4 border-r border-zinc-200 mr-2 flex-shrink-0">
-                    <SlidersHorizontal size={18} className="text-zinc-400" />
-                    <span className="text-sm font-bold text-zinc-500">Filters:</span>
-                </div>
+            <div className="h-px bg-zinc-100 w-full" />
 
-                {platforms.map(p => (
-                    <FilterPill 
-                        key={p} 
-                        label={p === 'All' ? 'All Platforms' : p.charAt(0).toUpperCase() + p.slice(1)} 
-                        active={filter.platform === p}
-                        onClick={() => setFilter(prev => ({ ...prev, platform: p }))}
+            {/* 3. Platform Filters - Vertical List */}
+            <div>
+                <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-2 block px-1">Platform</label>
+                <div className="space-y-1">
+                    <PlatformRow 
+                        label="All Platforms" 
+                        icon={Globe} 
+                        active={filter.platform === 'All'} 
+                        onClick={() => setFilter(prev => ({ ...prev, platform: 'All' }))}
                     />
-                ))}
+                    <PlatformRow 
+                        label="Instagram" 
+                        icon={Instagram} 
+                        active={filter.platform === 'instagram'} 
+                        onClick={() => setFilter(prev => ({ ...prev, platform: 'instagram' }))}
+                    />
+                    <PlatformRow 
+                        label="YouTube" 
+                        icon={Youtube} 
+                        active={filter.platform === 'youtube'} 
+                        onClick={() => setFilter(prev => ({ ...prev, platform: 'youtube' }))}
+                    />
+                    <PlatformRow 
+                        label="Facebook" 
+                        icon={Facebook} 
+                        active={filter.platform === 'facebook'} 
+                        onClick={() => setFilter(prev => ({ ...prev, platform: 'facebook' }))}
+                    />
+                    <PlatformRow 
+                        label="TikTok" 
+                        icon={Music2} 
+                        active={filter.platform === 'tiktok'} 
+                        onClick={() => setFilter(prev => ({ ...prev, platform: 'tiktok' }))}
+                    />
+                </div>
             </div>
         </div>
     );
