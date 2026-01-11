@@ -7,9 +7,14 @@ const Footer = () => {
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
                     <div className="col-span-1 md:col-span-2">
-                        <div className="flex items-center gap-2 mb-6">
-                            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-lg shadow-zinc-900/20">
-                                <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[10px] border-b-white transform rotate-90 ml-1"></div>
+                        <div className="flex items-center gap-3 mb-6 group">
+                            <div className="relative">
+                                <div className="absolute inset-0 bg-black blur-lg opacity-20 group-hover:opacity-30 transition-opacity rounded-full" />
+                                <img 
+                                    src="/logo.png" 
+                                    alt="Reelspot" 
+                                    className="w-10 h-10 relative z-10 rounded-xl shadow-sm transition-transform duration-300 group-hover:scale-105"
+                                />
                             </div>
                             <span className="text-2xl font-[900] tracking-tight text-zinc-900">Reelspot</span>
                         </div>
