@@ -35,7 +35,7 @@ const SignInPrompt = ({ isOpen, onClose, onSignIn }) => {
                     <X size={20} />
                 </button>
 
-                <div className="p-8 text-center">
+                <div className="p-6 md:p-8 text-center">
                     {/* Icon */}
                     <div className="w-16 h-16 bg-black rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-black/20">
                         <Lock size={28} className="text-white" />
