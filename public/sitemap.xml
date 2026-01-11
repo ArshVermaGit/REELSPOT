@@ -24,48 +24,50 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-  <!-- Info Pages -->
+
+  <!-- Product & Info -->
   <url>
-    <loc>https://reelspot.vercel.app/info/features</loc>
+    <loc>https://reelspot.vercel.app/features</loc>
+    <lastmod>2026-01-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://reelspot.vercel.app/supported-platforms</loc>
+    <lastmod>2026-01-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://reelspot.vercel.app/api-access</loc>
     <lastmod>2026-01-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://reelspot.vercel.app/info/supported-platforms</loc>
-    <lastmod>2026-01-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://reelspot.vercel.app/info/api-access</loc>
-    <lastmod>2026-01-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://reelspot.vercel.app/info/changelog</loc>
+    <loc>https://reelspot.vercel.app/changelog</loc>
     <lastmod>2026-01-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
+
   <!-- Legal -->
   <url>
-    <loc>https://reelspot.vercel.app/info/privacy</loc>
+    <loc>https://reelspot.vercel.app/privacy</loc>
     <lastmod>2026-01-11</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://reelspot.vercel.app/info/terms</loc>
+    <loc>https://reelspot.vercel.app/terms</loc>
     <lastmod>2026-01-11</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://reelspot.vercel.app/info/cookies</loc>
+    <loc>https://reelspot.vercel.app/cookies</loc>
     <lastmod>2026-01-11</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.4</priority>
   </url>
 </urlset>
