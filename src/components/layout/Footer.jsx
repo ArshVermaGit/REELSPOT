@@ -28,8 +28,18 @@ const Footer = () => {
                         <h4 className="font-bold text-zinc-900 mb-6">Product</h4>
                         <ul className="space-y-4 text-zinc-500 font-medium">
                             <li><Link to="/features" className="hover:text-black transition-colors">Features</Link></li>
-                            <li><Link to="/supported-platforms" className="hover:text-black transition-colors">Supported Platforms</Link></li>
+                            <li><Link to="/how-it-works" className="hover:text-black transition-colors">How It Works</Link></li>
+                            <li><Link to="/supported-platforms" className="hover:text-black transition-colors">Platforms</Link></li>
                             <li><Link to="/api-access" className="hover:text-black transition-colors">API Access</Link></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 className="font-bold text-zinc-900 mb-6">Company</h4>
+                        <ul className="space-y-4 text-zinc-500 font-medium">
+                            <li><Link to="/about" className="hover:text-black transition-colors">About Us</Link></li>
+                            <li><Link to="/contact" className="hover:text-black transition-colors">Contact</Link></li>
+                            <li><Link to="/faq" className="hover:text-black transition-colors">FAQ</Link></li>
+                            <li><Link to="/changelog" className="hover:text-black transition-colors">Changelog</Link></li>
                         </ul>
                     </div>
                     <div>
@@ -37,6 +47,7 @@ const Footer = () => {
                         <ul className="space-y-4 text-zinc-500 font-medium">
                             <li><Link to="/privacy" className="hover:text-black transition-colors">Privacy Policy</Link></li>
                             <li><Link to="/terms" className="hover:text-black transition-colors">Terms of Service</Link></li>
+                            <li><Link to="/cookies" className="hover:text-black transition-colors">Cookie Policy</Link></li>
                         </ul>
                     </div>
                 </div>
