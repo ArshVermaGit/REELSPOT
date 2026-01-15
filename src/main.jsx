@@ -2,7 +2,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import ErrorBoundary from './components/ErrorBoundary'
+import ErrorBoundary from './components/shared/ErrorBoundary'
 import './styles/index.css'
 
 console.log('Imports done');
