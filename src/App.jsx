@@ -14,6 +14,7 @@ import Dashboard from './pages/Dashboard'
 import History from './pages/History'
 import Settings from './pages/Settings'
 import InfoPage from './pages/InfoPage';
+import NotFound from './pages/NotFound';
 import Toast from './components/shared/Toast';
 import ConfigGuard from './components/layout/ConfigGuard';
 import AuthGate from './components/auth/AuthGate';
@@ -67,7 +68,7 @@ function App() {
                                     <Route path="/how-it-works" element={<InfoPage pageId="how-it-works" />} />
                                     
                                     <Route path="/info/:pageId" element={<InfoPage />} />
-                                    <Route path="*" element={<Home />} />
+                                    <Route path="*" element={<NotFound />} />
                                 </Routes>
                             </Layout>
                         </div>
