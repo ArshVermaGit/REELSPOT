@@ -1,15 +1,19 @@
-import axios from 'axios';
-import { supabase } from './supabase.js';
-import { PLATFORMS } from './platformDetector.js';
+import { PLATFORMS } from '../constants';
+import { registerPlatform, getPlatformStrategy } from './platforms/registry.js';
 
 // Platform Strategy Imports
 import { fetchInstagramData } from './platforms/instagram.service.js';
 import { fetchYoutubeData } from './platforms/youtube.service.js';
 import { fetchFacebookData } from './platforms/facebook.service.js';
 
+// Initialize Core Strategies
+registerPlatform(PLATFORMS.INSTAGRAM, fetchInstagramData);
+registerPlatform(PLATFORMS.YOUTUBE, fetchYoutubeData);
+registerPlatform(PLATFORMS.FACEBOOK, fetchFacebookData);
+
 /**
  * Advanced Media Downloader Service
- * Modularized version using platform-specific strategies.
+ * Strategy Pattern based modular architecture.
  */
 
 // Error Classes
@@ -27,19 +31,17 @@ export class MediaError extends Error {
 const getMediaInfo = async ({ url, platform, apiKey }) => {
     if (!url) throw new MediaError('URL is required', 'MISSING_URL');
 
-    try {
-        switch (platform) {
-            case PLATFORMS.INSTAGRAM:
-                return await fetchInstagramData(url, apiKey);
-            case PLATFORMS.YOUTUBE:
-                return await fetchYoutubeData(url, apiKey);
-            case PLATFORMS.FACEBOOK:
-                return await fetchFacebookData(url, apiKey);
-            case PLATFORMS.TIKTOK:
-                throw new MediaError('TikTok downloading is not yet configured for production.', 'NOT_CONFIGURED');
-            default:
-                throw new MediaError('Unsupported platform', 'UNSUPPORTED');
+    const fetchStrategy = getPlatformStrategy(platform);
+    
+    if (!fetchStrategy) {
+        if (platform === PLATFORMS.TIKTOK) {
+            throw new MediaError('TikTok downloading is not yet configured for production.', 'NOT_CONFIGURED');
         }
+        throw new MediaError(`Unsupported or unconfigured platform: ${platform}`, 'UNSUPPORTED');
+    }
+
+    try {
+        return await fetchStrategy(url, apiKey);
     } catch (error) {
         throw error instanceof MediaError ? error : new MediaError(error.message, 'UNKNOWN_ERROR');
     }
