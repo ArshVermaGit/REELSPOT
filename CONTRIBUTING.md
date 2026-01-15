@@ -46,6 +46,19 @@ Unsure where to begin contributing to Reelspot? You can start by looking through
     - Include screenshots or videos for UI changes.
 7.  **Review**: Wait for feedback from the maintainers. Be prepared to make changes if requested.
 
+## 🛠️ Adding a New Platform
+
+Reelspot uses a **Strategy Pattern** for handling different platforms. To add a new platform (e.g., Pinterest):
+
+1.  **Detection**: Add a new regex pattern and update `detectPlatform` in [platformDetector.js](file:///Users/arshverma/GitHub/REELSPOT/src/services/platformDetector.js).
+2.  **Service**: Create `src/services/platforms/pinterest.service.js`. It should export a function `fetchPinterestData(url, apiKey)`.
+3.  **Registry**: Register your new service in [download.service.js](file:///Users/arshverma/GitHub/REELSPOT/src/services/download.service.js):
+    ```javascript
+    import { fetchPinterestData } from "./platforms/pinterest.service.js";
+    registerPlatform(PLATFORMS.PINTEREST, fetchPinterestData);
+    ```
+4.  **UI**: Add the platform icon and color to the `Hero`, `DownloadForm`, and `SupportedPlatforms` components.
+
 ## Style Guide
 
 - **JavaScript**: Use ES6+ syntax.
