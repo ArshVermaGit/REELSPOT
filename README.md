@@ -1,14 +1,30 @@
 <div align="center">
-  <img src="public/logo.png" alt="Reelspot Logo" width="120" />
+  <a href="https://reelspot.vercel.app">
+    <img src="public/logo.png" alt="Reelspot Logo" width="120" height="auto" />
+  </a>
+  <br />
   <h1>Reelspot</h1>
   <h3>The Ultimate Media Downloader for Creators</h3>
   
   <p>
+    <b>High-Performance</b> · <b>Privacy-First</b> · <b>Obsidian Aesthetic</b>
+  </p>
+
+  <p>
     <a href="https://reelspot.vercel.app">View Demo</a>
     ·
-    <a href="https://github.com/arshverma/REELSPOT/issues">Report Bug</a>
+    <a href="https://github.com/arshverma/REELSPOT/issues/new?template=BUG_REPORT.yml">Report Bug</a>
     ·
-    <a href="https://github.com/arshverma/REELSPOT/pulls">Request Feature</a>
+    <a href="https://github.com/arshverma/REELSPOT/discussions">Request Feature</a>
+  </p>
+
+  <p>
+    <!-- CI/CD Status -->
+    <a href="https://github.com/arshverma/REELSPOT/actions"><img src="https://img.shields.io/github/actions/workflow/status/arshverma/REELSPOT/ci.yml?style=flat-square&logo=github" alt="Build Status" /></a>
+    <!-- License -->
+    <a href="LICENSE"><img src="https://img.shields.io/github/license/arshverma/REELSPOT?style=flat-square&color=blue" alt="License" /></a>
+    <!-- PRs -->
+    <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome" /></a>
   </p>
 
   <p>
@@ -23,15 +39,17 @@
 
 ## ✨ About The Project
 
-**Reelspot** is a premium, high-performance web application designed to simplify media consumption for creators and minimalists. With a hyper-polished "obsidian glass" aesthetic, it offers a seamless experience for downloading high-quality videos from major social platforms without the clutter of traditional tools.
+**Reelspot** is a premium, high-performance web application designed to simplify media consumption for creators and minimalists. Built with a hyper-polished "obsidian glass" aesthetic, it offers a seamless experience for downloading high-quality videos from major social platforms without the clutter of traditional tools.
 
-### Key Features
+We believe in **Software Craftsmanship**. Reelspot isn't just a tool; it's an example of how modern web apps should feel—fast, fluid, and respectful of the user.
 
-- **⚡ Multi-Platform Support**: Instantly download from **Instagram**, **YouTube**, **Facebook**, and **TikTok**.
-- **💎 Premium Design**: A stunning, responsive UI built with **Tailwind CSS**, featuring glassmorphism, micro-interactions, and fluid 60fps animations.
-- **🔒 Privacy First**: Your data stays yours. We use secure local storage and encrypted verified sessions. No tracking pixels or invasive ads.
-- **📁 Smart History**: Automatically tracks your downloads with filtering, search, and bulk management capabilities.
-- **🔌 Developer Friendly**: Open API architecture ready for extension.
+### 🔥 Key Features
+
+- **⚡ Multi-Platform Strategy**: Dynamically extensible architecture supporting **Instagram**, **YouTube**, **Facebook**, and **TikTok**.
+- **💎 Premium UX/UI**: A stunning interface built with **Tailwind CSS**, featuring glassmorphism, micro-interactions, and fluid 60fps animations.
+- **🔒 Privacy First**: Zero tracking. Your data stays yours. secure local storage for preferences.
+- **🔌 Developer Ready**: Built with a **Screaming Architecture**. Feature-first folder structure, Strategy Pattern for downloads, and centralized constants make contributing a breeze.
+- **📱 Universal**: Fully responsive, PWA-ready design that feels native on any device.
 
 ---
 
@@ -42,20 +60,21 @@ To get a local copy up and running, follow these simple steps.
 ### Prerequisites
 
 - Node.js (v18 or higher)
-- npm or yarn
+- npm (v9+)
 
 ### Installation
 
 1.  **Clone the repo**
     ```sh
     git clone https://github.com/arshverma/REELSPOT.git
+    cd REELSPOT
     ```
 2.  **Install dependencies**
     ```sh
-    npm install
+    npm ci
     ```
 3.  **Configure Environment**
-    Create a `.env` file based on `.env.example` and add your **Supabase** and **RapidAPI** keys.
+    Create a `.env` file based on `.env.example`:
     ```env
     VITE_SUPABASE_URL=your_url
     VITE_SUPABASE_ANON_KEY=your_key
@@ -68,30 +87,57 @@ To get a local copy up and running, follow these simple steps.
 
 ---
 
+## 🏗️ Project Structure
+
+Reelspot follows a domain-driven, modular architecture designed for scalability.
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── shared/          # Global atoms (Buttons, Inputs, Modals)
+│   ├── layout/          # Layout wrappers (Navbar, Footer)
+│   └── [feature]/       # Feature-specific components
+├── constants/           # Global constants (Regex, Configs)
+├── contexts/            # Global State (Auth, Theme)
+├── hooks/               # Custom React Hooks
+├── pages/               # Route Components
+├── services/            # Business Logic & API Layer
+│   └── platforms/       # Strategy Pattern Implementations
+└── styles/              # Global Tailwind Styles
+```
+
+---
+
 ## 📚 Documentation
 
-Detailed guides and policies for Reelspot.
+Detailed guides for developers and users.
 
-### 👤 User Guides
+### 💻 For Developers
 
-- [**Getting Started**](./docs/user/getting-started.md) - How to use Reelspot.
-- [**API Keys Guide**](./docs/user/api-keys.md) - How to get your free API keys.
-- [**Troubleshooting**](./docs/user/troubleshooting.md) - Troubleshooting common issues.
-- [**Legal**](./docs/user/legal.md) - Privacy Policy & Terms.
+- [**Architecture Guide**](./docs/dev/architecture.md) - Deep dive into usage of Strategy Pattern and directory structure.
+- [**Contribution Board**](./CONTRIBUTING.md) - How to add a new platform in 5 steps.
+- [**Repository Settings**](./docs/dev/repository-settings.md) - How to configure this repo for perfection.
+- [**API Integration**](./docs/dev/api.md) - Adding new endpoints.
 
-### 💻 Developer Guides
+### 👤 For Users
 
-- [**Architecture**](./docs/dev/architecture.md) - Codebase structure.
-- [**Database Schema**](./docs/dev/database.md) - Supabase table definitions.
-- [**API Integration**](./docs/dev/api.md) - Adding new platforms.
+- [**Getting Started**](./docs/user/getting-started.md)
+- [**Troubleshooting**](./docs/user/troubleshooting.md)
+- [**Legal & Privacy**](./docs/user/legal.md)
 
-### ⚖️ Policies & Governance
+---
 
-- [**Code of Conduct**](./CODE_OF_CONDUCT.md) - Community standards.
-- [**Contributing**](./CONTRIBUTING.md) - Join the project.
-- [**Security Policy**](./SECURITY.md) - Report vulnerabilities.
-- [**Support**](./SUPPORT.md) - Get help.
-- [**License**](./LICENSE) - MIT License.
+## 🤝 Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+See [**CONTRIBUTING.md**](./CONTRIBUTING.md) for detailed steps on how to:
+
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
 ---
 
@@ -101,14 +147,6 @@ Stay up to date with where Reelspot is headed.
 
 - 🚀 [**Roadmap**](./ROADMAP.md) - Planned features & milestones.
 - 📜 [**Changelog**](./CHANGELOG.md) - Track every change.
-
----
-
-## 🤝 Community & Support
-
-- 💬 [**Discussions**](https://github.com/arshverma/REELSPOT/discussions) - Ask questions & share ideas.
-- 🐞 [**Issues**](https://github.com/arshverma/REELSPOT/issues) - Report bugs or request features.
-- 🐦 [**Twitter**](https://x.com/TheArshVerma) - Follow for updates.
 
 ---
 
@@ -126,4 +164,7 @@ Stay up to date with where Reelspot is headed.
 <div align="center">
   <br />
   <p>Made with ❤️ by Arsh Verma</p>
+  <p>
+     <a href="#top">Back to Top</a>
+  </p>
 </div>
