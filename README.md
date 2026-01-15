@@ -70,29 +70,45 @@ To get a local copy up and running, follow these simple steps.
 
 ## 📚 Documentation
 
-Comprehensive guides for both users and developers.
+Detailed guides and policies for Reelspot.
 
 ### 👤 User Guides
 
 - [**Getting Started**](./docs/user/getting-started.md) - How to use Reelspot.
 - [**API Keys Guide**](./docs/user/api-keys.md) - How to get your free API keys.
-- [**Simulating Errors**](./docs/user/troubleshooting.md) - Troubleshooting common issues.
+- [**Troubleshooting**](./docs/user/troubleshooting.md) - Troubleshooting common issues.
 - [**Legal**](./docs/user/legal.md) - Privacy Policy & Terms.
 
 ### 💻 Developer Guides
 
-- [**Architecture**](./docs/dev/architecture.md) - Codebase structure and design patterns.
+- [**Architecture**](./docs/dev/architecture.md) - Codebase structure.
 - [**Database Schema**](./docs/dev/database.md) - Supabase table definitions.
 - [**API Integration**](./docs/dev/api.md) - Adding new platforms.
-- [**Deployment**](./docs/dev/deployment.md) - Build and deploy to Vercel/Netlify.
+
+### ⚖️ Policies & Governance
+
+- [**Code of Conduct**](./CODE_OF_CONDUCT.md) - Community standards.
+- [**Contributing**](./CONTRIBUTING.md) - Join the project.
+- [**Security Policy**](./SECURITY.md) - Report vulnerabilities.
+- [**Support**](./SUPPORT.md) - Get help.
+- [**License**](./LICENSE) - MIT License.
 
 ---
 
-## 🤝 Contributing
+## 🗺️ Roadmap & History
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Stay up to date with where Reelspot is headed.
 
-Please see [**CONTRIBUTING.md**](./CONTRIBUTING.md) for detailed guidelines.
+- 🚀 [**Roadmap**](./ROADMAP.md) - Planned features & milestones.
+- 📜 [**Changelog**](./CHANGELOG.md) - Track every change.
+
+---
+
+## 🤝 Community & Support
+
+- 💬 [**Discussions**](https://github.com/arshverma/REELSPOT/discussions) - Ask questions & share ideas.
+- 🐞 [**Issues**](https://github.com/arshverma/REELSPOT/issues) - Report bugs or request features.
+- 🐦 [**Twitter**](https://x.com/TheArshVerma) - Follow for updates.
 
 ---
 
@@ -106,10 +122,6 @@ Please see [**CONTRIBUTING.md**](./CONTRIBUTING.md) for detailed guidelines.
 - **X (Twitter)**: [@TheArshVerma](https://x.com/TheArshVerma)
 
 ---
-
-## 📄 License
-
-Distributed under the **MIT License**. See `LICENSE` for more information.
 
 <div align="center">
   <br />
