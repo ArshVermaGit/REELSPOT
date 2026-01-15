@@ -1,5 +1,5 @@
-name: Bug Report
-description: File a bug report to help us improve REELSPOT
+name: Bug report
+description: Create a report to help us improve
 labels: [bug]
 body:
   - type: markdown
@@ -11,44 +11,20 @@ body:
     attributes:
       label: What happened?
       description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you did and what went wrong!
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: input
+    id: platform-url
+    attributes:
+      label: Platform URL
+      description: The URL you were trying to download from.
+      placeholder: e.g., https://www.instagram.com/reel/XYZ/
     validations:
       required: true
   - type: textarea
-    id: reproduction
+    id: logs
     attributes:
-      label: Reproduction Steps
-      description: How do we reproduce this issue?
-      placeholder: |
-        1. Go to '...'
-        2. Click on '....'
-        3. Scroll down to '....'
-        4. See error
-    validations:
-      required: true
-  - type: dropdown
-    id: platform
-    attributes:
-      label: Which platform were you downloading from?
-      options:
-        - Instagram
-        - YouTube
-        - Facebook
-        - TikTok
-        - Other
-    validations:
-      required: true
-  - type: textarea
-    id: environment
-    attributes:
-      label: Environment Info
-      description: Browser version, OS, etc.
-      placeholder: Chrome 120, macOS Sonoma
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our Code of Conduct
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
