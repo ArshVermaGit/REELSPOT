@@ -1,14 +1,19 @@
 import axios from 'axios';
 import { supabase } from './supabase.js';
-import { extractMediaId, PLATFORMS } from './platformDetector.js';
+import { PLATFORMS } from './platformDetector.js';
+
+// Platform Strategy Imports
+import { fetchInstagramData } from './platforms/instagram.service.js';
+import { fetchYoutubeData } from './platforms/youtube.service.js';
+import { fetchFacebookData } from './platforms/facebook.service.js';
 
 /**
  * Advanced Media Downloader Service
- * Handles media analysis, downloading, and history tracking.
+ * Modularized version using platform-specific strategies.
  */
 
 // Error Classes
-class MediaError extends Error {
+export class MediaError extends Error {
     constructor(message, code, retryable = false) {
         super(message);
         this.name = 'MediaError';
@@ -16,143 +21,6 @@ class MediaError extends Error {
         this.retryable = retryable;
     }
 }
-
-// --- Platform Fetchers ---
-
-const fetchInstagramData = async (url, apiKey) => {
-    // Note: Official Instagram Graph API requires User Access Token for /me/media or Business Discovery
-    // Here we assume apiKey is a User Access Token or we use a simulated endpoint if needed.
-    // Ideally: GET https://graph.facebook.com/v18.0/{media-id}?fields=id,media_type,media_url,thumbnail_url,owner,timestamp&access_token={token}
-    
-    const mediaId = extractMediaId(url, PLATFORMS.INSTAGRAM);
-    if (!mediaId) throw new MediaError('Could not extract Media ID', 'INVALID_ID');
-
-    // For basic display API, we usually need the ID.
-    // Note: To get info from a public URL without auth is hard via Official API.
-    // We will structure this for the User Token approach as requested in the plan.
-    
-    try {
-        const fields = 'id,media_type,media_url,thumbnail_url,caption,timestamp,owner';
-        const endpoint = `https://graph.instagram.com/${mediaId}?fields=${fields}&access_token=${apiKey}`;
-        
-        // This is a placeholder call. Real IG Graph API interactions for *public* posts 
-        // usually require OEmbed or Business Discovery, not just Basic Display with an ID from URL.
-        // However, we interpret the user's request as "build the engine that makes the call".
-        
-        // If we can't really call it without a valid token in this env, we simulate for now 
-        // OR we try to call it and handle the error.
-        if (!apiKey || apiKey.length < 10) {
-             throw new MediaError('Valid Instagram Access Token required', 'AUTH_REQUIRED');
-        }
-
-        const response = await axios.get(endpoint);
-        const data = response.data;
-
-        return {
-            title: data.caption ? data.caption.substring(0, 50) + '...' : 'Instagram Media',
-            thumbnail: data.thumbnail_url || data.media_url, // Video might have thumbnail_url
-            mediaUrl: data.media_url,
-            author: data.owner?.username || 'instagram_user',
-            duration: '0:00', // IG API doesn't always return duration
-            formats: [{
-                type: data.media_type === 'VIDEO' ? 'video' : 'image',
-                quality: 'Original',
-                ext: data.media_type === 'VIDEO' ? 'mp4' : 'jpg',
-                url: data.media_url
-            }]
-        };
-    } catch (error) {
-        if (error.response) {
-            const status = error.response.status;
-            if (status === 401 || status === 403) {
-                 throw new MediaError('Instagram API Key Invalid or Expired', 'AUTH_EXPIRED', false);
-            }
-            if (status === 429) {
-                 throw new MediaError('Instagram Rate Limit Exceeded', 'RATE_LIMIT', true);
-            }
-            if (status === 400) {
-                 throw new MediaError('Invalid Media ID or Private Post', 'INVALID_ID', false);
-            }
-        }
-        // No fallback simulation
-        if (error instanceof MediaError) throw error; 
-        throw new MediaError(error.message || 'Instagram API Error', 'API_ERROR');
-    }
-};
-
-const fetchYoutubeData = async (url, apiKey) => {
-    const videoId = extractMediaId(url, PLATFORMS.YOUTUBE);
-    if (!videoId) throw new MediaError('Invalid YouTube URL', 'INVALID_URL');
-
-    if (!apiKey) throw new MediaError('YouTube Data API Key required', 'AUTH_REQUIRED');
-
-    const endpoint = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,status&id=${videoId}&key=${apiKey}`;
-
-    try {
-        const response = await axios.get(endpoint);
-        if (!response.data.items || response.data.items.length === 0) {
-            throw new MediaError('Video not found or private', 'NOT_FOUND');
-        }
-
-        const item = response.data.items[0];
-        const snippet = item.snippet;
-        const duration = item.contentDetails.duration; // P1DT... format needs parsing ideally
-
-        // Note: YT Data API does NOT give streaming URLs (mp4). 
-        // We can only get metadata. Real download engines use youtube-dl / ytdl-core on backend.
-        // We will mock the *formats* part but return real metadata.
-        
-        return {
-            title: snippet.title,
-            thumbnail: snippet.thumbnails?.high?.url || snippet.thumbnails?.default?.url,
-            author: snippet.channelTitle,
-            duration: duration, 
-            formats: [
-                { type: 'video', quality: '1080p', ext: 'mp4', url: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4' }, // Placeholder download URL
-                { type: 'video', quality: '720p', ext: 'mp4', url: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4' }
-            ]
-        };
-    } catch (error) {
-        if (error.response) {
-             const status = error.response.status;
-             if (status === 403) {
-                 // Check if it's quota
-                 const reason = error.response.data?.error?.errors?.[0]?.reason;
-                 if (reason === 'quotaExceeded') {
-                      throw new MediaError('YouTube API Quota Exceeded', 'RATE_LIMIT', true);
-                 }
-                 throw new MediaError('YouTube API Key Restricted or Invalid', 'AUTH_EXPIRED', false);
-             }
-             if (status === 404) throw new MediaError('Video not found', 'NOT_FOUND', false);
-        }
-        throw new MediaError(error.response?.data?.error?.message || 'YouTube API Error', 'API_ERROR');
-    }
-};
-
-const fetchFacebookData = async (url, apiKey) => {
-    // FB Graph API for videos: /{video-id}?fields=source,title,description
-    const videoId = extractMediaId(url, PLATFORMS.FACEBOOK);
-    if (!videoId) throw new MediaError('Could not extract Facebook Video ID', 'INVALID_ID');
-
-    if (!apiKey) throw new MediaError('Facebook Access Token required', 'AUTH_REQUIRED');
-
-    try {
-        const endpoint = `https://graph.facebook.com/v18.0/${videoId}?fields=source,title,description,picture&access_token=${apiKey}`;
-        const response = await axios.get(endpoint);
-        const data = response.data;
-
-        return {
-            title: data.title || data.description || 'Facebook Video',
-            thumbnail: data.picture,
-            author: 'Facebook User', // FB API often hides owner name in simple video calls
-            formats: [
-                { type: 'video', quality: 'SD', ext: 'mp4', url: data.source } // 'source' is often the playable mp4
-            ]
-        };
-    } catch (e) {
-        throw new MediaError('Facebook API Error', 'API_ERROR');
-    }
-};
 
 // --- Core Logic ---
 
@@ -186,7 +54,6 @@ const checkFileSize = async (url) => {
         }
         return size;
     } catch (e) {
-        // If HEAD fails, we might just proceed and fail later or ignore size check
         console.warn("Could not check file size via HEAD request");
         return 0;
     }
@@ -205,7 +72,7 @@ const downloadFileWithRetry = async (url, onProgress, retries = 3) => {
 
             const response = await axios.get(url, {
                 responseType: 'blob',
-                timeout: 30000, // 30s timeout
+                timeout: 30000,
                 onDownloadProgress: (progressEvent) => {
                     const total = progressEvent.total || 0;
                     const loaded = progressEvent.loaded;
@@ -215,8 +82,7 @@ const downloadFileWithRetry = async (url, onProgress, retries = 3) => {
                         const timeDiff = (now - lastTime) / 1000;
                         const byteDiff = loaded - lastLoaded;
 
-                        // Only update stats every 100ms
-                         if (timeDiff > 0.1) {
+                        if (timeDiff > 0.1) {
                             let speed = '0 MB/s';
                             if (byteDiff > 0) {
                                 const bytesPerSec = byteDiff / timeDiff;
@@ -243,7 +109,6 @@ const downloadFileWithRetry = async (url, onProgress, retries = 3) => {
             if (attempt > retries) {
                 return { success: false, error: error.message };
             }
-            // Exponential backoff
             await new Promise(r => setTimeout(r, Math.pow(2, attempt) * 1000));
         }
     }
@@ -262,7 +127,6 @@ const saveToHistory = async (userId, data) => {
     }
 };
 
-// Main Export
 const downloadMedia = async (options) => {
     const {
         downloadUrl, platform, format, quality, onProgress, userId,
@@ -272,11 +136,9 @@ const downloadMedia = async (options) => {
     try {
         if (!downloadUrl) throw new MediaError('No download link', 'NO_LINK');
 
-        // 1. Download
         const result = await downloadFileWithRetry(downloadUrl, onProgress);
         if (!result.success) throw new MediaError(result.error, 'DOWNLOAD_FAILED');
 
-        // 2. Browser Save
         const blobUrl = window.URL.createObjectURL(result.blob);
         const fileName = `${platform}_${(mediaTitle||'media').replace(/\W/g, '_').substring(0,20)}_${Date.now()}.${format || 'mp4'}`;
         
@@ -288,7 +150,6 @@ const downloadMedia = async (options) => {
         document.body.removeChild(a);
         window.URL.revokeObjectURL(blobUrl);
 
-        // 3. History
         await saveToHistory(userId, {
             platform, media_url: mediaUrl, media_type: 'video',
             format, quality, file_size: result.size,
@@ -298,7 +159,6 @@ const downloadMedia = async (options) => {
 
         return { success: true, fileName };
     } catch (error) {
-        // Save Failure
         if (userId) {
             await saveToHistory(userId, {
                 platform, media_url: mediaUrl, download_status: 'failed',
