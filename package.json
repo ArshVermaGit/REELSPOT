@@ -2,10 +2,33 @@
   "name": "reelspot",
   "version": "1.0.0",
   "type": "module",
+  "description": "The Ultimate Media Downloader for Creators. High-performance, obsidian-glass aesthetic, and privacy-first.",
+  "keywords": [
+    "react",
+    "vite",
+    "media-downloader",
+    "instagram",
+    "youtube",
+    "tiktok",
+    "facebook",
+    "glassmorphism",
+    "tailwind-css"
+  ],
+  "author": "Arsh Verma <arsh@example.com> (https://arshcreates.vercel.app)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arshverma/REELSPOT.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arshverma/REELSPOT/issues"
+  },
+  "homepage": "https://reelspot.vercel.app",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
