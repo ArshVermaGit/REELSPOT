@@ -13,6 +13,10 @@ import { User, Key, Sliders, Database, DownloadCloud, Trash2, Code, ChevronRight
 import toast from 'react-hot-toast';
 import ConfirmationModal from '../components/modals/ConfirmationModal';
 import EditProfileModal from '../components/modals/EditProfileModal';
+import FeedbackModal from '../components/modals/FeedbackModal';
+import HelpModal from '../components/modals/HelpModal';
+import SuccessModal from '../components/modals/SuccessModal';
+import ErrorModal from '../components/modals/ErrorModal';
 import { clsx } from 'clsx';
 
 const Settings = () => {
@@ -28,6 +32,9 @@ const Settings = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [activePlatform, setActivePlatform] = useState(null);
     const [profileModalOpen, setProfileModalOpen] = useState(false);
+    const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+    const [helpModalOpen, setHelpModalOpen] = useState(false);
+    const [successModal, setSuccessModal] = useState({ isOpen: false, title: '', message: '' });
 
     // Delete Flow State
     const [confirmModal, setConfirmModal] = useState({
@@ -74,6 +81,40 @@ const Settings = () => {
                             signOut={signOut}
                             onEditProfile={() => setProfileModalOpen(true)}
                         />
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <button 
+                                onClick={() => setHelpModalOpen(true)}
+                                className="flex items-center justify-between p-6 bg-white border border-zinc-100 rounded-3xl hover:bg-zinc-50 transition-all group"
+                            >
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 bg-blue-50 text-blue-600 rounded-2xl group-hover:scale-110 transition-transform">
+                                        <Shield size={24} />
+                                    </div>
+                                    <div className="text-left">
+                                        <h3 className="font-bold text-zinc-900">Help & Support</h3>
+                                        <p className="text-sm text-zinc-500">Guides and common questions.</p>
+                                    </div>
+                                </div>
+                                <ChevronRight size={20} className="text-zinc-300" />
+                            </button>
+
+                            <button 
+                                onClick={() => setFeedbackModalOpen(true)}
+                                className="flex items-center justify-between p-6 bg-white border border-zinc-100 rounded-3xl hover:bg-zinc-50 transition-all group"
+                            >
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 bg-purple-50 text-purple-600 rounded-2xl group-hover:scale-110 transition-transform">
+                                        <Code size={24} />
+                                    </div>
+                                    <div className="text-left">
+                                        <h3 className="font-bold text-zinc-900">Give Feedback</h3>
+                                        <p className="text-sm text-zinc-500">Tell us how we can improve.</p>
+                                    </div>
+                                </div>
+                                <ChevronRight size={20} className="text-zinc-300" />
+                            </button>
+                        </div>
                     </div>
                 );
             case 'keys':
@@ -171,7 +212,14 @@ const Settings = () => {
                                         onClick={() => openConfirm({
                                             title: 'Clear All History?',
                                             message: 'This will permanently remove all download records. This action cannot be undone.',
-                                            onConfirm: clearHistory,
+                                            onConfirm: () => {
+                                                clearHistory();
+                                                setSuccessModal({
+                                                    isOpen: true,
+                                                    title: 'History Cleared',
+                                                    message: 'Your download history has been successfully removed.'
+                                                });
+                                            },
                                             confirmText: 'Clear Everything',
                                             type: 'danger'
                                         })}
@@ -295,6 +343,31 @@ const Settings = () => {
                     message={confirmModal.message}
                     type={confirmModal.type}
                     confirmText={confirmModal.confirmText}
+                />
+
+                <FeedbackModal 
+                    isOpen={feedbackModalOpen}
+                    onClose={() => setFeedbackModalOpen(false)}
+                    onSubmit={async (data) => {
+                        toast.success("Feedback received! Thank you.");
+                        setSuccessModal({
+                            isOpen: true,
+                            title: 'Thank You!',
+                            message: 'Your feedback helps us make Reelspot better for everyone.'
+                        });
+                    }}
+                />
+
+                <HelpModal 
+                    isOpen={helpModalOpen}
+                    onClose={() => setHelpModalOpen(false)}
+                />
+
+                <SuccessModal 
+                    isOpen={successModal.isOpen}
+                    onClose={() => setSuccessModal(prev => ({ ...prev, isOpen: false }))}
+                    title={successModal.title}
+                    message={successModal.message}
                 />
             </div>
         </div>
