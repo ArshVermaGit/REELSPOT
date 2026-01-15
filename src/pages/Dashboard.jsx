@@ -7,9 +7,10 @@ import RecentDownloads from '../components/dashboard/RecentDownloads';
 import PlatformChart from '../components/dashboard/PlatformChart';
 import ApiKeyStatus from '../components/dashboard/ApiKeyStatus';
 import ApiKeyModal from '../components/modals/ApiKeyModal';
+import HelpModal from '../components/modals/HelpModal';
 import LoadingScreen from '../components/shared/LoadingSpinner';
 import { Link } from 'react-router-dom';
-import { Download, AlertTriangle, Settings, History, Plus } from 'lucide-react';
+import { Download, AlertTriangle, Settings, History, Plus, HelpCircle } from 'lucide-react';
 import { supabase } from '../services/supabase';
 import toast from 'react-hot-toast';
 
@@ -20,6 +21,7 @@ const Dashboard = () => {
 
     // API Key Modal State
     const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+    const [showHelpModal, setShowHelpModal] = useState(false);
     const [promptedPlatform, setPromptedPlatform] = useState(null);
 
     // Delete handler for recent downloads
@@ -57,6 +59,11 @@ const Dashboard = () => {
                 platform={promptedPlatform} 
             />
 
+            <HelpModal 
+                isOpen={showHelpModal}
+                onClose={() => setShowHelpModal(false)}
+            />
+
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 
                 {/* 1. Compact Header */}
@@ -86,6 +93,13 @@ const Dashboard = () => {
                         <Link to="/settings" className="p-3 bg-white border border-zinc-200 rounded-xl hover:bg-zinc-50 transition-colors text-zinc-600">
                             <Settings size={20} />
                         </Link>
+                        <button 
+                            onClick={() => setShowHelpModal(true)}
+                            className="p-3 bg-white border border-zinc-200 rounded-xl hover:bg-zinc-50 transition-colors text-zinc-600"
+                            title="Help & Support"
+                        >
+                            <HelpCircle size={20} />
+                        </button>
                     </div>
                 </div>
 
