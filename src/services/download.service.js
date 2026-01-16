@@ -5,11 +5,13 @@ import { registerPlatform, getPlatformStrategy } from './platforms/registry.js';
 import { fetchInstagramData } from './platforms/instagram.service.js';
 import { fetchYoutubeData } from './platforms/youtube.service.js';
 import { fetchFacebookData } from './platforms/facebook.service.js';
+import { fetchTikTokData } from './platforms/tiktok.service.js';
 
 // Initialize Core Strategies
 registerPlatform(PLATFORMS.INSTAGRAM, fetchInstagramData);
 registerPlatform(PLATFORMS.YOUTUBE, fetchYoutubeData);
 registerPlatform(PLATFORMS.FACEBOOK, fetchFacebookData);
+registerPlatform(PLATFORMS.TIKTOK, fetchTikTokData);
 
 /**
  * Advanced Media Downloader Service
@@ -34,9 +36,6 @@ const getMediaInfo = async ({ url, platform, apiKey }) => {
     const fetchStrategy = getPlatformStrategy(platform);
     
     if (!fetchStrategy) {
-        if (platform === PLATFORMS.TIKTOK) {
-            throw new MediaError('TikTok downloading is not yet configured for production.', 'NOT_CONFIGURED');
-        }
         throw new MediaError(`Unsupported or unconfigured platform: ${platform}`, 'UNSUPPORTED');
     }
 

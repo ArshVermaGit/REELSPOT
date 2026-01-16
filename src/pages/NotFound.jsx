@@ -1,10 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Home, ArrowLeft, Ghost } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Ghost } from 'lucide-react';
 
 const NotFound = () => {
-    const navigate = useNavigate();
-
     return (
         <div className="min-h-[80vh] flex flex-col items-center justify-center px-6 text-center">
             <div className="relative mb-8">
@@ -16,25 +14,21 @@ const NotFound = () => {
             <h2 className="text-2xl font-bold text-zinc-600 mb-8">Page Not Found</h2>
             
             <p className="max-w-md text-zinc-500 mb-12 leading-relaxed">
-                The page you are looking for might have been removed, had its name changed, 
+                The page you are looking for might have be removed, had its name changed, 
                 or is temporarily unavailable.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4">
-                <button 
-                    onClick={() => navigate('/')}
-                    className="flex items-center justify-center gap-2 px-8 py-4 bg-black text-white rounded-full font-bold shadow-xl shadow-black/20 hover:scale-[1.02] transition-all active:scale-95"
-                >
-                    <Home size={20} />
-                    Back to Home
-                </button>
-                <button 
-                    onClick={() => navigate(-1)}
-                    className="flex items-center justify-center gap-2 px-8 py-4 bg-zinc-100 text-zinc-900 rounded-full font-bold hover:bg-zinc-200 transition-all active:scale-95"
-                >
-                    <ArrowLeft size={20} />
-                    Go Back
-                </button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center w-full">
+                <Link to="/" className="w-full sm:w-auto">
+                    <div className="px-8 py-3 bg-zinc-900 text-white rounded-xl font-bold hover:scale-[1.02] active:scale-[0.98] transition-transform flex items-center justify-center">
+                        Go Home
+                    </div>
+                </Link>
+                <a href="https://github.com/arshverma/REELSPOT/issues" target="_blank" rel="noreferrer" className="w-full sm:w-auto">
+                    <div className="px-8 py-3 bg-zinc-100 text-zinc-900 border border-zinc-200 rounded-xl font-bold hover:bg-zinc-200 transition-colors flex items-center justify-center">
+                        Report Issue
+                    </div>
+                </a>
             </div>
         </div>
     );
