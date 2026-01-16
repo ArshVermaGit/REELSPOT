@@ -26,8 +26,8 @@ export const PATTERNS = {
     INSTAGRAM: /(?:instagr\.am|instagram\.com)\/(p|reel|reels|stories|tv)\/([a-zA-Z0-9_-]+)/,
     
     // YouTube: Matches watch?v=, youtu.be/, shorts/, embed/
-    YOUTUBE: /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/,
-    YOUTUBE_SHORTS: /(?:youtube\.com\/shorts\/)([^"&?\/\s]{11})/,
+    YOUTUBE: /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/,
+    YOUTUBE_SHORTS: /(?:youtube\.com\/shorts\/)([^"&?/\s]{11})/,
     
     // Facebook: Matches watch, videos, reel, stories
     FACEBOOK: /(?:facebook\.com|fb\.watch)\/(?:watch\/?\?v=|videos\/|reel\/|stories\/|groups\/[^/]+\/posts\/)([^/?&]+)/,

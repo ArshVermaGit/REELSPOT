@@ -45,7 +45,7 @@ const ConfigGuard = ({ children, isConfigured }) => {
                         onClick={() => window.location.reload()}
                         className="w-full bg-black text-white rounded-2xl py-4 font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-black/10"
                     >
-                        I've configured it, Reload
+                        I&apos;ve configured it, Reload
                     </button>
                     <p className="text-xs text-zinc-400 font-medium">
                         Need help? See the <span className="underline cursor-help">documentation</span>.

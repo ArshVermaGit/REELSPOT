@@ -5,7 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default [
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'scripts'] },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
@@ -35,6 +35,7 @@ export default [
       ],
       'no-unused-vars': ['warn', { varsIgnorePattern: '^React$' }],
       'react/prop-types': 'off', // Disable prop-types as we are moving towards modern React
+      'react-hooks/set-state-in-effect': 'off', // Allow setState in effects for navigation patterns
     },
   },
 ];

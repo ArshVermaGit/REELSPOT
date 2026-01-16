@@ -5,7 +5,6 @@ import { ApiKeyProvider } from './contexts/ApiKeyContext'
 import { DownloadProvider } from './contexts/DownloadContext'
 import { useNetworkStatus } from './hooks/useNetworkStatus'
 import { useToast } from './hooks/useToast';
-import ProtectedRoute from './components/shared/ProtectedRoute'
 import Layout from './components/layout/Layout'
 import ErrorBoundary from './components/shared/ErrorBoundary'
 import Home from './pages/Home'
@@ -36,7 +35,7 @@ function App() {
        toast.success("Back online!");
        wasOffline.current = false;
     }
-  }, [isOnline]);
+  }, [isOnline, toast]);
 
   if (import.meta.env.VITE_MAINTENANCE_MODE === 'true') {
       return <Maintenance />;

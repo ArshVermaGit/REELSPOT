@@ -24,8 +24,8 @@ const HelpModal = ({ isOpen, onClose }) => {
                     <h4>How do I download?</h4>
                     <p>Simply paste a link from Instagram, YouTube, TikTok, or Facebook into the input box on the home page and hit enter.</p>
                     
-                    <h4>My API Key isn't working?</h4>
-                    <p>Go to settings and make sure your API status is 'Active'. You can regenerate keys from your provider's dashboard.</p>
+                    <h4>My API Key isn&apos;t working?</h4>
+                    <p>Go to settings and make sure your API status is &apos;Active&apos;. You can regenerate keys from your provider&apos;s dashboard.</p>
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-zinc-100 flex justify-end">

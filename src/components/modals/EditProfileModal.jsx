@@ -4,10 +4,10 @@ import { X, User, Save } from 'lucide-react';
 import toast from 'react-hot-toast'; // Import toast if you need inside component, or props
 
 const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
-    if (!isOpen) return null;
-
     const [fullName, setFullName] = useState(user?.user_metadata?.full_name || '');
     const [loading, setLoading] = useState(false);
+
+    if (!isOpen) return null;
 
     const handleSubmit = async (e) => {
         e.preventDefault();

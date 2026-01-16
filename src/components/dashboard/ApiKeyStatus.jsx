@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle, AlertTriangle, ArrowRight, Activity, ShieldCheck, ShieldAlert } from 'lucide-react';
+import { ArrowRight, Activity, ShieldCheck, ShieldAlert } from 'lucide-react';
 import { clsx } from 'clsx';
 
 const ApiKeyStatus = ({ apiKeys }) => {

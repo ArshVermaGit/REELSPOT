@@ -2,18 +2,19 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { PieChart as PieChartIcon, Activity } from 'lucide-react';
 
+// Moved outside component to avoid re-creation on render
+const ChartEmptyState = () => (
+    <div className="bg-white rounded-[2.5rem] p-8 border border-zinc-100 shadow-sm flex flex-col items-center justify-center h-[420px] text-zinc-400 gap-4 group">
+        <div className="bg-zinc-50 p-6 rounded-full group-hover:scale-110 transition-transform duration-500">
+            <PieChartIcon size={40} className="opacity-20" />
+        </div>
+        <p className="font-semibold text-zinc-500">No download data available</p>
+    </div>
+);
+
 const PlatformChart = ({ data }) => {
     const chartData = (data && Array.isArray(data)) ? data.filter(item => item.value > 0) : [];
     const totalDownloads = chartData.reduce((acc, curr) => acc + curr.value, 0);
-
-    const ChartEmptyState = () => (
-        <div className="bg-white rounded-[2.5rem] p-8 border border-zinc-100 shadow-sm flex flex-col items-center justify-center h-[420px] text-zinc-400 gap-4 group">
-            <div className="bg-zinc-50 p-6 rounded-full group-hover:scale-110 transition-transform duration-500">
-                <PieChartIcon size={40} className="opacity-20" />
-            </div>
-            <p className="font-semibold text-zinc-500">No download data available</p>
-        </div>
-    );
 
     if (chartData.length === 0) return <ChartEmptyState />;
 

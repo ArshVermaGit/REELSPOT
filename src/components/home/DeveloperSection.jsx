@@ -61,7 +61,7 @@ const DeveloperSection = () => {
                         <div className="prose prose-zinc max-w-none mb-8">
                             <p className="text-zinc-600 leading-relaxed text-lg">
                                 My expertise lies in game development with Unity, but I also build dynamic websites and apps. 
-                                I've earned numerous certifications and treat every project as an opportunity to blend 
+                                I&apos;ve earned numerous certifications and treat every project as an opportunity to blend 
                                 <span className="font-semibold text-zinc-800"> creative vision with technical precision</span>.
                             </p>
                             <p className="text-zinc-600 leading-relaxed text-lg mt-4">

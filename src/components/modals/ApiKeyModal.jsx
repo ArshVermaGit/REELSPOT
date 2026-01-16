@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { X, CheckCircle, AlertCircle, Loader2, Key, ExternalLink, AlertTriangle, Eye, EyeOff, Save, Instagram, Youtube, Facebook, Music2, HelpCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Loader2, Key, ExternalLink, AlertTriangle, Eye, EyeOff, Save, Instagram, Youtube, Facebook, Music2, HelpCircle } from 'lucide-react';
 import { useApiKeys } from '../../contexts/ApiKeyContext';
 import { clsx } from 'clsx';
 
@@ -77,7 +77,6 @@ const ApiKeyModal = ({ isOpen, onClose, platform }) => {
     const [key, setKey] = useState('');
     const [showKey, setShowKey] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
-    const [activeStep, setActiveStep] = useState(0); // For collapsible steps if we wanted accordion, but listing is better.
 
     if (!isOpen || !platform) return null;
 
@@ -92,11 +91,6 @@ const ApiKeyModal = ({ isOpen, onClose, platform }) => {
             setKey('');
             onClose();
         }
-    };
-
-    const copyToClipboard = (text) => {
-        navigator.clipboard.writeText(text);
-        toast.success("Copied to clipboard!");
     };
 
     return (

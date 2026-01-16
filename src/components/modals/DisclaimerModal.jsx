@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { ShieldAlert, Check, X } from 'lucide-react';
-import Button from './Button';
+import React from 'react';
+import { ShieldAlert } from 'lucide-react';
+import Button from '../shared/Button';
 
 const DisclaimerModal = ({ isOpen, onClose, onAccept }) => {
   if (!isOpen) return null;
@@ -22,7 +22,7 @@ const DisclaimerModal = ({ isOpen, onClose, onAccept }) => {
               Reelspot is a tool designed for educational and personal use only.
             </p>
             <p>
-              By continuing, you agree not to infringe on anyone's copyright or intellectual property. You must own the rights or have permission to download any content.
+              By continuing, you agree not to infringe on anyone&apos;s copyright or intellectual property. You must own the rights or have permission to download any content.
             </p>
             <p className="font-semibold text-zinc-900">
               We do not host any media on our servers.
