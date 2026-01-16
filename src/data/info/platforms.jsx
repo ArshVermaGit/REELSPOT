@@ -5,7 +5,7 @@ export const platformsContent = {
     title: 'Global Compatibility',
     body: (
         <div className="space-y-8 text-zinc-600">
-            <p className="text-lg font-medium">Reelspot supports high-speed extraction from the world's most popular platforms. We are constantly adding support for more sources.</p>
+            <p className="text-lg font-medium">Reelspot supports high-speed extraction from the world&apos;s most popular platforms. We are constantly adding support for more sources.</p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-6 bg-white border-2 border-zinc-100 rounded-[2rem] hover:border-black transition-all group">

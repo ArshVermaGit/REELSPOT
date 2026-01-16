@@ -23,7 +23,7 @@ export const aboutContent = {
             </ul>
 
             <h3 className="text-xl font-bold text-zinc-900 mt-8">Our Technology</h3>
-            <p className="leading-relaxed">Reelspot is built using modern web technologies including React for the frontend, Supabase for secure backend services, and a distributed API infrastructure that ensures 99.9% uptime. We leverage RapidAPI's ecosystem to provide reliable extraction from multiple platforms while maintaining strict compliance with rate limits and usage policies.</p>
+            <p className="leading-relaxed">Reelspot is built using modern web technologies including React for the frontend, Supabase for secure backend services, and a distributed API infrastructure that ensures 99.9% uptime. We leverage RapidAPI&apos;s ecosystem to provide reliable extraction from multiple platforms while maintaining strict compliance with rate limits and usage policies.</p>
             <p className="leading-relaxed">Our platform supports downloads from Instagram (Reels, Stories, Posts, IGTV), YouTube (videos, Shorts, audio extraction), Facebook (public videos, Reels), and TikTok (watermark-free videos). We are constantly expanding our platform support based on user feedback and demand.</p>
 
             <h3 className="text-xl font-bold text-zinc-900 mt-8">Our Commitment to Users</h3>
@@ -32,7 +32,7 @@ export const aboutContent = {
 
             <div className="bg-zinc-900 text-white p-8 rounded-[2rem] mt-8">
                 <h4 className="text-lg font-[800] mb-2">Join Our Community</h4>
-                <p className="text-zinc-400 mb-4">Have questions, feedback, or feature requests? We'd love to hear from you.</p>
+                <p className="text-zinc-400 mb-4">Have questions, feedback, or feature requests? We&apos;d love to hear from you.</p>
                 <a href="https://github.com/ArshVermaGit/REELSPOT" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-[900] rounded-full hover:bg-zinc-200 transition-colors">
                     <Github size={18} />
                     Visit Our GitHub
@@ -94,7 +94,7 @@ export const changelogContent = {
                 <h4 className="font-bold text-zinc-900 text-lg">v1.2.0 - UI Polish & Settings</h4>
                 <p className="text-sm text-zinc-400 mb-2">January 11, 2026</p>
                 <ul className="list-disc pl-5 mt-2 space-y-1 text-sm">
-                    <li>Complete UI overhaul with "Hyper-Polished" aesthetic.</li>
+                    <li>Complete UI overhaul with &quot;Hyper-Polished&quot; aesthetic.</li>
                     <li>Added History filtering and bulk management.</li>
                     <li>New Settings page with detailed data management.</li>
                     <li>Improved component transparency and animations.</li>

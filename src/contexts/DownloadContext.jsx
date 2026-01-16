@@ -14,15 +14,6 @@ export const DownloadProvider = ({ children }) => {
     const [activeDownloads, setActiveDownloads] = useState([]); // Array of items currently downloading
     const MAX_CONCURRENT = 2;
 
-    // Process Queue Effect
-    useEffect(() => {
-        if (activeDownloads.length < MAX_CONCURRENT && queue.length > 0) {
-            const nextItem = queue[0];
-            setQueue(prev => prev.slice(1)); // Remove from queue
-            startDownload(nextItem);
-        }
-    }, [activeDownloads.length, queue]);
-
     const addToQueue = useCallback((downloadOptions) => {
         // Check for duplicates in active or queue (simple check by ID/URL)
         const isDuplicate = [...activeDownloads, ...queue].some(item => item.downloadUrl === downloadOptions.downloadUrl);
@@ -44,12 +35,11 @@ export const DownloadProvider = ({ children }) => {
         toast.info("Added to download queue");
     }, [activeDownloads, queue, toast]);
 
-    const startDownload = async (item) => {
+    const startDownload = useCallback(async (item) => {
         // Move to active
         setActiveDownloads(prev => [...prev, { ...item, status: 'initializing' }]);
 
-        // We need a way to update the specific active item's progress in state
-        // This is tricky with functional updates but doable
+        // Helper to update progress
         const updateProgress = (id, progressData) => {
             setActiveDownloads(prev => prev.map(d => 
                 d.id === id ? { ...d, ...progressData, status: 'downloading' } : d
@@ -73,9 +63,6 @@ export const DownloadProvider = ({ children }) => {
 
             if (result.success) {
                 toast.success(`Download complete: ${item.mediaTitle}`);
-            } else {
-                // Handled in mediaDownloader or global error handler, but nice to toast specific fail
-                // Error toast likely already shown by mediaDownloader catching helper
             }
         } catch (error) {
             console.error("Download manager caught error:", error);
@@ -84,7 +71,16 @@ export const DownloadProvider = ({ children }) => {
             // Remove from active
             setActiveDownloads(prev => prev.filter(d => d.id !== item.id));
         }
-    };
+    }, [user?.id, toast]);
+
+    // Process Queue Effect
+    useEffect(() => {
+        if (activeDownloads.length < MAX_CONCURRENT && queue.length > 0) {
+            const nextItem = queue[0];
+            setQueue(prev => prev.slice(1)); // Remove from queue
+            startDownload(nextItem);
+        }
+    }, [activeDownloads.length, queue, startDownload]);
 
     // Helper for UI to see queue/active
     // We expose a merged list or separate lists

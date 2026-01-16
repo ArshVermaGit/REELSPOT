@@ -1,9 +1,8 @@
 
 import { createClient } from '@supabase/supabase-js'
-import toast from 'react-hot-toast';
 
-const envUrl = (typeof import.meta !== 'undefined' && import.meta.env) ? import.meta.env.VITE_SUPABASE_URL : process.env.VITE_SUPABASE_URL
-const envKey = (typeof import.meta !== 'undefined' && import.meta.env) ? import.meta.env.VITE_SUPABASE_ANON_KEY : process.env.VITE_SUPABASE_ANON_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 // Helper to ensure URL is valid
 const getValidUrl = (url) => {
@@ -18,11 +17,11 @@ const getValidUrl = (url) => {
   }
 };
 
-const url = getValidUrl(envUrl);
-const key = envKey && !envKey.includes('your_supabase_anon_key') ? envKey : null;
+const validUrl = getValidUrl(supabaseUrl);
+const validKey = supabaseAnonKey && !supabaseAnonKey.includes('your_supabase_anon_key') ? supabaseAnonKey : null;
 
-if (!url || !key) {
+if (!validUrl || !validKey) {
     console.error('❌ Supabase credentials missing or invalid. Application will not function.');
 }
 
-export const supabase = (url && key) ? createClient(url, key) : null;
+export const supabase = (validUrl && validKey) ? createClient(validUrl, validKey) : null;

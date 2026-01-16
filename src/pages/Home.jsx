@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import React from 'react';
 import Hero from '../components/home/Hero';
 import DeveloperSection from '../components/home/DeveloperSection';
-import DisclaimerModal from '../components/shared/DisclaimerModal';
+import DisclaimerModal from '../components/modals/DisclaimerModal';
 
 const Home = () => {
   const { user } = useAuth()

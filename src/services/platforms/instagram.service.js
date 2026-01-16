@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { extractMediaId } from '../platformDetector.js';
-import { PLATFORMS, MEDIA_TYPES } from '../../constants';
+import { PLATFORMS } from '../../constants';
 
 export const fetchInstagramData = async (url, apiKey) => {
     const MediaError = (await import('../download.service.js')).MediaError;

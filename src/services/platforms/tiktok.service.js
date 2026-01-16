@@ -1,8 +1,7 @@
-import axios from 'axios';
 import { extractMediaId } from '../platformDetector.js';
 import { PLATFORMS } from '../../constants';
 
-export const fetchTikTokData = async (url, apiKey) => {
+export const fetchTikTokData = async (url) => {
     // Dynamically import MediaError to avoid circular dependency if it was in a shared file,
     // though here it is just following the pattern seen in youtube.service.js
     const MediaError = (await import('../download.service.js')).MediaError;

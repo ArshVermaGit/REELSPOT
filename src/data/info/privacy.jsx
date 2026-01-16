@@ -56,11 +56,11 @@ export const privacyContent = {
             <h3 className="text-xl font-bold text-zinc-900 mt-8">7. Data Retention</h3>
             <p className="leading-relaxed">We retain your personal information for as long as your account is active or as needed to provide you services. You can delete your download history at any time through the Settings page. If you delete your account, we will delete your personal data within 30 days, except where we are required to retain it for legal purposes.</p>
 
-            <h3 className="text-xl font-bold text-zinc-900 mt-8">8. Children's Privacy</h3>
+            <h3 className="text-xl font-bold text-zinc-900 mt-8">8. Children&apos;s Privacy</h3>
             <p className="leading-relaxed">Reelspot is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, please contact us immediately.</p>
 
             <h3 className="text-xl font-bold text-zinc-900 mt-8">9. Changes to This Policy</h3>
-            <p className="leading-relaxed">We may update this Privacy Policy from time to time. We will notify you of any significant changes by posting the new policy on this page and updating the "Last updated" date. We encourage you to review this policy periodically.</p>
+            <p className="leading-relaxed">We may update this Privacy Policy from time to time. We will notify you of any significant changes by posting the new policy on this page and updating the &quot;Last updated&quot; date. We encourage you to review this policy periodically.</p>
 
             <h3 className="text-xl font-bold text-zinc-900 mt-8">10. Contact Us</h3>
             <p className="leading-relaxed">If you have any questions about this Privacy Policy or our data practices, please contact us at:</p>

@@ -9,14 +9,13 @@ import PreferencesForm from '../components/settings/PreferencesForm';
 import ProfileSection from '../components/settings/ProfileSection';
 import DangerZone from '../components/settings/DangerZone';
 import ApiKeyModal from '../components/modals/ApiKeyModal';
-import { User, Key, Sliders, Database, DownloadCloud, Trash2, Code, ChevronRight, LogOut, Shield } from 'lucide-react';
+import { User, Key, Sliders, Database, DownloadCloud, Code, ChevronRight, LogOut, Shield } from 'lucide-react';
 import toast from 'react-hot-toast';
 import ConfirmationModal from '../components/modals/ConfirmationModal';
 import EditProfileModal from '../components/modals/EditProfileModal';
 import FeedbackModal from '../components/modals/FeedbackModal';
 import HelpModal from '../components/modals/HelpModal';
 import SuccessModal from '../components/modals/SuccessModal';
-import ErrorModal from '../components/modals/ErrorModal';
 import { clsx } from 'clsx';
 
 const Settings = () => {
@@ -348,7 +347,7 @@ const Settings = () => {
                 <FeedbackModal 
                     isOpen={feedbackModalOpen}
                     onClose={() => setFeedbackModalOpen(false)}
-                    onSubmit={async (data) => {
+                    onSubmit={async () => {
                         toast.success("Feedback received! Thank you.");
                         setSuccessModal({
                             isOpen: true,

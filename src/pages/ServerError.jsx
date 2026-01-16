@@ -15,7 +15,7 @@ const ServerError = () => {
             </h1>
 
             <p className="text-lg text-zinc-500 max-w-md mb-10 leading-relaxed">
-                Something went wrong on our end. We've been notified and are working to fix it immediately.
+                Something went wrong on our end. We&apos;ve been notified and are working to fix it immediately.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">

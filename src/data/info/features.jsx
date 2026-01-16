@@ -5,7 +5,7 @@ export const featuresContent = {
     title: 'Pro Features',
     body: (
         <div className="space-y-12 text-zinc-600">
-            <p className="text-lg">Reelspot is engineered for users who demand speed, quality, and a clutter-free experience. Here's what makes us the ultimate choice.</p>
+            <p className="text-lg">Reelspot is engineered for users who demand speed, quality, and a clutter-free experience. Here&apos;s what makes us the ultimate choice.</p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-4">
@@ -42,7 +42,7 @@ export const featuresContent = {
             </div>
 
             <div className="bg-zinc-50 rounded-[2rem] p-8 border border-zinc-100">
-                <h3 className="text-xl font-[800] text-zinc-900 mb-4">But wait, there's more...</h3>
+                <h3 className="text-xl font-[800] text-zinc-900 mb-4">But wait, there&apos;s more...</h3>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[
                         "Batch Link Detection",

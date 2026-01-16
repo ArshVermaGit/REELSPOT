@@ -23,7 +23,7 @@ export const fetchFacebookData = async (url, apiKey) => {
                 { type: 'video', quality: 'SD', ext: 'mp4', url: data.source }
             ]
         };
-    } catch (e) {
+    } catch {
         throw new MediaError('Facebook API Error', 'API_ERROR');
     }
 };

@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../services/supabase';
 import { useAuth } from '../contexts/AuthContext';
-import { useApiKeys } from '../contexts/ApiKeyContext';
 
 export const useDashboardStats = () => {
     const { user } = useAuth();
-    const { apiKeys } = useApiKeys();
     const [stats, setStats] = useState({
         totalDownloads: 0,
         totalSize: 0,
@@ -16,7 +14,7 @@ export const useDashboardStats = () => {
         loading: true
     });
 
-    const refreshStats = async () => {
+    const refreshStats = useCallback(async () => {
         if (!user) return;
         
         try {
@@ -54,8 +52,9 @@ export const useDashboardStats = () => {
             // Mocking trend comparison logic slightly since we don't have "last week" efficiently without more queries
             // Simply returning count for now
             const weekTrend = thisWeek; 
-
-            setStats({
+            
+            setStats(prev => ({ // Functional update to avoid stale state if called rapidly
+                ...prev,
                 totalDownloads,
                 totalSize,
                 successRate,
@@ -63,13 +62,13 @@ export const useDashboardStats = () => {
                 recentActivity: history.slice(0, 5),
                 weekTrend,
                 loading: false
-            });
+            }));
 
         } catch (err) {
             console.error("Stats error:", err);
             setStats(prev => ({ ...prev, loading: false }));
         }
-    };
+    }, [user]); // Only recreate if user changes
 
     useEffect(() => {
         refreshStats();
@@ -90,7 +89,7 @@ export const useDashboardStats = () => {
         return () => {
             supabase.removeChannel(subscription);
         };
-    }, [user, apiKeys]); // Re-run if keys change too, though less relevant for history stats
+    }, [refreshStats, user]); // Re-run if keys change too, though less relevant for history stats
 
     return { ...stats, refreshStats };
 };

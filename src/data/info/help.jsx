@@ -80,7 +80,7 @@ export const howItWorksContent = {
                     <div className="w-10 h-10 bg-zinc-900 text-white rounded-full flex items-center justify-center font-[900] shrink-0">1</div>
                     <div>
                         <h4 className="font-[800] text-zinc-900 mb-2">Copy the Media URL</h4>
-                        <p>Navigate to the video or media you want to download on Instagram, YouTube, Facebook, or TikTok. Copy the URL from your browser's address bar or use the share button to copy the link.</p>
+                        <p>Navigate to the video or media you want to download on Instagram, YouTube, Facebook, or TikTok. Copy the URL from your browser&apos;s address bar or use the share button to copy the link.</p>
                     </div>
                 </div>
 

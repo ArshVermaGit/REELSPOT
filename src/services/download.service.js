@@ -1,5 +1,7 @@
 import { PLATFORMS } from '../constants';
 import { registerPlatform, getPlatformStrategy } from './platforms/registry.js';
+import axios from 'axios';
+import { supabase } from './supabase.js';
 
 // Platform Strategy Imports
 import { fetchInstagramData } from './platforms/instagram.service.js';
@@ -54,7 +56,7 @@ const checkFileSize = async (url) => {
             throw new MediaError('File too large (> 2GB)', 'FILE_TOO_LARGE');
         }
         return size;
-    } catch (e) {
+    } catch {
         console.warn("Could not check file size via HEAD request");
         return 0;
     }

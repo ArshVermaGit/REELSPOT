@@ -14,7 +14,7 @@ export const validateUrl = (url) => {
             return { isValid: false, error: 'Invalid protocol. Use http or https.' };
         }
         return { isValid: true, error: null };
-    } catch (e) {
+    } catch {
         return { isValid: false, error: 'Invalid URL format' };
     }
 };
@@ -58,8 +58,8 @@ export const extractMediaId = (url, platform) => {
             default:
                 return null;
         }
-    } catch (e) {
-        console.warn('Error extracting media ID:', e);
+    } catch {
+        console.warn('Error extracting media ID');
         return null;
     }
 };

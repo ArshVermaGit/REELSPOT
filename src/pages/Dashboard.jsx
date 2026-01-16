@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useDashboardStats } from '../hooks/useDashboardStats';
 import { useApiKeys } from '../contexts/ApiKeyContext';
@@ -10,19 +10,18 @@ import ApiKeyModal from '../components/modals/ApiKeyModal';
 import HelpModal from '../components/modals/HelpModal';
 import LoadingScreen from '../components/shared/LoadingSpinner';
 import { Link } from 'react-router-dom';
-import { Download, AlertTriangle, Settings, History, Plus, HelpCircle } from 'lucide-react';
+import { AlertTriangle, Settings, History, Plus, HelpCircle } from 'lucide-react';
 import { supabase } from '../services/supabase';
 import toast from 'react-hot-toast';
 
 const Dashboard = () => {
     const { user } = useAuth();
     const stats = useDashboardStats();
-    const { apiKeys, loading: apiKeysLoading } = useApiKeys();
+    const { apiKeys } = useApiKeys();
 
     // API Key Modal State
     const [showApiKeyModal, setShowApiKeyModal] = useState(false);
     const [showHelpModal, setShowHelpModal] = useState(false);
-    const [promptedPlatform, setPromptedPlatform] = useState(null);
 
     // Delete handler for recent downloads
     const handleDeleteItem = async (id) => {
@@ -48,7 +47,7 @@ const Dashboard = () => {
     const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
     const firstName = user?.user_metadata?.full_name?.split(' ')[0] || 'there';
 
-    const invalidKeys = Object.entries(apiKeys).filter(([_, k]) => k.status === 'invalid' || k.status === 'expired');
+    const invalidKeys = Object.values(apiKeys).filter(k => k.status === 'invalid' || k.status === 'expired');
 
     return (
         <div className="min-h-screen bg-[#FAFAFA] pt-24 pb-20">
@@ -56,7 +55,6 @@ const Dashboard = () => {
             <ApiKeyModal 
                 isOpen={showApiKeyModal} 
                 onClose={() => setShowApiKeyModal(false)} 
-                platform={promptedPlatform} 
             />
 
             <HelpModal 
@@ -73,7 +71,7 @@ const Dashboard = () => {
                             {greeting}, {firstName}.
                         </h1>
                         <p className="text-zinc-500 font-medium">
-                            Here's what's happening with your downloads today.
+                            Here&apos;s what&apos;s happening with your downloads today.
                         </p>
                     </div>
 

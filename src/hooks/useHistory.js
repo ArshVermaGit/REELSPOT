@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { supabase } from '../services/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
@@ -28,7 +28,7 @@ export const useHistory = () => {
     const [hasMore, setHasMore] = useState(true);
     const ITEMS_PER_PAGE = 20;
 
-    const buildQuery = (baseQuery) => {
+    const buildQuery = useCallback((baseQuery) => {
         let q = baseQuery;
 
         // 1. Search
@@ -70,9 +70,9 @@ export const useHistory = () => {
         }
 
         return q;
-    };
+    }, [filter, sort, search]);
 
-    const fetchHistory = async (pageIndex, reset = false) => {
+    const fetchHistory = useCallback(async (pageIndex, reset = false) => {
         if (!user) return;
         if (reset) {
             setLoading(true);
@@ -93,7 +93,7 @@ export const useHistory = () => {
             // Pagination
             query = query.range(from, to);
 
-            const { data, error, count } = await query;
+            const { data, error } = await query;
 
             if (error) throw error;
 
@@ -106,7 +106,7 @@ export const useHistory = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [user, buildQuery]);
 
     // Effect for Filter/Sort/Search changes
     useEffect(() => {
@@ -116,7 +116,7 @@ export const useHistory = () => {
             fetchHistory(0, true); 
         }, 500);
         return () => clearTimeout(timeoutId);
-    }, [user, filter, sort, search]);
+    }, [fetchHistory]);
 
     const loadMore = () => {
         if (!loading && hasMore) {
@@ -160,8 +160,7 @@ export const useHistory = () => {
                 next.delete(id);
                 return next;
             });
-        } catch (err) {
-            console.error(err);
+        } catch {
             toast.error('Failed to delete item');
         }
     };
@@ -175,7 +174,7 @@ export const useHistory = () => {
             if (error) throw error;
             toast.success('History cleared');
             setSelectedIds(new Set());
-        } catch(err) {
+        } catch {
             toast.error('Failed to clear history');
         }
     };

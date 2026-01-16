@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import { useHistory } from '../hooks/useHistory';
-import HistoryCard from '../components/history/HistoryCard';
 import HistoryFilters from '../components/history/HistoryFilters';
 import HistoryStats from '../components/history/HistoryStats';
 import HistoryList from '../components/history/HistoryList';
-import { Trash2, CheckSquare, Square, History as HistoryIcon, X, Filter, ChevronDown } from 'lucide-react';
+import { Trash2, CheckSquare, Square, X, Filter, ChevronDown } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useAuth } from '../contexts/AuthContext';
 import { clsx } from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../components/modals/ConfirmationModal';
 
 const History = () => {
-    const { user } = useAuth();
     const navigate = useNavigate();
     
     const [viewMode, setViewMode] = useState('grid');
