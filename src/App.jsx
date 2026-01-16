@@ -38,6 +38,10 @@ function App() {
     }
   }, [isOnline]);
 
+  if (import.meta.env.VITE_MAINTENANCE_MODE === 'true') {
+      return <Maintenance />;
+  }
+
   return (
     <ErrorBoundary>
       <ConfigGuard isConfigured={!!supabase}>
