@@ -9,6 +9,7 @@ export const useDownloadManager = () => useContext(DownloadContext);
 
 export const DownloadProvider = ({ children }) => {
     const { user } = useAuth();
+    const toast = useToast();
     const [queue, setQueue] = useState([]); // Array of items waiting
     const [activeDownloads, setActiveDownloads] = useState([]); // Array of items currently downloading
     const MAX_CONCURRENT = 2;
@@ -28,7 +29,7 @@ export const DownloadProvider = ({ children }) => {
         
         if (isDuplicate) {
             // Optional: Allow anyway or warn
-            showToast.warning("This item is already in the download list.");
+            toast.warning("This item is already in the download list.");
             return;
         }
 
@@ -40,8 +41,8 @@ export const DownloadProvider = ({ children }) => {
         };
 
         setQueue(prev => [...prev, item]);
-        showToast.info("Added to download queue");
-    }, [activeDownloads, queue]);
+        toast.info("Added to download queue");
+    }, [activeDownloads, queue, toast]);
 
     const startDownload = async (item) => {
         // Move to active
@@ -71,14 +72,14 @@ export const DownloadProvider = ({ children }) => {
             });
 
             if (result.success) {
-                showToast.success(`Download complete: ${item.mediaTitle}`);
+                toast.success(`Download complete: ${item.mediaTitle}`);
             } else {
                 // Handled in mediaDownloader or global error handler, but nice to toast specific fail
                 // Error toast likely already shown by mediaDownloader catching helper
             }
         } catch (error) {
             console.error("Download manager caught error:", error);
-            showToast.error(`Download failed: ${error.message}`);
+            toast.error(`Download failed: ${error.message}`);
         } finally {
             // Remove from active
             setActiveDownloads(prev => prev.filter(d => d.id !== item.id));
