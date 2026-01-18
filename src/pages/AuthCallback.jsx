@@ -21,14 +21,14 @@ const AuthCallback = () => {
                 if (session) {
                     toast.success("Successfully signed in!");
                     // Add a small delay to ensure state propagates if needed, or just redirect
-                    setTimeout(() => navigate('/dashboard', { replace: true }), 500);
+                    setTimeout(() => navigate('/', { replace: true }), 500);
                 } else {
                     // Sometimes the hash processing takes a moment, or we might be here without a hash
                     // Listen for the auth state change
                     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
                         if (event === 'SIGNED_IN' && session) {
                              toast.success("Successfully signed in!");
-                             navigate('/dashboard', { replace: true });
+                             navigate('/', { replace: true });
                         }
                     });
                     return () => subscription.unsubscribe();
