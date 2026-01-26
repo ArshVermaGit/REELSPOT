@@ -14,14 +14,14 @@
     "glassmorphism",
     "tailwind-css"
   ],
-  "author": "Arsh Verma <arsh@example.com> (https://arshcreates.vercel.app)",
+  "author": "Arsh Verma <arshverma.dev@gmail.com> (https://arshcreates.vercel.app)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arshverma/REELSPOT.git"
+    "url": "git+https://github.com/ArshVermaGit/REELSPOT.git"
   },
   "bugs": {
-    "url": "https://github.com/arshverma/REELSPOT/issues"
+    "url": "https://github.com/ArshVermaGit/REELSPOT/issues"
   },
   "homepage": "https://reelspot.vercel.app",
   "scripts": {
