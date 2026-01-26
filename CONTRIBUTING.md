@@ -14,21 +14,21 @@ This section guides you through submitting a bug report for Reelspot. Following 
 
 - **Check Documentation**: Ensure the behavior isn't already documented.
 - **Search Issues**: See if the bug has already been reported.
-- **Open an Issue**: Use the [**Bug Report Template**](https://github.com/arshverma/REELSPOT/issues/new?assignees=&labels=bug&template=bug_report.md) (if available) and provide as much detail as possible.
+- **Open an Issue**: Use the [**Bug Report Template**](https://github.com/ArshVermaGit/REELSPOT/issues/new?assignees=&labels=bug&template=bug_report.md) (if available) and provide as much detail as possible.
 
 ### Suggesting Enhancements
 
 This section guides you through submitting an enhancement suggestion for Reelspot, including completely new features and minor improvements to existing functionality.
 
 - **Search Issues**: See if the enhancement has already been suggested.
-- **Open an Issue**: Use the [**Feature Request Template**](https://github.com/arshverma/REELSPOT/issues/new?assignees=&labels=enhancement&template=feature_request.md) (if available).
+- **Open an Issue**: Use the [**Feature Request Template**](https://github.com/ArshVermaGit/REELSPOT/issues/new?assignees=&labels=enhancement&template=feature_request.md) (if available).
 
 ### Your First Code Contribution
 
 Unsure where to begin contributing to Reelspot? You can start by looking through these `good-first-issue` and `help-wanted` issues:
 
-- **Good First Issues**: [Issues which should only require a few lines of code.](https://github.com/arshverma/REELSPOT/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)
-- **Help Wanted Issues**: [Issues which should be a bit more involved.](https://github.com/arshverma/REELSPOT/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
+- **Good First Issues**: [Issues which should only require a few lines of code.](https://github.com/ArshVermaGit/REELSPOT/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22)
+- **Help Wanted Issues**: [Issues which should be a bit more involved.](https://github.com/ArshVermaGit/REELSPOT/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
 
 ## Pull Request Process
 
