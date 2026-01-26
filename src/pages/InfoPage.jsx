@@ -9,7 +9,9 @@ import { featuresContent } from '../data/info/features';
 import { platformsContent } from '../data/info/platforms';
 import { apiContent } from '../data/info/api';
 import { aboutContent, contactContent, changelogContent } from '../data/info/index';
-import { faqContent, howItWorksContent } from '../data/info/help';
+import { faqContent, howItWorksContent, supportContent } from '../data/info/help';
+import { disclaimerContent } from '../data/info/disclaimer';
+import { cookiesContent } from '../data/info/cookies';
 
 const InfoPage = ({ pageId: propId }) => {
     const { pageId: paramId } = useParams();
@@ -31,17 +33,9 @@ const InfoPage = ({ pageId: propId }) => {
         'contact': contactContent,
         'faq': faqContent,
         'how-it-works': howItWorksContent,
-        'cookies': {
-            title: 'Cookie Policy',
-            body: (
-                <div className="space-y-6 text-zinc-600">
-                    <p>Reelspot uses cookies to enhance your experience.</p>
-                    <h3 className="text-xl font-bold text-zinc-900 mt-8">What are cookies?</h3>
-                    <p>Cookies are small text files stored on your device. We use them to remember your preferences (like your theme or login state) and to analyze how our service is used.</p>
-                    <p>You can control or delete cookies through your browser settings, but some features of Reelspot may not function properly without them.</p>
-                </div>
-            )
-        }
+        'support': supportContent,
+        'disclaimer': disclaimerContent,
+        'cookies': cookiesContent
     };
 
     const activeContent = contentMap[pageId] || { title: 'Not Found', body: <p>Page not found.</p> };
