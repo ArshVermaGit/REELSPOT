@@ -4,8 +4,8 @@ Need help with Reelspot? We are here to assist you.
 
 ## Contact Channels
 
-- **Email Support**: support@reelspot.app (Response time: 24-48 hours)
-- **GitHub Issues**: For bug reports and feature requests, please visit our [GitHub Repository](https://github.com/arshverma/REELSPOT/issues).
+- **Email Support**: arshverma.dev@gmail.com (Response time: 24-48 hours)
+- **GitHub Issues**: For bug reports and feature requests, please visit our [GitHub Repository](https://github.com/ArshVermaGit/REELSPOT/issues).
 
 ## Reporting Bugs
 
