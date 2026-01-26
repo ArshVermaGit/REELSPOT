@@ -13,16 +13,16 @@
   <p>
     <a href="https://reelspot.vercel.app">View Demo</a>
     ·
-    <a href="https://github.com/arshverma/REELSPOT/issues/new?template=BUG_REPORT.yml">Report Bug</a>
+    <a href="https://github.com/ArshVermaGit/REELSPOT/issues/new?template=BUG_REPORT.yml">Report Bug</a>
     ·
-    <a href="https://github.com/arshverma/REELSPOT/discussions">Request Feature</a>
+    <a href="https://github.com/ArshVermaGit/REELSPOT/discussions">Request Feature</a>
   </p>
 
   <p>
     <!-- CI/CD Status -->
-    <a href="https://github.com/arshverma/REELSPOT/actions"><img src="https://img.shields.io/github/actions/workflow/status/arshverma/REELSPOT/ci.yml?style=flat-square&logo=github" alt="Build Status" /></a>
+    <a href="https://github.com/ArshVermaGit/REELSPOT/actions"><img src="https://img.shields.io/github/actions/workflow/status/ArshVermaGit/REELSPOT/ci.yml?style=flat-square&logo=github" alt="Build Status" /></a>
     <!-- License -->
-    <a href="LICENSE"><img src="https://img.shields.io/github/license/arshverma/REELSPOT?style=flat-square&color=blue" alt="License" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/github/license/ArshVermaGit/REELSPOT?style=flat-square&color=blue" alt="License" /></a>
     <!-- PRs -->
     <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome" /></a>
   </p>
@@ -66,7 +66,7 @@ To get a local copy up and running, follow these simple steps.
 
 1.  **Clone the repo**
     ```sh
-    git clone https://github.com/arshverma/REELSPOT.git
+    git clone https://github.com/ArshVermaGit/REELSPOT.git
     cd REELSPOT
     ```
 2.  **Install dependencies**
