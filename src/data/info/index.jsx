@@ -52,12 +52,12 @@ export const contactContent = {
                 <div className="p-6 bg-zinc-50 rounded-2xl border border-zinc-100">
                     <h4 className="font-[800] text-zinc-900 mb-3">General Inquiries</h4>
                     <p className="text-sm mb-4">For questions about Reelspot, partnerships, or media inquiries.</p>
-                    <a href="mailto:contact@reelspot.app" className="text-blue-600 hover:underline font-medium">contact@reelspot.app</a>
+                    <a href="mailto:arshverma.dev@gmail.com" className="text-blue-600 hover:underline font-medium">arshverma.dev@gmail.com</a>
                 </div>
                 <div className="p-6 bg-zinc-50 rounded-2xl border border-zinc-100">
                     <h4 className="font-[800] text-zinc-900 mb-3">Technical Support</h4>
                     <p className="text-sm mb-4">Experiencing issues or need help with downloads?</p>
-                    <a href="mailto:support@reelspot.app" className="text-blue-600 hover:underline font-medium">support@reelspot.app</a>
+                    <a href="mailto:arshverma.dev@gmail.com" className="text-blue-600 hover:underline font-medium">arshverma.dev@gmail.com</a>
                 </div>
             </div>
 
