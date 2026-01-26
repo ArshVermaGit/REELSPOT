@@ -29,7 +29,7 @@ const Maintenance = () => {
         </Button>
         
         <a 
-          href="https://twitter.com/TheArshVerma" 
+          href="https://x.com/TheArshVerma" 
           target="_blank" 
           rel="noopener noreferrer"
           className="w-full sm:w-auto"
