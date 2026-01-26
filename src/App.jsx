@@ -71,6 +71,8 @@ function App() {
                                     <Route path="/contact" element={<InfoPage pageId="contact" />} />
                                     <Route path="/faq" element={<InfoPage pageId="faq" />} />
                                     <Route path="/how-it-works" element={<InfoPage pageId="how-it-works" />} />
+                                    <Route path="/support" element={<InfoPage pageId="support" />} />
+                                    <Route path="/disclaimer" element={<InfoPage pageId="disclaimer" />} />
                                     
                                     <Route path="/info/:pageId" element={<InfoPage />} />
                                     <Route path="/maintenance" element={<Maintenance />} />
