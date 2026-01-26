@@ -24,7 +24,7 @@ const NotFound = () => {
                         Go Home
                     </div>
                 </Link>
-                <a href="https://github.com/arshverma/REELSPOT/issues" target="_blank" rel="noreferrer" className="w-full sm:w-auto">
+                <a href="https://github.com/ArshVermaGit/REELSPOT/issues" target="_blank" rel="noreferrer" className="w-full sm:w-auto">
                     <div className="px-8 py-3 bg-zinc-100 text-zinc-900 border border-zinc-200 rounded-xl font-bold hover:bg-zinc-200 transition-colors flex items-center justify-center">
                         Report Issue
                     </div>
