@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github, Heart } from 'lucide-react';
+import { Github } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -38,6 +38,7 @@ const Footer = () => {
                         <ul className="space-y-4 text-zinc-500 font-medium">
                             <li><Link to="/about" className="hover:text-black transition-colors">About Us</Link></li>
                             <li><Link to="/contact" className="hover:text-black transition-colors">Contact</Link></li>
+                            <li><Link to="/support" className="hover:text-black transition-colors">Support</Link></li>
                             <li><Link to="/faq" className="hover:text-black transition-colors">FAQ</Link></li>
                             <li><Link to="/changelog" className="hover:text-black transition-colors">Changelog</Link></li>
                         </ul>
@@ -47,6 +48,7 @@ const Footer = () => {
                         <ul className="space-y-4 text-zinc-500 font-medium">
                             <li><Link to="/privacy" className="hover:text-black transition-colors">Privacy Policy</Link></li>
                             <li><Link to="/terms" className="hover:text-black transition-colors">Terms of Service</Link></li>
+                            <li><Link to="/disclaimer" className="hover:text-black transition-colors">Disclaimer</Link></li>
                             <li><Link to="/cookies" className="hover:text-black transition-colors">Cookie Policy</Link></li>
                         </ul>
                     </div>
