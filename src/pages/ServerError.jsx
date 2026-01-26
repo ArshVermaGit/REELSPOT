@@ -27,7 +27,7 @@ const ServerError = () => {
                 </Link>
 
                 <a
-                    href="https://github.com/arshverma/REELSPOT/issues/new?template=BUG_REPORT.yml"
+                    href="https://github.com/ArshVermaGit/REELSPOT/issues/new?template=BUG_REPORT.yml"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full sm:w-auto"
