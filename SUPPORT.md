@@ -15,11 +15,11 @@ Most questions can be answered by reading our guides:
 
 ### 2. Search Existing Issues
 
-Before opening a new issue, please search our [**GitHub Issues**](https://github.com/arshverma/REELSPOT/issues) to see if someone else has already reported the same problem.
+Before opening a new issue, please search our [**GitHub Issues**](https://github.com/ArshVermaGit/REELSPOT/issues) to see if someone else has already reported the same problem.
 
 ### 3. Open a New Issue
 
-If you can't find an answer in the documentation or existing issues, please [**open a new issue**](https://github.com/arshverma/REELSPOT/issues/new).
+If you can't find an answer in the documentation or existing issues, please [**open a new issue**](https://github.com/ArshVermaGit/REELSPOT/issues/new).
 
 When reporting a bug, please include:
 
@@ -33,9 +33,9 @@ When reporting a bug, please include:
 
 For general questions, discussions, or sharing your projects, join our community:
 
-- **GitHub Discussions**: [REELSPOT Discussions](https://github.com/arshverma/REELSPOT/discussions)
+- **GitHub Discussions**: [REELSPOT Discussions](https://github.com/ArshVermaGit/REELSPOT/discussions)
 - **Twitter**: [@TheArshVerma](https://x.com/TheArshVerma)
 
 ## Professional Support
 
-If you need professional support or have business inquiries, please contact Arsh Verma at [arsh.v.creates@gmail.com](mailto:arsh.v.creates@gmail.com).
+If you need professional support or have business inquiries, please contact Arsh Verma at [arshverma.dev@gmail.com](mailto:arshverma.dev@gmail.com).
