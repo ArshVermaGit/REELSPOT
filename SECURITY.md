@@ -15,7 +15,7 @@ If you've discovered a security vulnerability in Reelspot, please report it priv
 
 **Do not open a public issue.** This allows us to fix the vulnerability before it's public knowledge.
 
-To report a vulnerability, please email Arsh Verma at [arsh.v.creates@gmail.com](mailto:arsh.v.creates@gmail.com).
+To report a vulnerability, please email Arsh Verma at [arshverma.dev@gmail.com](mailto:arshverma.dev@gmail.com).
 
 Please include the following information in your report:
 
