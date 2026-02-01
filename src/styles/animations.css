@@ -1,26 +1,27 @@
-
 @layer utilities {
   .animate-slide-down {
-    animation: slideDown 0.8s ease-out forwards;
+    animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    will-change: transform, opacity;
   }
   
   .animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
+    animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    will-change: opacity;
   }
 
   .animate-in {
-    animation-duration: 0.2s;
+    animation-duration: 0.3s;
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
 @keyframes slideDown {
   from {
-    transform: translateY(-20px);
+    transform: translate3d(0, -20px, 0);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
     opacity: 1;
   }
 }
