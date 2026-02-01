@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, XCircle, RefreshCw, X, FileText, ArrowRight, Download, Loader2, Share2, Copy } from 'lucide-react';
+import { CheckCircle2, XCircle, RefreshCw, Download, Loader2, FileText, ArrowRight, Copy } from 'lucide-react';
 import { clsx } from 'clsx';
 import { toast } from 'react-hot-toast';
 
