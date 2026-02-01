@@ -65,7 +65,7 @@ axios.get = async (url, config) => {
          };
     }
     // Mock Successful API Responses
-    if (url.includes('graph.instagram')) {
+    if (hostname === 'graph.instagram.com') {
         return {
             data: {
                 caption: 'Mock Instagram Reel',
@@ -76,7 +76,7 @@ axios.get = async (url, config) => {
             }
         };
     }
-    if (url.includes('googleapis')) { // YouTube
+    if (hostname === 'www.googleapis.com') { // YouTube
         return {
             data: {
                 items: [{
@@ -90,7 +90,7 @@ axios.get = async (url, config) => {
             }
         };
     }
-    if (url.includes('graph.facebook')) {
+    if (hostname === 'graph.facebook.com') {
         return {
             data: {
                 title: 'Mock Facebook Video',
@@ -102,7 +102,7 @@ axios.get = async (url, config) => {
     
     // Simulate API calls failing auth so we trigger the internal simulation
     // (TikTok falls through to here or handled by logic)
-    if (url.includes('tiktok.com')) {
+    if (hostname === 'www.tiktok.com' || hostname === 'tiktok.com') {
          // TikTok logic in mediaDownloader uses simulation by default for now
     }
     
