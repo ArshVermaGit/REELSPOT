@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '../shared/Card';
-import { ToggleLeft, ToggleRight, Moon, Sun, ChevronDown } from 'lucide-react';
+import { ToggleLeft, ToggleRight, ChevronDown } from 'lucide-react';
 
 const Select = ({ label, value, onChange, options }) => (
     <div>
