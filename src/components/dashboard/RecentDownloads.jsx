@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Clock, MoreHorizontal, FileVideo, Youtube, X } from 'lucide-react';
-import { clsx } from 'clsx';
+import { ArrowRight, Clock, FileVideo, X } from 'lucide-react';
 
 const formatDistanceToNow = (date) => {
     if (!date) return '';
@@ -15,12 +14,7 @@ const formatDistanceToNow = (date) => {
     return new Date(date).toLocaleDateString();
 };
 
-const PlatformIcon = ({ platform }) => {
-    switch(platform?.toLowerCase()) {
-        case 'youtube': return <div className="text-red-500"><Youtube size={20} /></div>;
-        default: return <div className="text-zinc-500"><FileVideo size={20} /></div>;
-    }
-};
+
 
 const ActivityItem = ({ item, onDelete }) => {
     return (
