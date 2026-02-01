@@ -3,6 +3,18 @@ import { ShieldAlert } from 'lucide-react';
 import Button from '../shared/Button';
 
 const DisclaimerModal = ({ isOpen, onClose, onAccept }) => {
+  // Lock scroll when modal is open
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
