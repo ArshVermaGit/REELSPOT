@@ -27,7 +27,7 @@ const InfoPage = ({ pageId: propId }) => {
                     throw new Error('Content not found');
                 }
             } catch (err) {
-                console.error(`Failed to load content for ${pageId}:`, err);
+                console.error('Failed to load content for page:', pageId, err);
                 setError(true);
             } finally {
                 setLoading(false);
