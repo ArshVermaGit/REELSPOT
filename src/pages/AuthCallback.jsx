@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../services/supabase';
 import LoadingScreen from '../components/shared/LoadingSpinner';
+import SEO from '../components/shared/SEO';
 import toast from 'react-hot-toast';
 
 const AuthCallback = () => {
@@ -43,7 +44,15 @@ const AuthCallback = () => {
         handleAuth();
     }, [navigate]);
 
-    return <LoadingScreen message="Completing sign in..." />;
+    return (
+        <div className="relative">
+            <SEO 
+                title="Secure Authentication" 
+                description="Finalizing your secure sign-in to Reelspot. Please wait while we establish your protected session."
+            />
+            <LoadingScreen message="Completing secure sign-in..." />
+        </div>
+    );
 };
 
 export default AuthCallback;
