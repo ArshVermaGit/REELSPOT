@@ -1,12 +1,11 @@
 import React from 'react';
-import { Film } from 'lucide-react';
 
 const LoadingScreen = ({ message = "Loading..." }) => {
     return (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white animate-fade-in">
             <div className="relative mb-8">
-                <div className="bg-black text-white p-4 rounded-2xl shadow-xl animate-pulse">
-                     <Film size={48} strokeWidth={2} />
+                <div className="bg-white p-1 rounded-3xl shadow-2xl border border-zinc-100 animate-pulse">
+                     <img src="/logo.png" alt="Reelspot" className="w-16 h-16 rounded-2xl" />
                 </div>
                 {/* Decorative glow */}
                 <div className="absolute inset-0 bg-black/20 blur-xl rounded-full animate-pulse-slow -z-10"></div>
