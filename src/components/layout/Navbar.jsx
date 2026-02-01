@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { Film, Menu, X, User, LogOut, LayoutDashboard, History, Settings, ChevronDown } from 'lucide-react';
+import { Menu, X, User, LogOut, LayoutDashboard, History, Settings, ChevronDown } from 'lucide-react';
 import { clsx } from 'clsx';
 
 // Inline Google Icon with cleaner sizing
@@ -14,7 +14,7 @@ const GIcon = () => (
     </svg>
 );
 
-const NavLink = ({ to, icon: Icon, label, disabled, onClick }) => {
+const NavLink = ({ to, icon: Icon, label, onClick }) => {
     const location = useLocation();
     const isActive = location.pathname === to;
 
@@ -79,10 +79,10 @@ const Navbar = () => {
         <>
         <nav 
             className={clsx(
-                "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+                "fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color,backdrop-filter,box-shadow,transform] duration-500",
                 scrolled 
-                    ? "bg-white/80 backdrop-blur-xl h-16 border-b border-zinc-200/50 shadow-sm/5" 
-                    : "bg-transparent h-24 border-transparent"
+                    ? "bg-white/80 backdrop-blur-xl h-20 border-b border-zinc-200/50 shadow-sm/5" 
+                    : "bg-transparent h-20 border-transparent"
             )}
         >
             <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
@@ -92,7 +92,7 @@ const Navbar = () => {
                     <div className="relative">
                         <div className="absolute inset-0 bg-black blur-lg opacity-20 group-hover:opacity-30 transition-opacity rounded-full" />
                         <img 
-                            src="/logo.png" 
+                            src="/logo.png?v=2" 
                             alt="Reelspot" 
                             className="w-10 h-10 relative z-10 rounded-xl shadow-sm transition-transform duration-300 group-hover:scale-105"
                         />
@@ -142,6 +142,13 @@ const Navbar = () => {
                                             <p className="font-bold text-sm text-zinc-900 truncate">{user.user_metadata?.full_name || 'User'}</p>
                                             <p className="text-xs text-zinc-500 truncate font-medium">{user.email}</p>
                                         </div>
+                                        
+                                        <Link 
+                                            to="/profile"
+                                            className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-zinc-600 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors group"
+                                        >
+                                            <User size={16} className="group-hover:scale-110 transition-transform" /> My Profile
+                                        </Link>
                                         
                                         <button 
                                             onClick={signOut}
@@ -209,6 +216,10 @@ const Navbar = () => {
                                 <Link to="/settings" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-50 hover:bg-zinc-100 transition-colors">
                                     <div className="p-2 bg-white rounded-xl shadow-sm"><Settings size={20} /></div>
                                     <span className="font-bold text-zinc-900">Settings</span>
+                                </Link>
+                                <Link to="/profile" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-50 hover:bg-zinc-100 transition-colors">
+                                    <div className="p-2 bg-white rounded-xl shadow-sm"><User size={20} /></div>
+                                    <span className="font-bold text-zinc-900">My Profile</span>
                                 </Link>
 
                                 <button 
