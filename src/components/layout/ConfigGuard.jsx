@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, Terminal, Settings } from 'lucide-react';
+import { AlertTriangle, Terminal } from 'lucide-react';
 
 const ConfigGuard = ({ children, isConfigured }) => {
     if (isConfigured) return children;
