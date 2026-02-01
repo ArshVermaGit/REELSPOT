@@ -3,7 +3,9 @@ import { useHistory } from '../hooks/useHistory';
 import HistoryFilters from '../components/history/HistoryFilters';
 import HistoryStats from '../components/history/HistoryStats';
 import HistoryList from '../components/history/HistoryList';
-import { Trash2, CheckSquare, Square, X, Filter, ChevronDown } from 'lucide-react';
+import HistoryHeader from '../components/history/HistoryHeader';
+import { Filter, ChevronDown, CheckSquare, Square, Trash2, X } from 'lucide-react';
+import SEO from '../components/shared/SEO';
 import toast from 'react-hot-toast';
 import { clsx } from 'clsx';
 import { useNavigate } from 'react-router-dom';
@@ -56,45 +58,24 @@ const History = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#FAFAFA] pt-24 pb-20">
+        <div className="min-h-screen bg-[#FAFAFA] pt-24 pb-20 relative">
+            <SEO 
+                title="Download History" 
+                description="View and manage your past social media downloads from Instagram, YouTube, and TikTok on Reelspot."
+            />
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 
-                {/* Header */}
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
-                    <div>
-                        <h1 className="text-4xl font-[800] tracking-tight text-zinc-900 mb-2">History</h1>
-                        <p className="text-zinc-500 font-medium">Manage your past downloads and media.</p>
-                    </div>
-
-                    {/* Bulk Actions Header Control */}
-                    {selectedIds.size > 0 && (
-                        <div className="flex items-center gap-3 bg-white border border-zinc-200 p-2 rounded-2xl shadow-xl shadow-zinc-200/50 animate-in fade-in slide-in-from-bottom-2">
-                             <div className="px-3 text-sm font-bold text-zinc-900">
-                                {selectedIds.size} selected
-                            </div>
-                            <div className="h-4 w-px bg-zinc-200" />
-                            <button 
-                                onClick={() => openConfirm({
-                                    title: 'Delete Selected Items?',
-                                    message: `Are you sure you want to delete ${selectedIds.size} items? This action cannot be undone.`,
-                                    onConfirm: bulkDelete,
-                                    confirmText: 'Delete All',
-                                    type: 'danger'
-                                })}
-                                className="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-xl transition-colors text-sm font-bold"
-                            >
-                                <Trash2 size={16} /> Delete
-                            </button>
-                            <button 
-                                onClick={selectAll} 
-                                className="p-2 hover:bg-zinc-50 rounded-lg text-zinc-400 hover:text-black transition-colors"
-                                title="Clear Selection"
-                            >
-                                <X size={16} />
-                            </button>
-                        </div>
-                    )}
-                </div>
+                <HistoryHeader 
+                    selectedCount={selectedIds.size}
+                    onOpenBulkDelete={() => openConfirm({
+                        title: 'Delete Selected Items?',
+                        message: `Are you sure you want to delete ${selectedIds.size} items? This action cannot be undone.`,
+                        onConfirm: bulkDelete,
+                        confirmText: 'Delete All',
+                        type: 'danger'
+                    })}
+                    onClearSelection={selectAll}
+                />
 
                 {/* Analytics */}
                 <div className="mb-10">
