@@ -1,6 +1,5 @@
 import React from 'react';
 import { Loader2 } from 'lucide-react';
-import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 const Button = ({ 
@@ -12,7 +11,7 @@ const Button = ({
     disabled, 
     ...props 
 }) => {
-    const baseStyles = "inline-flex items-center justify-center rounded-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95";
+    const baseStyles = "inline-flex items-center justify-center rounded-xl font-bold transition-[background-color,transform,box-shadow,opacity] duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 will-change-transform";
     
     const variants = {
         primary: "bg-black text-white hover:bg-zinc-800 shadow-lg shadow-black/10",
