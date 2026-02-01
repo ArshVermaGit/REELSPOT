@@ -1,3 +1,7 @@
+/**
+ * Exports history data to a CSV file and triggers a browser download.
+ * @param {Array<Object>} historyData - Array of download history records
+ */
 export const exportHistoryToCSV = (historyData) => {
     if (!historyData || historyData.length === 0) return;
 
@@ -23,6 +27,10 @@ export const exportHistoryToCSV = (historyData) => {
     triggerDownload(csvContent, 'csv');
 };
 
+/**
+ * Exports history data to a JSON file and triggers a browser download.
+ * @param {Array<Object>} historyData - Array of download history records
+ */
 export const exportHistoryToJSON = (historyData) => {
     if (!historyData || historyData.length === 0) return;
 
@@ -36,6 +44,11 @@ export const exportHistoryToJSON = (historyData) => {
     triggerDownload(jsonContent, 'json');
 };
 
+/**
+ * Helper to trigger a file download in the browser.
+ * @param {string} content - File content string
+ * @param {'csv'|'json'} type - File extension/type
+ */
 const triggerDownload = (content, type) => {
     const mime = type === 'csv' ? 'text/csv;charset=utf-8;' : 'application/json;charset=utf-8;';
     const ext = type;
