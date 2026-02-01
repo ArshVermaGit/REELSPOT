@@ -1,4 +1,4 @@
-import { PLATFORMS } from '../constants';
+import { PLATFORMS } from '../constants/index.js';
 import { registerPlatform, getPlatformStrategy } from './platforms/registry.js';
 import axios from 'axios';
 import { supabase } from './supabase.js';
@@ -229,6 +229,11 @@ const downloadMedia = async (options) => {
 /**
  * Exports for individual service methods to enable tree-shaking
  */
+export const getMediaInfoExport = getMediaInfo;
+export const downloadMediaExport = downloadMedia;
+
+export { getMediaInfo, downloadMedia };
+
 export const MediaDownloader = {
     getMediaInfo,
     downloadMedia
