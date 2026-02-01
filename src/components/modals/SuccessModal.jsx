@@ -1,12 +1,25 @@
-import React from 'react';
-import { CheckCircle2, X } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { CheckCircle2 } from 'lucide-react';
 
 const SuccessModal = ({ isOpen, onClose, title, message, actionText = 'Okay', onAction }) => {
+    // Lock scroll when modal is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={onClose} />
+            {/* Backdrop - Click disabled as per user request */}
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" />
             <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
                 <div className="p-8 text-center">
                     <div className="mx-auto w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6">
