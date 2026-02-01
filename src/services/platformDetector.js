@@ -1,4 +1,4 @@
-import { PLATFORMS, MEDIA_TYPES } from '../constants';
+import { PLATFORMS, MEDIA_TYPES } from '../constants/index.js';
 
 /**
  * Validates and extracts platform information from a social media URL.
@@ -15,7 +15,8 @@ export const detectPlatform = (url) => {
         const cleanUrl = urlObj.origin + urlObj.pathname;
         
         // Instagram
-        if (cleanUrl.includes('instagram.com')) {
+        const igHosts = ['instagram.com', 'www.instagram.com'];
+        if (igHosts.includes(urlObj.hostname)) {
             const pathSegments = urlObj.pathname.split('/').filter(Boolean);
             const type = pathSegments[0]; // 'p', 'reel', 'tv', 'stories'
             const id = pathSegments[1];
@@ -29,11 +30,12 @@ export const detectPlatform = (url) => {
         }
 
         // YouTube
-        if (cleanUrl.includes('youtube.com') || cleanUrl.includes('youtu.be')) {
+        const ytHosts = ['youtube.com', 'www.youtube.com', 'm.youtube.com', 'youtu.be'];
+        if (ytHosts.includes(urlObj.hostname)) {
             let id = urlObj.searchParams.get('v');
             let mediaType = MEDIA_TYPES.VIDEO;
 
-            if (cleanUrl.includes('youtu.be')) {
+            if (urlObj.hostname === 'youtu.be') {
                 id = urlObj.pathname.slice(1);
             } else if (urlObj.pathname.includes('/shorts/')) {
                 id = urlObj.pathname.split('/shorts/')[1]?.split('/')[0];
@@ -44,7 +46,8 @@ export const detectPlatform = (url) => {
         }
 
         // Facebook
-        if (cleanUrl.includes('facebook.com') || cleanUrl.includes('fb.watch')) {
+        const fbHosts = ['facebook.com', 'www.facebook.com', 'm.facebook.com', 'fb.watch'];
+        if (fbHosts.includes(urlObj.hostname)) {
             let id = urlObj.searchParams.get('v');
             if (!id && urlObj.pathname.includes('/reels/')) {
                 id = urlObj.pathname.split('/reels/')[1]?.replace(/\//g, '');
@@ -53,7 +56,8 @@ export const detectPlatform = (url) => {
         }
 
         // TikTok
-        if (cleanUrl.includes('tiktok.com')) {
+        const ttHosts = ['tiktok.com', 'www.tiktok.com', 'm.tiktok.com'];
+        if (ttHosts.includes(urlObj.hostname)) {
             const id = urlObj.pathname.split('/video/')[1]?.split('?')[0];
             return { platform: PLATFORMS.TIKTOK, mediaType: MEDIA_TYPES.VIDEO, mediaId: id, isValid: !!id, cleanUrl };
         }
