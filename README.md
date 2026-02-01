@@ -47,6 +47,7 @@ We believe in **Software Craftsmanship**. Reelspot isn't just a tool; it's an ex
 
 - **⚡ Multi-Platform Strategy**: Dynamically extensible architecture supporting **Instagram**, **YouTube**, **Facebook**, and **TikTok**.
 - **💎 Premium UX/UI**: A stunning interface built with **Tailwind CSS**, featuring glassmorphism, micro-interactions, and fluid 60fps animations.
+- **🚀 Performance Optimized**: Implements **React Lazy Loading** and dynamic imports for supplemental content to ensure lightning-fast initial loads.
 - **🔒 Privacy First**: Zero tracking. Your data stays yours. secure local storage for preferences.
 - **🔌 Developer Ready**: Built with a **Screaming Architecture**. Feature-first folder structure, Strategy Pattern for downloads, and centralized constants make contributing a breeze.
 - **📱 Universal**: Fully responsive, PWA-ready design that feels native on any device.
@@ -94,11 +95,10 @@ Reelspot follows a domain-driven, modular architecture designed for scalability.
 ```
 src/
 ├── components/          # Reusable UI components
-│   ├── shared/          # Global atoms (Buttons, Inputs, Modals)
-│   ├── layout/          # Layout wrappers (Navbar, Footer)
-│   └── [feature]/       # Feature-specific components
 ├── constants/           # Global constants (Regex, Configs)
 ├── contexts/            # Global State (Auth, Theme)
+├── data/                # Static & Dynamic Data
+│   └── info/            # Modular Information Content
 ├── hooks/               # Custom React Hooks
 ├── pages/               # Route Components
 ├── services/            # Business Logic & API Layer
