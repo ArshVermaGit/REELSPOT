@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../services/supabase';
 import { useAuth } from './AuthContext';
@@ -177,7 +178,7 @@ export const ApiKeyProvider = ({ children }) => {
          }
     };
 
-    const updateKeyStatus = async (platform, status, latency) => {
+    const updateKeyStatus = async (platform, status) => {
         try {
             const updates = { 
                 status, 
