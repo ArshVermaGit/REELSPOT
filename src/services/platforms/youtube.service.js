@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { extractMediaId } from '../platformDetector.js';
-import { PLATFORMS } from '../../constants';
+import { PLATFORMS } from '../../constants/index.js';
 
 export const fetchYoutubeData = async (url, apiKey) => {
     const MediaError = (await import('../download.service.js')).MediaError;
