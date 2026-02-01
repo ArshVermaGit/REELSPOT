@@ -16,12 +16,15 @@ registerPlatform(PLATFORMS.FACEBOOK, fetchFacebookData);
 registerPlatform(PLATFORMS.TIKTOK, fetchTikTokData);
 
 /**
- * Advanced Media Downloader Service
- * Strategy Pattern based modular architecture.
+ * Custom Error Class for Media extraction and download issues.
+ * @extends Error
  */
-
-// Error Classes
 export class MediaError extends Error {
+    /**
+     * @param {string} message - Human readable error message
+     * @param {string} code - Internal error code (e.g., 'MISSING_URL')
+     * @param {boolean} [retryable=false] - Whether the operation can be retried
+     */
     constructor(message, code, retryable = false) {
         super(message);
         this.name = 'MediaError';
@@ -30,8 +33,26 @@ export class MediaError extends Error {
     }
 }
 
-// --- Core Logic ---
+/**
+ * @typedef {Object} MediaInfo
+ * @property {string} title - Title of the media
+ * @property {string} thumbnail - URL to the thumbnail image
+ * @property {string} downloadUrl - Direct link to the media file
+ * @property {string} [author] - Name of the content creator
+ * @property {number} [duration] - Duration in seconds
+ * @property {Array} [formats] - Available download formats/qualities
+ */
 
+/**
+ * Fetches media information using the registered strategy for the detected platform.
+ * 
+ * @param {Object} params
+ * @param {string} params.url - The source URL of the media
+ * @param {string} params.platform - The detected platform (e.g., 'instagram')
+ * @param {string} [params.apiKey] - Optional RapidAPI key for the platform
+ * @returns {Promise<MediaInfo>}
+ * @throws {MediaError}
+ */
 const getMediaInfo = async ({ url, platform, apiKey }) => {
     if (!url) throw new MediaError('URL is required', 'MISSING_URL');
 
@@ -48,6 +69,11 @@ const getMediaInfo = async ({ url, platform, apiKey }) => {
     }
 };
 
+/**
+ * Checks the size of a file before downloading to prevent memory overflow or quota exit.
+ * @param {string} url 
+ * @returns {Promise<number>} Size in bytes
+ */
 const checkFileSize = async (url) => {
     try {
         const response = await axios.head(url);
@@ -57,11 +83,19 @@ const checkFileSize = async (url) => {
         }
         return size;
     } catch {
-        console.warn("Could not check file size via HEAD request");
+        console.warn("Could not check file size via HEAD request. Proceeding with caution.");
         return 0;
     }
 };
 
+/**
+ * Downloads a file with exponential backoff retry logic.
+ * 
+ * @param {string} url - Direct download URL
+ * @param {Function} onProgress - Callback for download progress
+ * @param {number} [retries=3] - Maximum number of retries
+ * @returns {Promise<{success: boolean, blob?: Blob, size?: number, error?: string}>}
+ */
 const downloadFileWithRetry = async (url, onProgress, retries = 3) => {
     let attempt = 0;
     while (attempt <= retries) {
@@ -103,6 +137,9 @@ const downloadFileWithRetry = async (url, onProgress, retries = 3) => {
                             lastLoaded = loaded;
                             lastTime = now;
                         }
+                    } else {
+                        // Indeterminate progress
+                        onProgress({ loaded, total: 0, percentage: 0, speed: '---', timeRemaining: '---' });
                     }
                 }
             });
@@ -112,24 +149,39 @@ const downloadFileWithRetry = async (url, onProgress, retries = 3) => {
             if (attempt > retries) {
                 return { success: false, error: error.message };
             }
+            // Exponential backoff
             await new Promise(r => setTimeout(r, Math.pow(2, attempt) * 1000));
         }
     }
+    return { success: false, error: 'Max retries exceeded' };
 };
 
+/**
+ * Saves a download record to the user's history in Supabase.
+ * @param {string} userId - UUID of the authenticated user
+ * @param {Object} data - Metadata about the download
+ */
 const saveToHistory = async (userId, data) => {
     if (!userId) return;
     try {
-        await supabase.from('download_history').insert({
+        const { error } = await supabase.from('download_history').insert({
             user_id: userId,
             ...data,
             created_at: new Date().toISOString()
         });
+        if (error) throw error;
     } catch (e) {
-        console.error('Failed to save history:', e);
+        console.error('Failed to save history to database:', e.message);
     }
 };
 
+/**
+ * High-level method to handle the entire media download process.
+ * Includes fetching, progress tracking, file saving, and history logging.
+ * 
+ * @param {Object} options
+ * @returns {Promise<{success: boolean, fileName?: string, error?: string}>}
+ */
 const downloadMedia = async (options) => {
     const {
         downloadUrl, platform, format, quality, onProgress, userId,
@@ -137,10 +189,10 @@ const downloadMedia = async (options) => {
     } = options;
 
     try {
-        if (!downloadUrl) throw new MediaError('No download link', 'NO_LINK');
+        if (!downloadUrl) throw new MediaError('No download link provided', 'NO_LINK');
 
         const result = await downloadFileWithRetry(downloadUrl, onProgress);
-        if (!result.success) throw new MediaError(result.error, 'DOWNLOAD_FAILED');
+        if (!result.success) throw new MediaError(result.error || 'Download failed after retries', 'DOWNLOAD_FAILED');
 
         const blobUrl = window.URL.createObjectURL(result.blob);
         const fileName = `${platform}_${(mediaTitle||'media').replace(/\W/g, '_').substring(0,20)}_${Date.now()}.${format || 'mp4'}`;
@@ -153,7 +205,8 @@ const downloadMedia = async (options) => {
         document.body.removeChild(a);
         window.URL.revokeObjectURL(blobUrl);
 
-        await saveToHistory(userId, {
+        // Background history logging
+        saveToHistory(userId, {
             platform, media_url: mediaUrl, media_type: 'video',
             format, quality, file_size: result.size,
             download_status: 'completed', title: mediaTitle,
@@ -162,8 +215,9 @@ const downloadMedia = async (options) => {
 
         return { success: true, fileName };
     } catch (error) {
+        console.error("Downloader Service Error:", error);
         if (userId) {
-            await saveToHistory(userId, {
+            saveToHistory(userId, {
                 platform, media_url: mediaUrl, download_status: 'failed',
                 error_message: error.message, title: mediaTitle
             });
@@ -172,6 +226,9 @@ const downloadMedia = async (options) => {
     }
 };
 
+/**
+ * Exports for individual service methods to enable tree-shaking
+ */
 export const MediaDownloader = {
     getMediaInfo,
     downloadMedia
