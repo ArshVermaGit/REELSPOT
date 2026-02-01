@@ -18,8 +18,22 @@ const AuthGate = ({ children }) => {
             // Small delay so the page loads first
             const timer = setTimeout(() => setShowModal(true), 800);
             return () => clearTimeout(timer);
+        } else {
+            setShowModal(false);
         }
     }, [user, loading]);
+
+    // Lock scroll when modal is open
+    useEffect(() => {
+        if (showModal) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [showModal]);
 
     const { signInWithGoogle } = useAuth();
 
@@ -35,10 +49,9 @@ const AuthGate = ({ children }) => {
             {/* Sign-in prompt modal for unauthenticated users */}
             {showModal && !user && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    {/* Backdrop with blur */}
+                    {/* Backdrop with blur - disabled click as per user request */}
                     <div 
                         className="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity"
-                        onClick={handleClose}
                     />
 
                     {/* Modal Content */}
