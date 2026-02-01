@@ -1,5 +1,5 @@
 import React from 'react';
-import { DownloadCloud, Key, Database, CheckCircle, TrendingUp, TrendingDown, Activity } from 'lucide-react';
+import { DownloadCloud, Key, Database, TrendingUp, TrendingDown, Activity } from 'lucide-react';
 import { clsx } from 'clsx';
 import { Link } from 'react-router-dom';
 
@@ -11,17 +11,16 @@ const BentoCard = ({ title, value, subtext, icon: Icon, colorClass, delay, to, t
         <Wrapper 
             {...wrapperProps}
             className={clsx(
-                "relative flex flex-col justify-between p-6 rounded-[2rem] border border-zinc-100 shadow-sm transition-all duration-300 overflow-hidden group hover:shadow-md",
-                to ? "cursor-pointer hover:border-zinc-300" : "bg-white",
-                "h-full min-h-[180px]"
+                "relative flex flex-col justify-between p-6 rounded-[2rem] border border-zinc-100 shadow-sm transition-[transform,box-shadow,border-color] duration-500 overflow-hidden group hover:shadow-md h-full min-h-[180px] will-change-transform",
+                to ? "cursor-pointer hover:border-zinc-300" : "bg-white"
             )}
             style={{ animationDelay: `${delay}ms` }}
         >
             {/* Background Decoration */}
-            <div className="absolute -right-6 -top-6 w-32 h-32 bg-zinc-50 rounded-full blur-2xl group-hover:bg-zinc-100 transition-colors" />
+            <div className="absolute -right-6 -top-6 w-32 h-32 bg-zinc-50 rounded-full blur-2xl group-hover:bg-zinc-100 transition-colors duration-500" />
             
             <div className="relative z-10 flex justify-between items-start">
-                <div className={clsx("p-3 rounded-2xl transition-all duration-300 group-hover:scale-110 shadow-sm", colorClass)}>
+                <div className={clsx("p-3 rounded-2xl transition-[transform,background-color] duration-500 group-hover:scale-110 shadow-sm will-change-transform", colorClass)}>
                     <Icon size={22} strokeWidth={2.5} />
                 </div>
                 {subtext && (
