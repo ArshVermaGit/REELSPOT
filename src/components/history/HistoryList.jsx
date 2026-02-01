@@ -1,7 +1,7 @@
 import React from 'react';
 import HistoryCard from './HistoryCard';
 import { clsx } from 'clsx';
-import { CheckSquare, Ghost, SearchX, Download } from 'lucide-react';
+import { Ghost, SearchX, Download } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const HistoryList = ({ 
