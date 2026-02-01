@@ -2,7 +2,7 @@ import React from 'react';
 import { Search, LayoutGrid, List as ListIcon, ChevronDown, Instagram, Youtube, Facebook, Music2, Globe, Check } from 'lucide-react';
 import { clsx } from 'clsx';
 
-const PlatformRow = ({ label, icon: Icon, active, onClick, count }) => (
+const PlatformRow = ({ label, icon: Icon, active, onClick }) => (
     <button 
         onClick={onClick}
         className={clsx(
@@ -33,8 +33,7 @@ const HistoryFilters = ({
     sort, 
     setSort,
     viewMode,
-    setViewMode,
-    totalItems 
+    setViewMode
 }) => {
     
     return (
