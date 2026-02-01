@@ -68,7 +68,6 @@ We are building the future of media accessibility. Check our [**Roadmap**](./ROA
 
 <div align="center">
   <p>Crafted with obsession by <a href="https://github.com/ArshVermaGit"><b>Arsh Verma</b></a></p>
-  <a href="#top">Back to top</a>
 </div>
 
 ---
