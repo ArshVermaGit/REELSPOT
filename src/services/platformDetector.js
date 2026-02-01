@@ -1,127 +1,77 @@
-import { PLATFORMS, MEDIA_TYPES, PATTERNS } from '../constants';
+import { PLATFORMS, MEDIA_TYPES } from '../constants';
 
 /**
- * Validates the URL structure and protocol
- * @param {string} url 
- * @returns {{isValid: boolean, error: string|null}}
- */
-export const validateUrl = (url) => {
-    if (!url) return { isValid: false, error: 'URL is required' };
-    
-    try {
-        const parsed = new URL(url);
-        if (!['http:', 'https:'].includes(parsed.protocol)) {
-            return { isValid: false, error: 'Invalid protocol. Use http or https.' };
-        }
-        return { isValid: true, error: null };
-    } catch {
-        return { isValid: false, error: 'Invalid URL format' };
-    }
-};
-
-/**
- * Extracts the media ID from the URL based on the platform
- * @param {string} url 
- * @param {string} platform 
- * @returns {string|null}
- */
-export const extractMediaId = (url, platform) => {
-    try {
-        let match = null;
-        switch (platform) {
-            case PLATFORMS.INSTAGRAM:
-                match = url.match(PATTERNS.INSTAGRAM);
-                // Handle story URLs: /stories/username/12345
-                if(url.includes('/stories/')) {
-                     const parts = url.split('/').filter(p => p);
-                     // If structure is instagram.com/stories/username/ID ...
-                     // Last part should be ID.
-                     const lastPart = parts[parts.length - 1];
-                     // Basic check if it looks like an ID (numeric)
-                     if (/^\d+$/.test(lastPart)) return lastPart;
-                }
-                return match ? match[2] : null;
-
-            case PLATFORMS.YOUTUBE:
-                match = url.match(PATTERNS.YOUTUBE_SHORTS) || url.match(PATTERNS.YOUTUBE);
-                return match ? match[1] : null;
-
-            case PLATFORMS.FACEBOOK:
-                match = url.match(PATTERNS.FACEBOOK);
-                return match ? match[1] : null;
-
-            case PLATFORMS.TIKTOK:
-                match = url.match(PATTERNS.TIKTOK);
-                // Group 1 is ID for standard, Group 2 for vt.tiktok (shortened)
-                return match ? (match[1] || match[2]) : null;
-            
-            default:
-                return null;
-        }
-    } catch {
-        console.warn('Error extracting media ID');
-        return null;
-    }
-};
-
-/**
- * Detects the platform and extracts metadata
- * @param {string} url 
- * @returns {{platform: string, mediaType: string, mediaId: string|null, isValid: boolean}}
+ * Validates and extracts platform information from a social media URL.
+ * Supports Instagram, YouTube, Facebook, and TikTok.
+ * 
+ * @param {string} url - The URL to analyze
+ * @returns {Object} { platform, mediaType, mediaId, isValid, cleanUrl }
  */
 export const detectPlatform = (url) => {
-    // 1. Basic Validation
-    const validation = validateUrl(url);
-    if (!validation.isValid) {
-        return { platform: PLATFORMS.UNKNOWN, mediaType: MEDIA_TYPES.UNKNOWN, mediaId: null, isValid: false };
-    }
+    if (!url) return { platform: PLATFORMS.UNKNOWN, mediaType: MEDIA_TYPES.UNKNOWN, mediaId: null, isValid: false };
 
-    const cleanUrl = url.trim();
-
-    // 2. Instagram Detection
-    if (cleanUrl.includes('instagram.com') || cleanUrl.includes('instagr.am')) {
-        let type = MEDIA_TYPES.POST;
-        if (cleanUrl.includes('/reel/') || cleanUrl.includes('/reels/')) type = MEDIA_TYPES.REEL;
-        else if (cleanUrl.includes('/stories/')) type = MEDIA_TYPES.STORY;
-        else if (cleanUrl.includes('/tv/')) type = MEDIA_TYPES.VIDEO;
-
-        const id = extractMediaId(cleanUrl, PLATFORMS.INSTAGRAM);
-        // Valid if we found an ID (except for stories which might be tricky, but general posts need ID)
-        // For stories, allow if URL looks correct even if extractMediaId simple matching failed previously
-        const isValid = !!id || cleanUrl.includes('/stories/');
+    try {
+        const urlObj = new URL(url);
+        const cleanUrl = urlObj.origin + urlObj.pathname;
         
-        return { platform: PLATFORMS.INSTAGRAM, mediaType: type, mediaId: id, isValid: isValid };
-    }
+        // Instagram
+        if (cleanUrl.includes('instagram.com')) {
+            const pathSegments = urlObj.pathname.split('/').filter(Boolean);
+            const type = pathSegments[0]; // 'p', 'reel', 'tv', 'stories'
+            const id = pathSegments[1];
+            
+            let mediaType = MEDIA_TYPES.POST;
+            if (type === 'reels' || type === 'reel') mediaType = MEDIA_TYPES.REEL;
+            if (type === 'tv') mediaType = MEDIA_TYPES.VIDEO;
+            if (type === 'stories') mediaType = MEDIA_TYPES.STORY;
 
-    // 3. YouTube Detection
-    if (cleanUrl.match(/youtu\.?be/)) {
-        const isShort = PATTERNS.YOUTUBE_SHORTS.test(cleanUrl);
-        const id = extractMediaId(cleanUrl, PLATFORMS.YOUTUBE);
-        return { 
-            platform: PLATFORMS.YOUTUBE, 
-            mediaType: isShort ? MEDIA_TYPES.SHORT : MEDIA_TYPES.VIDEO, 
-            mediaId: id, 
-            isValid: !!id 
-        };
-    }
+            return { platform: PLATFORMS.INSTAGRAM, mediaType, mediaId: id, isValid: !!id, cleanUrl };
+        }
 
-    // 4. Facebook Detection
-    if (cleanUrl.includes('facebook.com') || cleanUrl.includes('fb.watch')) {
-        let type = MEDIA_TYPES.VIDEO;
-        if (cleanUrl.includes('/reel/')) type = MEDIA_TYPES.REEL;
-        else if (cleanUrl.includes('/stories/')) type = MEDIA_TYPES.STORY;
-        
-        const id = extractMediaId(cleanUrl, PLATFORMS.FACEBOOK);
-        // FB URLs are diverse, loosen valid check slightly or rely on regex match
-        const hasMatch = PATTERNS.FACEBOOK.test(cleanUrl);
-        return { platform: PLATFORMS.FACEBOOK, mediaType: type, mediaId: id, isValid: hasMatch };
-    }
+        // YouTube
+        if (cleanUrl.includes('youtube.com') || cleanUrl.includes('youtu.be')) {
+            let id = urlObj.searchParams.get('v');
+            let mediaType = MEDIA_TYPES.VIDEO;
 
-    // 5. TikTok Detection
-    if (cleanUrl.includes('tiktok.com')) {
-        const id = extractMediaId(cleanUrl, PLATFORMS.TIKTOK);
-        return { platform: PLATFORMS.TIKTOK, mediaType: MEDIA_TYPES.VIDEO, mediaId: id, isValid: !!id };
+            if (cleanUrl.includes('youtu.be')) {
+                id = urlObj.pathname.slice(1);
+            } else if (urlObj.pathname.includes('/shorts/')) {
+                id = urlObj.pathname.split('/shorts/')[1]?.split('/')[0];
+                mediaType = MEDIA_TYPES.SHORTS;
+            }
+
+            return { platform: PLATFORMS.YOUTUBE, mediaType, mediaId: id, isValid: !!id, cleanUrl };
+        }
+
+        // Facebook
+        if (cleanUrl.includes('facebook.com') || cleanUrl.includes('fb.watch')) {
+            let id = urlObj.searchParams.get('v');
+            if (!id && urlObj.pathname.includes('/reels/')) {
+                id = urlObj.pathname.split('/reels/')[1]?.replace(/\//g, '');
+            }
+            return { platform: PLATFORMS.FACEBOOK, mediaType: MEDIA_TYPES.VIDEO, mediaId: id, isValid: !!id, cleanUrl };
+        }
+
+        // TikTok
+        if (cleanUrl.includes('tiktok.com')) {
+            const id = urlObj.pathname.split('/video/')[1]?.split('?')[0];
+            return { platform: PLATFORMS.TIKTOK, mediaType: MEDIA_TYPES.VIDEO, mediaId: id, isValid: !!id, cleanUrl };
+        }
+
+    } catch (e) {
+        console.error("Platform detection failed:", e.message);
     }
 
     return { platform: PLATFORMS.UNKNOWN, mediaType: MEDIA_TYPES.UNKNOWN, mediaId: null, isValid: false };
+};
+
+/**
+ * Utility to extract Media ID from various URL patterns if direct detection fails.
+ * @param {string} platform 
+ * @param {string} url 
+ * @returns {string|null}
+ */
+export const extractMediaId = (platform, url) => {
+    const { mediaId } = detectPlatform(url);
+    return mediaId;
 };
