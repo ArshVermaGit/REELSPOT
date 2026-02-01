@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Link as LinkIcon, AlertCircle, Loader2, Instagram, Youtube, Facebook, Music2, Settings2, Download, X, CheckCircle } from 'lucide-react';
+import { ArrowRight, Link as LinkIcon, AlertCircle, Loader2, Instagram, Youtube, Facebook, Music2, Settings2, X, CheckCircle, Copy } from 'lucide-react';
 import { MediaDownloader } from '../../services/download.service'; // Renamed service
-import { useDownloadManager } from '../../contexts/DownloadContext';
 import { useApiKeys } from '../../contexts/ApiKeyContext';
 import { detectPlatform } from '../../services/platformDetector';
 import { toast } from 'react-hot-toast';
@@ -43,7 +42,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
         if (initialUrl && initialUrl !== url) {
             setUrl(initialUrl);
         }
-    }, [initialUrl]);
+    }, [initialUrl, url]);
 
     // 1. Platform Detection
     useEffect(() => {
@@ -267,7 +266,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                     placeholder="Paste your link here..."
                     disabled={analyzing}
                     className={clsx(
-                        "w-full h-16 pl-14 pr-16 rounded-full border text-lg font-medium placeholder:text-zinc-400 placeholder:font-normal outline-none transition-all duration-300 shadow-sm",
+                        "w-full h-16 pl-14 pr-16 rounded-full border text-lg font-medium placeholder:text-zinc-400 placeholder:font-normal outline-none transition-[border-color,background-color,box-shadow,transform] duration-300 shadow-sm will-change-[transform,border-color]",
                         !url ? "border-zinc-200 focus:border-zinc-400 bg-white" :
                         platformState.isValid 
                             ? "border-green-500/50 focus:border-green-500 bg-green-50/10" 
@@ -284,6 +283,18 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                             ) : (
                                 (platformState.platform !== 'unknown' || url.length > 10) && <AlertCircle size={24} className="text-red-400" />
                             )}
+                            
+                            <button 
+                                onClick={() => {
+                                    if (!url) return;
+                                    navigator.clipboard.writeText(url);
+                                    toast.success('URL copied to clipboard');
+                                }}
+                                className="p-2 text-zinc-300 hover:text-zinc-600 transition-colors rounded-full hover:bg-zinc-100"
+                                title="Copy to clipboard"
+                            >
+                                <Copy size={18} />
+                            </button>
                             
                             <button 
                                 onClick={() => {
@@ -358,7 +369,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                                         key={fmt}
                                         onClick={() => setSelectedFormat(fmt)}
                                         className={clsx(
-                                            "relative py-4 px-4 rounded-2xl text-sm font-bold transition-all border-2 uppercase flex items-center justify-center gap-2",
+                                            "relative py-4 px-4 rounded-2xl text-sm font-bold transition-[background-color,border-color,transform,box-shadow] duration-300 border-2 uppercase flex items-center justify-center gap-2 will-change-transform",
                                             selectedFormat === fmt 
                                                 ? "bg-black border-black text-white shadow-lg shadow-black/20 scale-[1.02]" 
                                                 : "bg-white border-zinc-100 text-zinc-500 hover:border-zinc-200 hover:bg-zinc-50"
@@ -383,7 +394,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                                         key={q}
                                         onClick={() => setSelectedQuality(q)}
                                         className={clsx(
-                                            "px-5 py-3 rounded-xl text-sm font-bold transition-all border-2",
+                                            "px-5 py-3 rounded-xl text-sm font-bold transition-[background-color,border-color,transform,box-shadow] duration-300 border-2 will-change-transform",
                                             selectedQuality === q
                                                 ? "bg-black border-black text-white shadow-md shadow-black/10 scale-105"
                                                 : "bg-white border-zinc-100 text-zinc-500 hover:border-zinc-200 hover:bg-zinc-50"
@@ -399,7 +410,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                     {/* Action Button */}
                     <button
                         onClick={handleDownloadClick}
-                        className="w-full bg-black text-white rounded-2xl py-5 font-bold text-xl hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 shadow-xl shadow-black/10 group mt-2"
+                        className="w-full bg-black text-white rounded-2xl py-5 font-bold text-xl hover:scale-[1.01] active:scale-[0.99] transition-[transform,box-shadow] duration-300 flex items-center justify-center gap-3 shadow-xl shadow-black/10 group mt-2 will-change-transform"
                     >
                         <span>Start Download</span>
                         <div className="bg-white/20 p-1 rounded-full group-hover:translate-x-1 transition-transform">
@@ -414,7 +425,7 @@ const DownloadForm = ({ onApiKeyRequired, onSignInRequired, user, initialUrl }) 
                 <button
                     onClick={() => handleAnalyze(false)}
                     disabled={analyzing}
-                    className="w-full bg-black text-white rounded-[2rem] py-6 px-12 font-bold text-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 shadow-2xl shadow-black/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:scale-100 group mt-4"
+                    className="w-full bg-black text-white rounded-[2rem] py-6 px-12 font-bold text-xl hover:scale-[1.02] active:scale-[0.98] transition-[transform,box-shadow,opacity] duration-300 flex items-center justify-center gap-3 shadow-2xl shadow-black/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:scale-100 group mt-4 will-change-[transform,opacity]"
                 >
                     {analyzing ? (
                         <>
