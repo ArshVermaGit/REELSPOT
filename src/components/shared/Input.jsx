@@ -1,5 +1,4 @@
 import React, { forwardRef } from 'react';
-import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 const Input = forwardRef(({ className, error, label, icon: Icon, ...props }, ref) => {
@@ -15,7 +14,7 @@ const Input = forwardRef(({ className, error, label, icon: Icon, ...props }, ref
                 <input
                     ref={ref}
                     className={twMerge(
-                        "w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-all",
+                        "w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-[border-color,box-shadow,background-color] duration-300 will-change-[border-color,box-shadow]",
                         Icon && "pl-10",
                         error && "border-red-500 focus:border-red-500 focus:ring-red-500",
                         className
