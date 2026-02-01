@@ -22,16 +22,22 @@ Reelspot is a Single Page Application (SPA) built with the modern React ecosyste
     Business logic is abstracted into custom hooks (e.g., `useHistory`, `useDashboardStats`). This separates UI rendering from data fetching and manipulation logic.
 
 3.  **Component Design**:
-
     - **Atomic/Shared Components**: Small, reusable elements like `Button`, `Card`, `Modal` in `src/components/shared`.
     - **Feature Components**: Complex, specific UI blocks like `HistoryList` or `StatsCard` in feature folders.
 
 4.  **Glassmorphism UI**:
     The design relies heavily on transparency, blur filters (`backdrop-blur`), and gradients to achieve a "Hyper-Polished" aesthetic.
 
+5.  **Strategy Pattern (Downloads)**:
+    Platform-specific logic is decoupled from the UI. New platforms are registered in `src/services/platforms/registry.js`, allowing for easy extension without modify core downloader logic.
+
+6.  **Modular Information Content**:
+    Supplemental pages (About, FAQ, etc.) are loaded dynamically from `src/data/info/contents/`. This keeps `App.jsx` clean and routes scalable.
+
 ## Data Flow
 
-1.  **User Action**: User inputs URL -> `Dashboard.jsx`.
-2.  **API Call**: `fetchVideoData` utility calls RapidAPI with stored keys.
-3.  **State Update**: Context updates `history` state.
-4.  **Persistence**: `useHistory` hook syncs the new record to Supabase.
+1.  **User Action**: User inputs URL -> `DownloadForm.jsx`.
+2.  **Detection**: `platformDetector.js` identifies the service and extracted ID.
+3.  **Strategy Lookup**: `MediaDownloader` gets the registered function from the `Registry`.
+4.  **API Call**: The strategy function calls the external API with stored credentials.
+5.  **Persistence**: `DownloadContext` triggers the `historyService` to record the entry in Supabase.
