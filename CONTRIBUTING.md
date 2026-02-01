@@ -61,6 +61,31 @@ Reelspot uses a **Strategy Pattern** for handling different platforms. To add a 
     ```
 4.  **UI**: Add the platform icon and color to the `Hero`, `DownloadForm`, and `SupportedPlatforms` components.
 
+For a deeper dive into the codebase, check out:
+
+- [Architecture Overview](file:///Users/arshverma/GitHub/REELSPOT/docs/dev/architecture.md)
+- [Developer Setup](file:///Users/arshverma/GitHub/REELSPOT/docs/dev/setup.md)
+- [Adding New Platforms](file:///Users/arshverma/GitHub/REELSPOT/docs/dev/adding-platforms.md)
+- [API Integration](file:///Users/arshverma/GitHub/REELSPOT/docs/dev/api.md)
+
+## 📝 Adding Information Content
+
+Reelspot uses a modular system for information pages (About, FAQ, Privacy, etc.) to keep the codebase clean and performant.
+
+1.  **Create Content**: Create a new `.jsx` file in `src/data/info/contents/` (e.g., `brand-guide.jsx`).
+2.  **Export Format**: Use the standardized export format:
+    ```javascript
+    export const content = {
+      title: "Brand Guidelines",
+      body: (
+        <div className="space-y-6">
+          <p>Content goes here...</p>
+        </div>
+      ),
+    };
+    ```
+3.  **Registration**: Add a route in `App.jsx` if a custom URL is needed, or use the dynamic route `/info/:pageId`.
+
 ## Style Guide
 
 - **JavaScript**: Use ES6+ syntax.
