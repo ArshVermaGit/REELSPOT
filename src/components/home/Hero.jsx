@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useApiKeys } from '../../contexts/ApiKeyContext';
 import ApiKeyModal from '../modals/ApiKeyModal';
 import SignInPrompt from '../modals/SignInPrompt';
 import DownloadForm from '../download/DownloadForm';
@@ -11,8 +10,9 @@ import { clsx } from 'clsx';
 const FloatingIcon = ({ icon: Icon, colorClass, positionClass, delay }) => (
     <div 
         className={clsx(
-            "absolute hidden xl:flex items-center justify-center w-24 h-24 rounded-[2rem] backdrop-blur-xl bg-white/40 border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.1)] animate-float-slow hover:scale-110 transition-transform duration-500",
-            positionClass
+            "absolute hidden xl:flex items-center justify-center w-24 h-24 rounded-[2rem] backdrop-blur-xl bg-white/40 border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:scale-110 transition-transform duration-500 will-change-transform",
+            positionClass,
+            delay === "0s" ? "animate-float-1" : "animate-float-2"
         )}
         style={{ animationDelay: delay }}
     >
@@ -25,7 +25,6 @@ const FloatingIcon = ({ icon: Icon, colorClass, positionClass, delay }) => (
 );
 
 const Hero = () => {
-    const { hasApiKey, getApiKey } = useApiKeys();
     const { user, signInWithGoogle } = useAuth();
     
     // Modal & Auth State
@@ -48,7 +47,8 @@ const Hero = () => {
         setShowSignInPrompt(false);
         try {
             await signInWithGoogle();
-        } catch (error) {
+        } catch (err) {
+            console.error(err);
             toast.error('Sign in failed. Please try again.');
         }
     };
@@ -132,8 +132,7 @@ const Hero = () => {
                 {/* Form Container - Premium Glow */}
                 <div className="w-full max-w-2xl animate-fade-in mb-20 relative group" style={{ animationDelay: '0.2s' }}>
                     
-                    {/* Glow Effect */}
-                    <div className="absolute -inset-1 bg-gradient-to-r from-pink-500/20 via-blue-500/20 to-purple-500/20 rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
+                    <div className="absolute -inset-1 bg-gradient-to-r from-pink-500/20 via-blue-500/20 to-purple-500/20 rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500 will-change-[opacity]" />
                     
                     <div className="relative">
                         <DownloadForm 
@@ -155,7 +154,7 @@ const Hero = () => {
                             { icon: Facebook, bg: 'text-blue-600 bg-blue-50' },
                             { icon: Music2, bg: 'text-zinc-900 bg-zinc-100' },
                         ].map(({ icon: Icon, bg }, i) => (
-                            <div key={i} className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center transition-transform hover:scale-110 cursor-default`}>
+                            <div key={i} className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center transition-transform hover:scale-110 cursor-default will-change-transform`}>
                                 <Icon size={20} />
                             </div>
                         ))}
