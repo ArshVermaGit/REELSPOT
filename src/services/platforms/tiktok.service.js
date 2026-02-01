@@ -1,5 +1,5 @@
 import { extractMediaId } from '../platformDetector.js';
-import { PLATFORMS } from '../../constants';
+import { PLATFORMS } from '../../constants/index.js';
 
 export const fetchTikTokData = async (url) => {
     // Dynamically import MediaError to avoid circular dependency if it was in a shared file,
