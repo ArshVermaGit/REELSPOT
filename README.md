@@ -70,3 +70,37 @@ We are building the future of media accessibility. Check our [**Roadmap**](./ROA
   <p>Crafted with obsession by <a href="https://github.com/ArshVermaGit"><b>Arsh Verma</b></a></p>
   <a href="#top">Back to top</a>
 </div>
+
+---
+
+## ☕ Support the Project
+
+If you find this tool helpful and want to support its development, consider buying me a coffee! Your support helps keep the project alive and free.
+
+<div align="center">
+    
+<a href="https://www.buymeacoffee.com/ArshVerma">
+  <img src="public/buy-me-a-coffee.png" width="200" />
+</a>
+
+</div>
+
+## 📱 Connect with Me
+
+I'd love to hear your feedback or discuss potential collaborations!
+
+<div align="center">
+
+[![GitHub](https://skillicons.dev/icons?i=github)](https://github.com/ArshVermaGit)
+[![LinkedIn](https://skillicons.dev/icons?i=linkedin)](https://www.linkedin.com/in/arshvermadev/)
+[![Twitter](https://skillicons.dev/icons?i=twitter)](https://x.com/TheArshVerma)
+[![Gmail](https://skillicons.dev/icons?i=gmail)](mailto:arshverma.dev@gmail.com)
+
+</div>
+
+---
+
+<p align="center">
+  Built with ❤️ by <strong>Arsh Verma</strong>
+</p>
+
