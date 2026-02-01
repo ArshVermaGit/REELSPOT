@@ -1,7 +1,8 @@
 
 import axios from 'axios';
-import { getMediaInfo, downloadMedia } from '../src/services/mediaDownloader.js';
-import { detectPlatform, PLATFORMS } from '../src/services/platformDetector.js';
+import { getMediaInfo, downloadMedia } from '../src/services/download.service.js';
+import { detectPlatform } from '../src/services/platformDetector.js';
+import { PLATFORMS } from '../src/constants/index.js';
 
 // --- Mock Browser Environment ---
 global.window = {
@@ -25,8 +26,15 @@ global.document = {
 // --- Mock Axios for File Download ---
 // We need to mock the blob download request in downloadMedia
 axios.interceptors.request.use(config => {
-    if (config.url.includes('sample-videos.com')) {
-        console.log(`[MockNetwork] GET ${config.url}`);
+    if (config.url) {
+        try {
+            const urlObj = new URL(config.url);
+            if (urlObj.hostname === 'sample-videos.com') {
+                console.log(`[MockNetwork] GET ${config.url}`);
+            }
+        } catch (e) {
+            // Not a valid absolute URL, skip mock logging
+        }
     }
     return config;
 });
@@ -36,12 +44,20 @@ const originalGet = axios.get;
 const originalHead = axios.head;
 
 axios.head = async (url) => {
-    if (url.includes('sample-videos.com')) return { headers: { 'content-length': '1048576' } }; // 1MB
+    try {
+        const urlObj = new URL(url);
+        if (urlObj.hostname === 'sample-videos.com') return { headers: { 'content-length': '1048576' } }; // 1MB
+    } catch (e) {}
     return originalHead(url);
 };
 
 axios.get = async (url, config) => {
-    if (url.includes('sample-videos.com')) {
+    let hostname = '';
+    try {
+        hostname = new URL(url).hostname;
+    } catch (e) {}
+
+    if (hostname === 'sample-videos.com') {
          // Return a mock blob-like object for Node
          return { 
              data: { size: 1048576, arrayBuffer: () => Promise.resolve(new ArrayBuffer(100)) }, 
