@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import { Instagram, Youtube, Facebook, Music2, Link as LinkIcon, Search } from 'lucide-react';
+import { Instagram, Youtube, Facebook, Music2, Link as LinkIcon } from 'lucide-react';
 import { clsx } from 'clsx';
 import { detectPlatform } from '../../services/platformDetector';
-import Input from '../shared/Input';
 
 const PlatformDetector = ({ url, onChange, onDetect }) => {
     
