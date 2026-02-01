@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Loader2, Key, ExternalLink, AlertTriangle, Eye, EyeOff, Save, Instagram, Youtube, Facebook, Music2, HelpCircle } from 'lucide-react';
 import { useApiKeys } from '../../contexts/ApiKeyContext';
 import { clsx } from 'clsx';
@@ -77,6 +77,18 @@ const ApiKeyModal = ({ isOpen, onClose, platform }) => {
     const [key, setKey] = useState('');
     const [showKey, setShowKey] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    
+    // Lock scroll when modal is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isOpen]);
 
     if (!isOpen || !platform) return null;
 
@@ -95,10 +107,9 @@ const ApiKeyModal = ({ isOpen, onClose, platform }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop */}
+            {/* Backdrop - Click disabled as per user request */}
             <div 
                 className="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-300"
-                onClick={onClose}
             />
 
             {/* Modal Content */}
