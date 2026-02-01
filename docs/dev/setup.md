@@ -61,12 +61,17 @@ This guide covers how to set up the Reelspot development environment.
 
 - `/src`: Source code
   - `/components`: Reusable UI components
-  - `/pages`: Route pages (Dashboard, History, Settings)
+  - `/pages`: Route pages (Home, Dashboard, Settings, etc.)
   - `/hooks`: Custom React hooks (logic layer)
-  - `/contexts`: Global state (Auth, ApiKeys)
+  - `/contexts`: Global state (Auth, ApiKeys, Download, Feedback)
+  - `/services`: Core business logic (Supabase, Downloader, Platforms)
+  - `/data`: Static content and configurations
   - `/utils`: Helper functions
-- `/docs`: Documentation
+- `/docs`: Detailed documentation
+- `/public`: Static assets (Logo, illustrations)
 
-## Linting & Formatting
+## Quality Assurance
 
-- **Lint**: `npm run lint`
+- **Linting**: Run `npm run lint` to check for code style issues. The project aims for zero errors.
+- **Testing**: Run `npm test` to execute unit tests using Vitest.
+- **Formating**: Prettier is configured to maintain consistency.
