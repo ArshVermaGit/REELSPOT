@@ -1,24 +1,30 @@
 /**
- * Platform Strategy Registry
- * Allows dynamic registration of platform-specific download strategies.
+ * @typedef {Function} PlatformStrategy
+ * @param {string} url - Source URL
+ * @param {string} [apiKey] - API key
+ * @returns {Promise<Object>} Media metadata
  */
 
-const PLATFORM_STRATEGIES = new Map();
+/** @type {Record<string, PlatformStrategy>} */
+const strategies = {};
 
 /**
- * Registers a new platform strategy.
- * @param {string} platform - Use constants from PLATFORMS
- * @param {Function} fetchFn - The API fetching logic
+ * Registers a new download strategy for a specific platform.
+ * Used for modular extension of the downloader.
+ * 
+ * @param {string} platform - Platform key from PLATFORMS constant
+ * @param {PlatformStrategy} strategy - Function that implements the extraction logic
  */
-export const registerPlatform = (platform, fetchFn) => {
-    PLATFORM_STRATEGIES.set(platform, fetchFn);
+export const registerPlatform = (platform, strategy) => {
+  strategies[platform] = strategy;
 };
 
 /**
- * Gets a platform strategy.
+ * Retrieves the registered strategy for a platform.
+ * 
  * @param {string} platform 
- * @returns {Function|null}
+ * @returns {PlatformStrategy | null}
  */
 export const getPlatformStrategy = (platform) => {
-    return PLATFORM_STRATEGIES.get(platform);
+  return strategies[platform] || null;
 };
