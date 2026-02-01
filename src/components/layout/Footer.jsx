@@ -1,8 +1,12 @@
 import React from 'react';
-import { Github } from 'lucide-react';
+import { Github, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useFeedback } from '../../contexts/FeedbackContext';
+import HelpModal from '../modals/HelpModal';
 
 const Footer = () => {
+    const { openFeedback } = useFeedback();
+    const [isHelpOpen, setIsHelpOpen] = React.useState(false);
     return (
         <footer className="bg-white border-t border-zinc-100 pt-16 pb-8 mt-auto">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -12,7 +16,7 @@ const Footer = () => {
                             <div className="relative">
                                 <div className="absolute inset-0 bg-black blur-lg opacity-20 group-hover:opacity-30 transition-opacity rounded-full" />
                                 <img 
-                                    src="/logo.png" 
+                                    src="/logo.png?v=2" 
                                     alt="Reelspot" 
                                     className="w-10 h-10 relative z-10 rounded-xl shadow-sm transition-transform duration-300 group-hover:scale-105"
                                 />
@@ -38,9 +42,26 @@ const Footer = () => {
                         <ul className="space-y-4 text-zinc-500 font-medium">
                             <li><Link to="/about" className="hover:text-black transition-colors">About Us</Link></li>
                             <li><Link to="/contact" className="hover:text-black transition-colors">Contact</Link></li>
+                            <li>
+                                <button 
+                                    onClick={() => setIsHelpOpen(true)}
+                                    className="hover:text-black transition-colors flex items-center gap-2"
+                                >
+                                    <HelpCircle size={14} />
+                                    Help Center
+                                </button>
+                            </li>
                             <li><Link to="/support" className="hover:text-black transition-colors">Support</Link></li>
                             <li><Link to="/faq" className="hover:text-black transition-colors">FAQ</Link></li>
                             <li><Link to="/changelog" className="hover:text-black transition-colors">Changelog</Link></li>
+                            <li>
+                                <button 
+                                    onClick={openFeedback}
+                                    className="hover:text-black transition-colors"
+                                >
+                                    Feedback
+                                </button>
+                            </li>
                         </ul>
                     </div>
                     <div>
@@ -68,9 +89,28 @@ const Footer = () => {
                         >
                             <Github size={20} />
                         </a>
+                        <a 
+                            href="https://www.linkedin.com/in/arshvermadev/" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="p-2 text-zinc-400 hover:text-black hover:bg-zinc-50 rounded-full transition-all"
+                            aria-label="LinkedIn"
+                        >
+                            <img src="https://img.icons8.com/ios-filled/24/null/linkedin.png" className="w-5 h-5 opacity-40 hover:opacity-100 grayscale hover:grayscale-0 transition-opacity" alt="LinkedIn" />
+                        </a>
+                        <a 
+                            href="https://x.com/TheArshVerma" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="p-2 text-zinc-400 hover:text-black hover:bg-zinc-50 rounded-full transition-all"
+                            aria-label="X (Twitter)"
+                        >
+                            <img src="https://img.icons8.com/ios-filled/24/null/twitterx--v1.png" className="w-5 h-5 opacity-40 hover:opacity-100 grayscale hover:grayscale-0 transition-opacity" alt="X" />
+                        </a>
                     </div>
                 </div>
             </div>
+            <HelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
         </footer>
     );
 };
