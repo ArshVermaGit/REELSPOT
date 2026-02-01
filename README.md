@@ -1,170 +1,72 @@
 <div align="center">
-  <a href="https://reelspot.vercel.app">
-    <img src="public/logo.png" alt="Reelspot Logo" width="120" height="auto" />
-  </a>
-  <br />
-  <h1>Reelspot</h1>
-  <h3>The Ultimate Media Downloader for Creators</h3>
-  
+  <img src="public/logo.png?v=2" alt="Reelspot Logo" width="80" />
+  <h1>REELSPOT 2.0</h1>
+  <p><i>The Ultimate Social Media Experience. Redefined.</i></p>
+
   <p>
-    <b>High-Performance</b> · <b>Privacy-First</b> · <b>Obsidian Aesthetic</b>
+    <a href="https://reelspot.vercel.app"><b>Live Experience</b></a> •
+    <a href="https://github.com/ArshVermaGit/REELSPOT/releases"><b>Releases</b></a> •
+    <a href="CONTRIBUTING.md"><b>Collaborate</b></a>
   </p>
 
   <p>
-    <a href="https://reelspot.vercel.app">View Demo</a>
-    ·
-    <a href="https://github.com/ArshVermaGit/REELSPOT/issues/new?template=BUG_REPORT.yml">Report Bug</a>
-    ·
-    <a href="https://github.com/ArshVermaGit/REELSPOT/discussions">Request Feature</a>
-  </p>
-
-  <p>
-    <!-- CI/CD Status -->
-    <a href="https://github.com/ArshVermaGit/REELSPOT/actions"><img src="https://img.shields.io/github/actions/workflow/status/ArshVermaGit/REELSPOT/ci.yml?style=flat-square&logo=github" alt="Build Status" /></a>
-    <!-- License -->
-    <a href="LICENSE"><img src="https://img.shields.io/github/license/ArshVermaGit/REELSPOT?style=flat-square&color=blue" alt="License" /></a>
-    <!-- PRs -->
-    <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome" /></a>
-  </p>
-
-  <p>
-    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
-    <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
-    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
-    <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
+    <img src="https://img.shields.io/github/actions/workflow/status/ArshVermaGit/REELSPOT/ci.yml?style=flat-square&label=system&color=black" />
+    <img src="https://img.shields.io/github/license/ArshVermaGit/REELSPOT?style=flat-square&label=license&color=black" />
+    <img src="https://img.shields.io/badge/version-2.0.0-black?style=flat-square" />
   </p>
 </div>
 
-<br />
+---
 
-## ✨ About The Project
+### 💎 Philosophy
 
-**Reelspot** is a premium, high-performance web application designed to simplify media consumption for creators and minimalists. Built with a hyper-polished "obsidian glass" aesthetic, it offers a seamless experience for downloading high-quality videos from major social platforms without the clutter of traditional tools.
+**Reelspot** isn't just a downloader; it's a statement on software aesthetics. Designed for creators who value precision, privacy, and performance. Version 2.0 introduces our most refined "Obsidian Glass" interface yet.
 
-We believe in **Software Craftsmanship**. Reelspot isn't just a tool; it's an example of how modern web apps should feel—fast, fluid, and respectful of the user.
+### ⚡ Core Pillars
 
-### 🔥 Key Features
-
-- **⚡ Multi-Platform Strategy**: Dynamically extensible architecture supporting **Instagram**, **YouTube**, **Facebook**, and **TikTok**.
-- **💎 Premium UX/UI**: A stunning interface built with **Tailwind CSS**, featuring glassmorphism, micro-interactions, and fluid 60fps animations.
-- **🚀 Performance Optimized**: Implements **React Lazy Loading** and dynamic imports for supplemental content to ensure lightning-fast initial loads.
-- **🔒 Privacy First**: Zero tracking. Your data stays yours. secure local storage for preferences.
-- **🔌 Developer Ready**: Built with a **Screaming Architecture**. Feature-first folder structure, Strategy Pattern for downloads, and centralized constants make contributing a breeze.
-- **📱 Universal**: Fully responsive, PWA-ready design that feels native on any device.
+- **Universal Flow**: Native-speed downloads from **Instagram**, **YouTube**, **TikTok**, and **Facebook**.
+- **Privacy Zero**: No tracking, no cookies, no metadata leak. Your browsing is invisible.
+- **Obsidian UX**: Hand-crafted 60fps micro-animations and a deep obsidian glass aesthetics.
+- **Screaming Core**: A developer-first architecture built for extreme scalability and ease of contribution.
 
 ---
 
-## 🚀 Getting Started
+### 🛠️ The Stack
 
-To get a local copy up and running, follow these simple steps.
-
-### Prerequisites
-
-- Node.js (v18 or higher)
-- npm (v9+)
-
-### Installation
-
-1.  **Clone the repo**
-    ```sh
-    git clone https://github.com/ArshVermaGit/REELSPOT.git
-    cd REELSPOT
-    ```
-2.  **Install dependencies**
-    ```sh
-    npm ci
-    ```
-3.  **Configure Environment**
-    Create a `.env` file based on `.env.example`:
-    ```env
-    VITE_SUPABASE_URL=your_url
-    VITE_SUPABASE_ANON_KEY=your_key
-    VITE_RAPIDAPI_KEY=your_key
-    ```
-4.  **Start the server**
-    ```sh
-    npm run dev
-    ```
-
----
-
-## 🏗️ Project Structure
-
-Reelspot follows a domain-driven, modular architecture designed for scalability.
-
+```mermaid
+graph LR
+    A[React 18] --> B[Vite 7]
+    B --> C[Tailwind CSS]
+    C --> D[Supabase]
+    D --> E[Reelspot 2.0]
 ```
-src/
-├── components/          # Reusable UI components
-├── constants/           # Global constants (Regex, Configs)
-├── contexts/            # Global State (Auth, Theme)
-├── data/                # Static & Dynamic Data
-│   └── info/            # Modular Information Content
-├── hooks/               # Custom React Hooks
-├── pages/               # Route Components
-├── services/            # Business Logic & API Layer
-│   └── platforms/       # Strategy Pattern Implementations
-└── styles/              # Global Tailwind Styles
+
+### 🚀 Quickstart
+
+```bash
+git clone https://github.com/ArshVermaGit/REELSPOT.git
+cd REELSPOT
+npm ci
+npm run dev
 ```
 
 ---
 
-## 📚 Documentation
+### 🎨 Architecture
 
-Detailed guides for developers and users.
+Reelspot 2.0 utilizes a **Strategy Pattern** for platform handling, ensuring that adding new social networks requires zero changes to the core engine.
 
-### 💻 For Developers
-
-- [**Architecture Guide**](./docs/dev/architecture.md) - Deep dive into usage of Strategy Pattern and directory structure.
-- [**Contribution Board**](./CONTRIBUTING.md) - How to add a new platform in 5 steps.
-- [**Repository Settings**](./docs/dev/repository-settings.md) - How to configure this repo for perfection.
-- [**API Integration**](./docs/dev/api.md) - Adding new endpoints.
-
-### 👤 For Users
-
-- [**Getting Started**](./docs/user/getting-started.md)
-- [**Troubleshooting**](./docs/user/troubleshooting.md)
-- [**Legal & Privacy**](./docs/user/legal.md)
+- `src/services/platforms` — The heart of the extraction logic.
+- `src/components/shared` — Atomic, reusable glassmorphism units.
+- `src/data/info` — Dynamic content layer for extreme SEO control.
 
 ---
 
-## 🤝 Contributing
+### 🤝 Join the Movement
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-See [**CONTRIBUTING.md**](./CONTRIBUTING.md) for detailed steps on how to:
-
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
-
----
-
-## 🗺️ Roadmap & History
-
-Stay up to date with where Reelspot is headed.
-
-- 🚀 [**Roadmap**](./ROADMAP.md) - Planned features & milestones.
-- 📜 [**Changelog**](./CHANGELOG.md) - Track every change.
-
----
-
-## 👤 Author
-
-**Arsh Verma**
-
-- **Portfolio**: [arshcreates.vercel.app](https://arshcreates.vercel.app)
-- **GitHub**: [@ArshVermaGit](https://github.com/ArshVermaGit)
-- **LinkedIn**: [Arsh Verma](https://www.linkedin.com/in/arshvermadev/)
-- **X (Twitter)**: [@TheArshVerma](https://x.com/TheArshVerma)
-
----
+We are building the future of media accessibility. Check our [**Roadmap**](./ROADMAP.md) or [**Changelog**](./CHANGELOG.md) to see what we've achieved.
 
 <div align="center">
-  <br />
-  <p>Made with ❤️ by Arsh Verma</p>
-  <p>
-     <a href="#top">Back to Top</a>
-  </p>
+  <p>Crafted with obsession by <a href="https://github.com/ArshVermaGit"><b>Arsh Verma</b></a></p>
+  <a href="#top">Back to top</a>
 </div>

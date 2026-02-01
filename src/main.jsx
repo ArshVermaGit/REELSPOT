@@ -5,8 +5,6 @@ import App from './App.jsx'
 import ErrorBoundary from './components/shared/ErrorBoundary'
 import './styles/index.css'
 
-console.log('Imports done');
-
 try {
   const rootElement = document.getElementById('root');
   if (!rootElement) throw new Error("Root element not found");
@@ -19,7 +17,7 @@ try {
       </ErrorBoundary>
     </React.StrictMode>,
   )
-  console.log('Root render called');
 } catch (e) {
-  console.error('CRASH IN MAIN.JSX:', e);
+  // Use console.error only as a last resort for critical boot failures
+  console.error('[CRITICAL] Application failed to mount:', e);
 }
