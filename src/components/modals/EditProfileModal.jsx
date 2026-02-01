@@ -1,11 +1,23 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, User, Save } from 'lucide-react';
 import toast from 'react-hot-toast'; // Import toast if you need inside component, or props
 
 const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
     const [fullName, setFullName] = useState(user?.user_metadata?.full_name || '');
     const [loading, setLoading] = useState(false);
+    
+    // Lock scroll when modal is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
@@ -25,7 +37,8 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+            {/* Backdrop - Click disabled as per user request */}
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
             
             <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200">
                 <div className="px-6 py-4 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/50">
