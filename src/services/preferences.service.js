@@ -1,6 +1,14 @@
 import { supabase } from './supabase';
 
+/**
+ * Service to manage user application preferences.
+ */
 export const preferencesService = {
+    /**
+     * Retrieves preferences for a specific user.
+     * @param {string} userId - UUID of the user
+     * @returns {Promise<Object|null>}
+     */
     async get(userId) {
         if (!userId) return null;
         const { data, error } = await supabase
@@ -15,6 +23,12 @@ export const preferencesService = {
         return data;
     },
 
+    /**
+     * Updates preferences for a user (upsert).
+     * @param {string} userId - UUID of the user
+     * @param {Object} prefs - Partial preference object
+     * @returns {Promise<Object>} Updated preference object
+     */
     async update(userId, prefs) {
         if (!userId) return null;
         const { data, error } = await supabase
