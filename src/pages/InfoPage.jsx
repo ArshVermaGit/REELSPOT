@@ -1,47 +1,64 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-
-// Content Imports
-import { privacyContent } from '../data/info/privacy';
-import { termsContent } from '../data/info/terms';
-import { featuresContent } from '../data/info/features';
-import { platformsContent } from '../data/info/platforms';
-import { apiContent } from '../data/info/api';
-import { aboutContent, contactContent, changelogContent } from '../data/info/index';
-import { faqContent, howItWorksContent, supportContent } from '../data/info/help';
-import { disclaimerContent } from '../data/info/disclaimer';
-import { cookiesContent } from '../data/info/cookies';
+import { ArrowLeft, Loader2 } from 'lucide-react';
+import SEO from '../components/shared/SEO';
 
 const InfoPage = ({ pageId: propId }) => {
     const { pageId: paramId } = useParams();
     const pageId = propId || paramId;
     const navigate = useNavigate();
+    
+    const [pageContent, setPageContent] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        
+        const loadContent = async () => {
+            setLoading(true);
+            setError(false);
+            try {
+                // Standardized dynamic import from modular contents
+                const module = await import(`../data/info/contents/${pageId}.jsx`);
+                if (module && module.content) {
+                    setPageContent(module.content);
+                } else {
+                    throw new Error('Content not found');
+                }
+            } catch (err) {
+                console.error(`Failed to load content for ${pageId}:`, err);
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadContent();
     }, [pageId]);
 
-    const contentMap = {
-        'privacy': privacyContent,
-        'terms': termsContent,
-        'features': featuresContent,
-        'supported-platforms': platformsContent,
-        'api-access': apiContent,
-        'changelog': changelogContent,
-        'about': aboutContent,
-        'contact': contactContent,
-        'faq': faqContent,
-        'how-it-works': howItWorksContent,
-        'support': supportContent,
-        'disclaimer': disclaimerContent,
-        'cookies': cookiesContent
-    };
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 size={40} className="animate-spin text-zinc-900" />
+                    <span className="text-zinc-500 font-medium">Loading content...</span>
+                </div>
+            </div>
+        );
+    }
 
-    const activeContent = contentMap[pageId] || { title: 'Not Found', body: <p>Page not found.</p> };
+    const activeContent = !error && pageContent ? pageContent : { 
+        title: 'Content Not Available', 
+        body: <p className="text-zinc-500">We couldn&apos;t load this page. Please try again later or contact support.</p> 
+    };
 
     return (
         <div className="min-h-screen bg-white pt-24 pb-20">
+            <SEO 
+                title={activeContent.title} 
+                description={`Read about ${activeContent.title} on Reelspot. We provide transparent information about our social media media downloader services.`}
+            />
             <div className="max-w-3xl mx-auto px-6">
                 <button 
                     onClick={() => navigate(-1)}
