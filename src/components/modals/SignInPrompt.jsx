@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, Lock, Shield, Zap } from 'lucide-react';
 
 // Inline Google Icon
@@ -12,14 +12,25 @@ const GIcon = () => (
 );
 
 const SignInPrompt = ({ isOpen, onClose, onSignIn }) => {
+    // Lock scroll when modal is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop */}
+            {/* Backdrop - Click disabled as per user request */}
             <div 
                 className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-                onClick={onClose}
             />
 
             {/* Modal */}
