@@ -1,10 +1,15 @@
 import React from 'react';
 import { Settings, RefreshCw, ExternalLink } from 'lucide-react';
 import Button from '../components/shared/Button';
+import SEO from '../components/shared/SEO';
 
 const Maintenance = () => {
   return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 text-center">
+    <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 text-center relative">
+      <SEO 
+        title="Scheduled Maintenance" 
+        description="Reelspot is temporarily offline for scheduled upgrades. We are improving our social media media downloader infrastructure to serve you better."
+      />
       <div className="w-24 h-24 bg-zinc-100 rounded-3xl flex items-center justify-center mb-8 shadow-sm animate-pulse-slow">
         <Settings size={48} className="text-zinc-400 animate-spin-slow" />
       </div>
