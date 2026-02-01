@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Trash2, ExternalLink, RefreshCw, ChevronDown, ChevronUp, FileVideo, FileAudio, Image as ImageIcon, Instagram, Youtube, Facebook, Music2, User, Clock, HardDrive, Film, PlayCircle } from 'lucide-react';
+import { Trash2, ExternalLink, RefreshCw, ChevronDown, ChevronUp, FileVideo, FileAudio, Image as ImageIcon, Instagram, Youtube, Facebook, Music2, User, Film, PlayCircle } from 'lucide-react';
 import { clsx } from 'clsx';
 import toast from 'react-hot-toast';
 
