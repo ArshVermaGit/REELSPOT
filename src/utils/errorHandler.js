@@ -1,6 +1,15 @@
-import { showToast } from './toastUtils'; // Extension is resolved automatically but good to know it's JSX now
+import { showToast } from './toastUtils';
+import logger from './logger';
 
+/**
+ * Custom error class for application-specific errors.
+ */
 export class AppError extends Error {
+    /**
+     * @param {string} message - Human-readable error message
+     * @param {string} code - Machine-readable error code (e.g., 'AUTH_REQUIRED')
+     * @param {Object} [details] - Additional error context
+     */
     constructor(message, code, details = null) {
         super(message);
         this.name = 'AppError';
@@ -9,7 +18,12 @@ export class AppError extends Error {
     }
 }
 
-export const handleError = (error) => {
+/**
+ * Global error handler to provide consistent feedback and logging.
+ * @param {Error|AppError} error - The error object to handle
+ * @param {string} [context] - Where the error occurred (e.g., 'Auth')
+ */
+export const handleError = (error, context = 'General') => {
     // 1. Network Errors
     if (!navigator.onLine) {
         showToast.error("No internet connection. Please check your network.");
@@ -23,10 +37,11 @@ export const handleError = (error) => {
 
     // 2. Custom App Logic Errors
     if (error instanceof AppError) {
+        logger.warn(`AppError [${context}]: ${error.message}`, error.details);
+        
         switch(error.code) {
             case 'AUTH_REQUIRED':
                 showToast.error("Session expired. Please sign in again.");
-                // Redirect logic handled elsewhere ideally, or dispatch event
                 break;
             case 'API_KEY_INVALID':
                 showToast.error(`Invalid API Key for ${error.details?.platform || 'platform'}. Check settings.`);
@@ -37,6 +52,9 @@ export const handleError = (error) => {
             case 'RATE_LIMIT':
                 showToast.error(`Rate limit reached. Try again later.`);
                 break;
+            case 'MEDIA_NOT_FOUND':
+                showToast.error("Could not find media at this URL. Make sure it's public.");
+                break;
             default:
                 showToast.error(error.message);
         }
@@ -44,10 +62,16 @@ export const handleError = (error) => {
     }
 
     // 3. Generic/Unknown Errors
-    console.error("Unhandled Error:", error);
+    logger.error(`Unhandled Error [${context}]:`, error);
     showToast.error(error.message || "Something went wrong. Please try again.");
 };
 
+/**
+ * Maps HTTP status codes to AppError instances for platform APIs.
+ * @param {number} status - HTTP status code
+ * @param {string} platform - Platform key (e.g., 'youtube')
+ * @returns {AppError}
+ */
 export const parseApiError = (status, platform) => {
     switch (status) {
         case 401: return new AppError('Unauthorized', 'API_KEY_INVALID', { platform });
