@@ -35,3 +35,13 @@ export const PATTERNS = {
     // TikTok: Matches @user/video/ID, v/ID, vt.tiktok.com/ID
     TIKTOK: /(?:tiktok\.com\/)(?:@[\w.-]+\/video\/|v\/)([\d]+)|(?:vt\.tiktok\.com\/)([\w]+)/
 };
+
+export const DOWNLOAD_STATUS = {
+    PENDING: 'pending',
+    DOWNLOADING: 'downloading',
+    COMPLETED: 'completed',
+    FAILED: 'failed'
+};
+
+export const APP_NAME = "Reelspot";
+export const API_VERSION = "v1";
